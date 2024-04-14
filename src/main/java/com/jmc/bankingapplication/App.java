@@ -12,9 +12,9 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        Parent fxmlLoader = FXMLLoader.load(getClass().getResource("login.fxml"));
-        Scene scene = new Scene(fxmlLoader, 520, 300);
-        stage.setTitle("Hello!");
+        Parent fxmlLoader = FXMLLoader.load(getClass().getResource("signup.fxml"));
+        Scene scene = new Scene(fxmlLoader, 520, 400);
+        stage.setTitle("Signup");
         stage.setScene(scene);
         stage.show();
     }
