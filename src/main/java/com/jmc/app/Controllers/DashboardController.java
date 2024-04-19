@@ -15,10 +15,10 @@ public class DashboardController {
     @FXML
     private Label statusLabel; // Achte darauf, dass diese Deklaration korrekt ist
 
-    @FXML
+    /*@FXML
     private void initialize() {
         statusLabel.setText("Dashboard geladen.");
-    }
+    }*/
     @FXML
     public void setUserText(String userText) {
         if (welcomeLabel != null) {

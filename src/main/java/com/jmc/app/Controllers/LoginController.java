@@ -10,6 +10,8 @@ import javafx.stage.Stage;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.fxml.FXMLLoader;
+
+import javafx.event.ActionEvent;
 import java.io.IOException;
 import java.sql.*;
 
@@ -18,13 +20,14 @@ public class LoginController {
     // Datenbankverbindungsparameter (an deine Datenbank anpassen)
     public static final String USER = "admin";
     public static final String PWD = "BigBankSoSe2024";
-    public static final String CONNECT_STRING = "jdbc:oracle:thin:@e4xxmj5ey9kfqzz5_high?TNS_ADMIN=/Users/perseus/Desktop/Wallet_E4XXMJ5EY9KFQZZ5";
+    public static final String CONNECT_STRING = "jdbc:oracle:thin:@e4xxmj5ey9kfqzz5_high?TNS_ADMIN=/Users/petritcena/Desktop/Wallet_E4XXMJ5EY9KFQZZ5";
 
     @FXML
     public Button loginButton;
 
     @FXML
     public AnchorPane mainPain;
+
 
     @FXML
     private TextField emailField;
@@ -35,37 +38,22 @@ public class LoginController {
     @FXML
     private Label statusLabel;
 
-
     @FXML
-    private void initialize() {
-        // debug
-        if (statusLabel != null) {
-            statusLabel.setText("Bereit zum Anmelden");
-        } else {
-            System.out.println("Fehler: statusLabel ist nicht initialisiert!");
-        }
-    }
+    private Button noAccountButton;
 
-    @FXML
-    public void handleLoginButtonAction() {
-
+    public void handleLoginButtonAction(ActionEvent event) {
         if (emailField.getText().isEmpty() || passwordField.getText().isEmpty()){
             statusLabel.setText("Bitte E-Mail und Passwort eingeben!");
-        }else {
-            String email = emailField.getText();
-            String password = passwordField.getText();
+        }
+        else {
             if (userAuthenticated(emailField.getText(), passwordField.getText())) {
-                statusLabel.setText("Anmeldung erfolgreich!");
-                System.out.println("Lade Dashboard...");
-
                 loadDashboardView();
-            } else {
-                statusLabel.setText("Login fehlgeschlagen. Bitte überprüfen Sie Ihre Eingaben.");
+            }
+            else {
+                statusLabel.setText("Login fehlgeschlagen. Überprüfen Sie Ihre Eingaben.");
             }
         }
     }
-
-
 
     private boolean userAuthenticated(String email, String password) {
         final String LOGIN_QUERY = "SELECT password FROM users WHERE email = ?";
@@ -94,6 +82,7 @@ public class LoginController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/jmc/app/Dashboard.fxml"));
             Parent root = loader.load();
             Stage stage = (Stage) emailField.getScene().getWindow();
+            stage.setTitle("Login");
             stage.setScene(new Scene(root));
             stage.show();
         } catch (IOException e) {
@@ -102,5 +91,16 @@ public class LoginController {
         }
     }
 
+    private void loadSignUpView(Stage stage) throws IOException {
+        Parent fxmlLoader = FXMLLoader.load(getClass().getResource("/com/jmc/app/signup.fxml"));
+        Scene scene = new Scene(fxmlLoader, 520, 400);
+        stage.setTitle("Signup");
+        stage.setScene(scene);
+        stage.show();
+    }
 
+    public void noAccountButtonAction(ActionEvent event) throws IOException {
+        Stage stage = (Stage) loginButton.getScene().getWindow();
+        loadSignUpView(stage);
+    }
 }
