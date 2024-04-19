@@ -8,4 +8,5 @@ module org.example.app {
 
     opens com.jmc.app.Controllers to javafx.fxml;
     exports com.jmc.app;
+    exports com.jmc.app.Controllers;
 }

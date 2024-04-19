@@ -1,68 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.layout.HBox?>
+
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.text.Font?>
-<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.text.Font?>
 
-<BorderPane xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.jmc.app.Controllers.DashboardController"
-            prefHeight="400.0" prefWidth="600.0">
-
-    <top>
-        <HBox fx:id="topContainer" style="-fx-background-color: #DAECFB;" spacing="20" alignment="CENTER">
-            <FontAwesomeIconView glyphName="HOME" size="30" style="-fx-fill: #35495a"/>
-            <FontAwesomeIconView glyphName="FILE_TEXT" size="30" style="-fx-fill: #35495a"/>
-        </HBox>
-    </top>
-
-    <center>
-        <VBox fx:id="centerContainer" spacing="10" alignment="CENTER">
-            <HBox spacing="15" alignment="CENTER">
-                <Button fx:id="mainAccountButton" text="Create Main Account" style="-fx-background-color: #DAECFB; -fx-text-fill: #35495a;">
-                    <graphic>
-                        <FontAwesomeIconView glyphName="USER" size="20" style="-fx-fill: #35495a"/>
-                    </graphic>
-                </Button>
-                <Label fx:id="mainAccountLabel" text="Establish your main account to manage all transactions." wrapText="true">
-                    <font>
-                        <Font size="12.0"/>
-                    </font>
-                </Label>
-            </HBox>
-            <HBox spacing="15" alignment="CENTER">
-                <Button fx:id="createSpaceButton" text="Create Space" style="-fx-background-color: #DAECFB; -fx-text-fill: #35495a;">
-                    <graphic>
-                        <FontAwesomeIconView glyphName="LAYERS" size="20" style="-fx-fill: #35495a"/>
-                    </graphic>
-                </Button>
-                <Label fx:id="createSpaceLabel" text="Create separate spaces for saving and spending." wrapText="true">
-                    <font>
-                        <Font size="12.0"/>
-                    </font>
-                </Label>
-            </HBox>
-            <HBox spacing="15" alignment="CENTER">
-                <Button fx:id="orderCardButton" text="Order Card" style="-fx-background-color: #DAECFB; -fx-text-fill: #35495a;">
-                    <graphic>
-                        <FontAwesomeIconView glyphName="CREDIT_CARD" size="20" style="-fx-fill: #35495a"/>
-                    </graphic>
-                </Button>
-                <Label fx:id="orderCardLabel" text="Order a new card for your account or additional users." wrapText="true">
-                    <font>
-                        <Font size="12.0"/>
-                    </font>
-                </Label>
-            </HBox>
-        </VBox>
-    </center>
-
-    <bottom>
-        <AnchorPane fx:id="bottomContainer" prefHeight="50.0" prefWidth="600.0" style="-fx-background-color: #DAECFB;">
-            <Label fx:id="statusLabel" text="Initialer Status" layoutX="10" layoutY="10" prefWidth="580" prefHeight="30" />
-        </AnchorPane>
-    </bottom>
+<BorderPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jmc.app.Controllers.DashboardController">
+   <left>
+      <AnchorPane prefHeight="400.0" prefWidth="121.0" style="-fx-background-color: #DAECFB;" BorderPane.alignment="CENTER">
+         <FontAwesomeIconView fill="#35495a" glyphName="BANK" layoutX="32.0" layoutY="70.0" size="50" />
+         <Button alignment="CENTER" contentDisplay="CENTER" layoutX="26.0" layoutY="159.0" mnemonicParsing="false" style="-fx-background-color: #35495a;" text="Startseite" textFill="#daecfb">
+            <cursor>
+               <Cursor fx:constant="OPEN_HAND" />
+            </cursor>
+         </Button>
+         <Button alignment="CENTER" contentDisplay="CENTER" layoutX="27.0" layoutY="216.0" mnemonicParsing="false" style="-fx-background-color: #35495a;" text="Produkte" textFill="#daecfb">
+            <opaqueInsets>
+               <Insets />
+            </opaqueInsets>
+            <cursor>
+               <Cursor fx:constant="OPEN_HAND" />
+            </cursor>
+         </Button>
+         <FontAwesomeIconView fill="#35495a" glyphName="USER" layoutX="48.0" layoutY="359.0" size="30" text="" wrappingWidth="24.285714149475098">
+            <cursor>
+               <Cursor fx:constant="OPEN_HAND" />
+            </cursor></FontAwesomeIconView>
+      </AnchorPane>
+   </left>
+   <center>
+      <AnchorPane prefHeight="200.0" prefWidth="479.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label layoutX="40.0" layoutY="41.0" text="Startseite" textFill="#35495a">
+               <font>
+                  <Font name="Arial Bold" size="30.0" />
+               </font>
+            </Label>
+            <FontAwesomeIconView fill="#35495a" glyphName="HOME" layoutX="187.0" layoutY="69.0" size="30" />
+            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="30.0" layoutY="183.0" prefHeight="17.0" prefWidth="428.0" text="Keine Produkte vorhanden" textFill="#35495a">
+               <font>
+                  <Font name="Arial Bold" size="20.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+   </center>
 </BorderPane>
