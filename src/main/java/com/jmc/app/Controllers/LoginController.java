@@ -20,7 +20,7 @@ public class LoginController {
     // Datenbankverbindungsparameter (an deine Datenbank anpassen)
     public static final String USER = "admin";
     public static final String PWD = "BigBankSoSe2024";
-    public static final String CONNECT_STRING = "jdbc:oracle:thin:@e4xxmj5ey9kfqzz5_high?TNS_ADMIN=/Users/petritcena/Desktop/Wallet_E4XXMJ5EY9KFQZZ5";
+    public static final String CONNECT_STRING = "jdbc:oracle:thin:@e4xxmj5ey9kfqzz5_high?TNS_ADMIN=/Users/oemer.t/Downloads/Wallet_E4XXMJ5EY9KFQZZ5";
 
     @FXML
     public Button loginButton;
@@ -29,8 +29,12 @@ public class LoginController {
     public AnchorPane mainPain;
 
 
+
+
     @FXML
     private TextField emailField;
+
+
 
     @FXML
     private PasswordField passwordField;
@@ -41,11 +45,16 @@ public class LoginController {
     @FXML
     private Button noAccountButton;
 
+    public static String password1; //Änderung
+    public static String email1;   //Änderung
+
     public void handleLoginButtonAction(ActionEvent event) {
         if (emailField.getText().isEmpty() || passwordField.getText().isEmpty()){
             statusLabel.setText("Bitte E-Mail und Passwort eingeben!");
         }
         else {
+            password1 = passwordField.getText(); //Änderung
+            email1 = emailField.getText();       //Änderung
             if (userAuthenticated(emailField.getText(), passwordField.getText())) {
                 loadDashboardView();
             }
