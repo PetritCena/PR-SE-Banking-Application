@@ -18,6 +18,7 @@ public class DashboardController {
     @FXML
     private Label statusLabel; // Achte darauf, dass diese Deklaration korrekt ist
 
+    public ProfilController p = new ProfilController();
     /*@FXML
     private void initialize() {
         statusLabel.setText("Dashboard geladen.");
@@ -29,22 +30,8 @@ public class DashboardController {
         }
     }
 
-    public void loadDashboardView() {
-        try {
-            // Ersetze "Dashboard.fxml" durch den tatsächlichen Pfad zu deiner Dashboard-FXML-Datei
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/jmc/app/Dashboard.fxml"));
-            Parent root = loader.load();
-            Scene scene = new Scene(root);
-            Stage stage = (Stage) statusLabel.getScene().getWindow(); // Nutze irgendein Element, das bereits geladen ist, um das Fenster zu erhalten
-            stage.setScene(scene);
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-            statusLabel.setText("Fehler beim Laden des Dashboards.");
-        }
-    }
-
     public void loadProfilView() {
+
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/jmc/app/profil.fxml"));
             Parent root = loader.load();
@@ -52,11 +39,11 @@ public class DashboardController {
             Stage stage = (Stage) profilButton.getScene().getWindow();
             stage.setScene(scene);
             stage.show();
-
         } catch (IOException e) {
             e.printStackTrace();
             statusLabel.setText("Fehler beim Laden der Profilseite.");
         }
+
     }
 
 }
