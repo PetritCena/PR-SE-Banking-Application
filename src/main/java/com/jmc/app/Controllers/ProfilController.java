@@ -1,12 +1,17 @@
 package com.jmc.app.Controllers;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.event.ActionEvent;
-//import java.awt.event.ActionEvent;
+import javafx.stage.Stage;
+
+import java.io.IOException;
 import java.sql.*;
 
 import static com.jmc.app.Controllers.LoginController.password1;
@@ -17,7 +22,7 @@ public class ProfilController {
     // Datenbankverbindungsparameter (an deine Datenbank anpassen)
     public static final String USER = "admin";
     public static final String PWD = "BigBankSoSe2024";
-    public static final String CONNECT_STRING = "jdbc:oracle:thin:@e4xxmj5ey9kfqzz5_high?TNS_ADMIN=/Users/oemer.t/Downloads/Wallet_E4XXMJ5EY9KFQZZ5";
+    public static final String CONNECT_STRING = "jdbc:oracle:thin:@e4xxmj5ey9kfqzz5_high?TNS_ADMIN=/Users/petritcena/Desktop/Wallet_E4XXMJ5EY9KFQZZ5";
     public Label statusLabel;
 
     @FXML
@@ -33,6 +38,13 @@ public class ProfilController {
     private PasswordField neuesPasswortFeld;
     @FXML
     private PasswordField neuesPasswortBestätigungFeld;
+    @FXML
+    private Button startSeiteButton;
+    @FXML
+    private Button produktSeiteButton;
+    @FXML
+    private Button signoutButton;
+
 
     String vornameAlt;
     String nachnameAlt;
@@ -45,7 +57,8 @@ public class ProfilController {
         nachnameAlt = nachnameFeld.getText();
     }
 
-    public String getVorname(){
+    // Hilfsmethode um den Vornamen des Users zu bekommen
+    private String getVorname(){
         final String SELECT_NAME = "SELECT vorname FROM users WHERE email = ?";
         try (Connection con = DriverManager.getConnection(CONNECT_STRING, USER, PWD); PreparedStatement stmt = con.prepareStatement(SELECT_NAME)) {
             stmt.setString(1, email1);
@@ -56,13 +69,14 @@ public class ProfilController {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            e.printStackTrace(System.err);
             System.out.println("Datenbankfehler: " + e.getMessage());
         }
         return "Hat nicht funktioniert";
     }
 
-    public String getNachname(){
+    // Hilfsmethode um den Nachnamen des Users zu bekommen
+    private String getNachname(){
         final String SELECT_NAME = "SELECT nachname FROM users WHERE email = ?";
         try (Connection con = DriverManager.getConnection(CONNECT_STRING, USER, PWD); PreparedStatement stmt = con.prepareStatement(SELECT_NAME)) {
             stmt.setString(1, email1);
@@ -73,16 +87,16 @@ public class ProfilController {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            e.printStackTrace(System.err);
             System.out.println("Datenbankfehler: " + e.getMessage());
         }
         return "Hat nicht funktioniert";
     }
 
-
-
+    // wenn man auf Button Speichern drückt, werden die User Daten mit dem neuen Input in der Datenbank geupdatet
+    // beim ändern des Passworts, wird gecheckt, ob das alte Passwort mit dem Passwort von der Datenbank übereinstimmt
+    // die Felder "neues Passwort" und "neues Passwort bestätigen" müssen gleich sein, um das Passwort zu ändern
     public void datenÄndern(ActionEvent event) {
-
         if (altesPasswortFeld.getText().equals(password1) && neuesPasswortFeld.getText().equals(neuesPasswortBestätigungFeld.getText())){
 
             final String UPDATE_PASSWORD = "UPDATE users SET password = ? WHERE email = ?";
@@ -102,7 +116,7 @@ public class ProfilController {
                     System.out.println("Datenbank konnte nicht geändert werden");
                 }
             } catch (SQLException e) {
-                e.printStackTrace();
+                e.printStackTrace(System.err);
                 //statusLabel.setText("Datenbankfehler: " + e.getMessage());
                 System.out.println("Datenbankfehler: " + e.getMessage());
             }
@@ -113,9 +127,7 @@ public class ProfilController {
             statusLabel.setText("falsches Passwort");
         }
 
-
         //Vorname ändern
-
         if (vornameAlt.equals(vornameFeld.getText()) == false){
             final String UPDATE_VORNAME = "UPDATE users SET vorname = ? WHERE email = ?";
 
@@ -133,19 +145,13 @@ public class ProfilController {
                     System.out.println("Datenbank konnte nicht geändert werden");
                 }
             } catch (SQLException e) {
-                e.printStackTrace();
+                e.printStackTrace(System.err);
                 //statusLabel.setText("Datenbankfehler: " + e.getMessage());
                 System.out.println("Datenbankfehler: " + e.getMessage());
             }
         }
 
-
-
-
-
         //Nachname ändern
-
-
         if (nachnameAlt.equals(nachnameFeld.getText()) == false){
             final String UPDATE_NACHNAME = "UPDATE users SET nachname = ? WHERE email = ?";
 
@@ -163,20 +169,30 @@ public class ProfilController {
                     System.out.println("Datenbank konnte nicht geändert werden");
                 }
             } catch (SQLException e) {
-                e.printStackTrace();
+                e.printStackTrace(System.err);
                 //statusLabel.setText("Datenbankfehler: " + e.getMessage());
                 System.out.println("Datenbankfehler: " + e.getMessage());
             }
         }
-
-
     }
 
+    //man drück Button Startseite und wird zur Startseite weitergeleitet
+    public void startSeiteButtonOnAction(ActionEvent event) throws IOException {
+        Parent fxmlLoader = FXMLLoader.load(getClass().getResource("/com/jmc/app/Dashboard.fxml"));
+        Scene scene = new Scene(fxmlLoader, 850, 750);
+        Stage stage = (Stage) startSeiteButton.getScene().getWindow();
+        stage.setTitle("Startseite");
+        stage.setScene(scene);
+        stage.show();
+    }
 
-
+    //man drück Button Signout und ausgeloggt und zum Login weitergeleitet
+    public void signoutButtonOnAction(ActionEvent event) throws IOException {
+        Parent fxmlLoader = FXMLLoader.load(getClass().getResource("/com/jmc/app/login.fxml"));
+        Scene scene = new Scene(fxmlLoader, 520, 400);
+        Stage stage = (Stage) signoutButton.getScene().getWindow();
+        stage.setTitle("Login");
+        stage.setScene(scene);
+        stage.show();
+    }
 }
-
-
-
-//else if (altesPasswortFeld.getText().isEmpty() || neuesPasswortFeld.getText().isEmpty() || neuesPasswortBestätigungFeld.getText().isEmpty()) {
-//            statusLabel.setText("Feld ist Leer!");

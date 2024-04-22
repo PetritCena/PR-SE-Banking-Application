@@ -3,6 +3,7 @@ import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.fxml.FXML;
 import javafx.stage.Stage;
@@ -13,25 +14,14 @@ public class DashboardController {
     @FXML
     private FontAwesomeIconView profilButton;
     @FXML
-    private Label welcomeLabel;
-
+    private Label statusLabel;
     @FXML
-    private Label statusLabel; // Achte darauf, dass diese Deklaration korrekt ist
-
-    public ProfilController p = new ProfilController();
-    /*@FXML
-    private void initialize() {
-        statusLabel.setText("Dashboard geladen.");
-    }*/
+    private Button startSeiteButton;
     @FXML
-    public void setUserText(String userText) {
-        if (welcomeLabel != null) {
-            welcomeLabel.setText("Willkommen, " + userText + "!");
-        }
-    }
+    private Button produktSeiteButton;
 
+    // man drückt Account Icon und wird zur Profilseite weitergeleitet
     public void loadProfilView() {
-
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/jmc/app/profil.fxml"));
             Parent root = loader.load();
@@ -40,12 +30,11 @@ public class DashboardController {
             stage.setScene(scene);
             stage.show();
         } catch (IOException e) {
-            e.printStackTrace();
+            e.printStackTrace(System.err);
             statusLabel.setText("Fehler beim Laden der Profilseite.");
         }
 
     }
-
 }
 
 

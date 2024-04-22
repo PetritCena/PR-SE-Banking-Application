@@ -20,34 +20,28 @@ public class LoginController {
     // Datenbankverbindungsparameter (an deine Datenbank anpassen)
     public static final String USER = "admin";
     public static final String PWD = "BigBankSoSe2024";
-    public static final String CONNECT_STRING = "jdbc:oracle:thin:@e4xxmj5ey9kfqzz5_high?TNS_ADMIN=/Users/oemer.t/Downloads/Wallet_E4XXMJ5EY9KFQZZ5";
+    public static final String CONNECT_STRING = "jdbc:oracle:thin:@e4xxmj5ey9kfqzz5_high?TNS_ADMIN=/Users/petritcena/Desktop/Wallet_E4XXMJ5EY9KFQZZ5";
 
     @FXML
     public Button loginButton;
-
     @FXML
     public AnchorPane mainPain;
-
-
-
-
     @FXML
     private TextField emailField;
-
-
-
     @FXML
     private PasswordField passwordField;
-
     @FXML
     private Label statusLabel;
-
     @FXML
     private Button noAccountButton;
 
     public static String password1; //Änderung
     public static String email1;   //Änderung
 
+    // User Input wird gecheckt
+    // also, ob alle Felder ausgefüllt wurden
+    // es wird auch überprüft, ob die User Daten wirklich existieren
+    // wenn, alles klappt wird man zur Startseite weitergeleitet
     public void handleLoginButtonAction(ActionEvent event) {
         if (emailField.getText().isEmpty() || passwordField.getText().isEmpty()){
             statusLabel.setText("Bitte E-Mail und Passwort eingeben!");
@@ -64,6 +58,7 @@ public class LoginController {
         }
     }
 
+    //Hilfsmethode, um zu checken, ob User Input in der Datenbank vorhanden sind
     private boolean userAuthenticated(String email, String password) {
         final String LOGIN_QUERY = "SELECT password FROM users WHERE email = ?";
 
@@ -80,36 +75,34 @@ public class LoginController {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            e.printStackTrace(System.err);
             statusLabel.setText("Datenbankfehler: " + e.getMessage());
         }
         return false;
     }
 
+    // Hilfsmethode, um Startseite zu laden
     private void loadDashboardView() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/jmc/app/Dashboard.fxml"));
             Parent root = loader.load();
             Stage stage = (Stage) emailField.getScene().getWindow();
-            stage.setTitle("Login");
+            stage.setTitle("Startseite");
             stage.setScene(new Scene(root));
             stage.show();
         } catch (IOException e) {
-            e.printStackTrace();
+            e.printStackTrace(System.err);
             statusLabel.setText("Fehler beim Laden des Dashboards.");
         }
     }
 
-    private void loadSignUpView(Stage stage) throws IOException {
+    // wenn Text "Noch kein Konto? Hier registrieren" gedrückt wird, wird man zur SignUp Seite weitergeleitet
+    public void noAccountButtonAction(ActionEvent event) throws IOException {
         Parent fxmlLoader = FXMLLoader.load(getClass().getResource("/com/jmc/app/signup.fxml"));
         Scene scene = new Scene(fxmlLoader, 520, 400);
+        Stage stage = (Stage) noAccountButton.getScene().getWindow();
         stage.setTitle("Signup");
         stage.setScene(scene);
         stage.show();
-    }
-
-    public void noAccountButtonAction(ActionEvent event) throws IOException {
-        Stage stage = (Stage) loginButton.getScene().getWindow();
-        loadSignUpView(stage);
     }
 }

@@ -46,6 +46,11 @@ public class SignUpController {
    @FXML
    private Button haveAcccountButton;
 
+   // man drückt Registrier Button
+   // es werden alle Inputs von den Feldern in die Datenbank gespeichert
+   // es wird auch gecheckt, ob alle Felder ausgefüllt wurden, ob die Passwörter übereinstimmen
+   // und ob die E-Mail schon von einem anderen User verwendet wird,
+   // wenn alles klappt, wird man zur Loginseite weitergeleitet
    public void registerButtonAction(ActionEvent actionEvent) throws IOException {
        if(firstNameTextField.getText().isBlank() || lastNameTextField.getText().isBlank() || emailTextField.getText().isBlank() || passwordTextField.getText().isBlank() || passwordAgainTextField.getText().isBlank()) {
            messageLabel.setText("Please fill in all the fields");
@@ -105,13 +110,14 @@ public class SignUpController {
            }
        }
        catch(SQLException ex){
-           System.out.println("failed1");
+           System.out.println("failed");
            ex.printStackTrace(System.err);
        }
        Stage stage = (Stage) registerButton.getScene().getWindow();
        loadLoginView(stage);
    }
 
+    // Methode, um zur Loginseite weitergeleitet zu werden
     private void loadLoginView(Stage stage) throws IOException {
        Parent fxmlLoader = FXMLLoader.load(getClass().getResource("/com/jmc/app/login.fxml"));
        Scene scene = new Scene(fxmlLoader, 520, 400);
@@ -121,6 +127,7 @@ public class SignUpController {
 
     }
 
+    // man drückt auf Text "Schon ein Konto? Hier anmelden" und wird zum Login weitergeleitet
     public void haveAcccountButtonAction(ActionEvent actionEvent) throws IOException {
        Stage stage = (Stage) haveAcccountButton.getScene().getWindow();
        loadLoginView(stage);

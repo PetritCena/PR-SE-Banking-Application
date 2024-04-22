@@ -15,11 +15,19 @@
    <left>
       <AnchorPane prefHeight="750.0" prefWidth="182.0" style="-fx-background-color: DAECFB;" BorderPane.alignment="CENTER">
          <FontAwesomeIconView fill="#35495a" glyphName="USER" layoutX="80.0" layoutY="700.0" size="30" text="" />
-         <FontAwesomeIconView fill="#35495a" glyphName="BANK" layoutX="51.0" layoutY="108.0" size="70" text="" />
+         <FontAwesomeIconView fill="#35495a" glyphName="BANK" layoutX="55.0" layoutY="108.0" size="70" text="" />
+         <Button fx:id="startSeiteButton" layoutX="46.0" layoutY="325.0" mnemonicParsing="false" onAction="#startSeiteButtonOnAction" prefHeight="40.0" prefWidth="90.0" style="-fx-background-color: #35495a;" text="Startseite" textFill="#daecfb">
+            <cursor>
+               <Cursor fx:constant="OPEN_HAND" />
+            </cursor></Button>
+         <Button fx:id="produktSeiteButton" layoutX="46.0" layoutY="418.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="90.0" style="-fx-background-color: #35495a;" text="Produkte" textFill="#daecfb">
+            <cursor>
+               <Cursor fx:constant="OPEN_HAND" />
+            </cursor></Button>
       </AnchorPane>
    </left>
    <center>
-      <AnchorPane prefHeight="750.0" prefWidth="672.0" style="-fx-border-color: DAECFB;" BorderPane.alignment="CENTER">
+      <AnchorPane prefHeight="750.0" prefWidth="672.0" style="-fx-background-color: white;" BorderPane.alignment="CENTER">
          <Text fill="#35495a" layoutX="83.0" layoutY="94.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Userdaten">
             <font>
                <Font name="System Bold" size="42.0" />
@@ -35,33 +43,33 @@
                <Font size="21.0" />
             </font>
          </Text>
-         <TextField fx:id="vornameFeld" layoutX="90.0" layoutY="188.0" />
-         <Button fx:id="speichernButton" layoutX="250.0" layoutY="611.0" mnemonicParsing="false" onAction="#datenÄndern" prefHeight="31.0" prefWidth="167.0" style="-fx-background-color: DAECFB; -fx-background-radius: 20;" text="Speichern" textFill="#2a4e82">
+         <TextField fx:id="vornameFeld" layoutX="88.0" layoutY="188.0" />
+         <Button fx:id="speichernButton" layoutX="250.0" layoutY="611.0" mnemonicParsing="false" onAction="#datenÄndern" prefHeight="31.0" prefWidth="167.0" style="-fx-background-color: DAECFB; -fx-background-radius: 20;" text="Speichern" textFill="#35495a">
             <cursor>
                <Cursor fx:constant="OPEN_HAND" />
             </cursor></Button>
-         <TextField fx:id="nachnameFeld" layoutX="85.0" layoutY="265.0" />
-         <Text fill="#35495a" layoutX="86.0" layoutY="332.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Altes Passwort">
+         <TextField fx:id="nachnameFeld" layoutX="88.0" layoutY="265.0" />
+         <Text fill="#35495a" layoutX="88.0" layoutY="332.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Altes Passwort">
             <font>
                <Font size="21.0" />
             </font>
          </Text>
-         <Text fill="#35495a" layoutX="87.0" layoutY="413.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Neues Passwort">
+         <Text fill="#35495a" layoutX="88.0" layoutY="411.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Neues Passwort">
             <font>
                <Font size="21.0" />
             </font>
          </Text>
-         <Text fill="#35495a" layoutX="87.0" layoutY="486.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Neues Passwort bestätigen">
+         <Text fill="#35495a" layoutX="88.0" layoutY="490.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Neues Passwort bestätigen">
             <font>
                <Font size="21.0" />
             </font>
          </Text>
-         <PasswordField fx:id="altesPasswortFeld" layoutX="87.0" layoutY="349.0" promptText="  Passwort eingeben" />
-         <PasswordField fx:id="neuesPasswortFeld" layoutX="90.0" layoutY="423.0" promptText="  Passwort eingeben" />
-         <PasswordField fx:id="neuesPasswortBestätigungFeld" layoutX="85.0" layoutY="506.0" promptText="  Passwort eingeben" />
-         <FontAwesomeIconView fill="#d0c5c5" glyphName="LOCK" layoutX="86.0" layoutY="367.0" />
-         <FontAwesomeIconView fill="#d0c5c5" glyphName="LOCK" layoutX="90.0" layoutY="440.0" />
-         <FontAwesomeIconView fill="#d0c5c5" glyphName="LOCK" layoutX="86.0" layoutY="523.0" />
+         <PasswordField fx:id="altesPasswortFeld" layoutX="88.0" layoutY="338.0" promptText="  Passwort eingeben" />
+         <PasswordField fx:id="neuesPasswortFeld" layoutX="88.0" layoutY="417.0" promptText="  Passwort eingeben" />
+         <PasswordField fx:id="neuesPasswortBestätigungFeld" layoutX="88.0" layoutY="496.0" promptText="  Passwort eingeben" />
+         <FontAwesomeIconView fill="#d0c5c5" glyphName="LOCK" layoutX="92.0" layoutY="356.0" />
+         <FontAwesomeIconView fill="#d0c5c5" glyphName="LOCK" layoutX="92.0" layoutY="435.0" />
+         <FontAwesomeIconView fill="#d0c5c5" glyphName="LOCK" layoutX="92.0" layoutY="514.0" />
          <Label fx:id="statusLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="153.0" layoutY="568.0" prefHeight="23.0" prefWidth="365.0" textAlignment="CENTER" textFill="RED" AnchorPane.leftAnchor="153.0" AnchorPane.rightAnchor="152.0">
             <font>
                <Font size="18.0" />
@@ -72,6 +80,11 @@
                <Font size="18.0" />
             </font>
          </Label>
+         <Button fx:id="signoutButton" layoutX="528.0" layoutY="674.0" mnemonicParsing="false" onAction="#signoutButtonOnAction" prefHeight="40.0" prefWidth="90.0" style="-fx-background-color: red;" text=" Signout       ">
+            <cursor>
+               <Cursor fx:constant="OPEN_HAND" />
+            </cursor></Button>
+         <FontAwesomeIconView glyphName="SIGN_OUT" layoutX="594.0" layoutY="699.0" size="15" />
       </AnchorPane>
    </center>
 </BorderPane>
