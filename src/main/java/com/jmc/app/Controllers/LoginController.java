@@ -20,7 +20,7 @@ public class LoginController {
     // Datenbankverbindungsparameter (an deine Datenbank anpassen)
     public static final String USER = "admin";
     public static final String PWD = "BigBankSoSe2024";
-    public static final String CONNECT_STRING = "jdbc:oracle:thin:@e4xxmj5ey9kfqzz5_high?TNS_ADMIN=/Users/petritcena/Desktop/Wallet_E4XXMJ5EY9KFQZZ5";
+    private final String URL = "jdbc:oracle:thin:@e4xxmj5ey9kfqzz5_high?TNS_ADMIN=/Users/oemer.t/Downloads/Wallet_E4XXMJ5EY9KFQZZ5";
 
     @FXML
     public Button loginButton;
@@ -62,7 +62,7 @@ public class LoginController {
     private boolean userAuthenticated(String email, String password) {
         final String LOGIN_QUERY = "SELECT password FROM users WHERE email = ?";
 
-        try (Connection con = DriverManager.getConnection(CONNECT_STRING, USER, PWD);
+        try (Connection con = DriverManager.getConnection(URL, USER, PWD);
              PreparedStatement stmt = con.prepareStatement(LOGIN_QUERY)) {
 
             stmt.setString(1, email);

@@ -31,7 +31,7 @@ public class DashboardController {
             stage.show();
         } catch (IOException e) {
             e.printStackTrace(System.err);
-            statusLabel.setText("Fehler beim Laden der Profilseite.");
+
         }
 
     }

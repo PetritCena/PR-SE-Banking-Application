@@ -20,7 +20,7 @@ public class SignUpController {
     // Datenbankverbindungsparameter (an deine Datenbank anpassen)
     private final String USER = "admin";
     private final String PWD = "BigBankSoSe2024";
-    private final String URL = "jdbc:oracle:thin:@e4xxmj5ey9kfqzz5_high?TNS_ADMIN=/Users/petritcena/Desktop/Wallet_E4XXMJ5EY9KFQZZ5";
+    private final String URL = "jdbc:oracle:thin:@e4xxmj5ey9kfqzz5_high?TNS_ADMIN=/Users/oemer.t/Downloads/Wallet_E4XXMJ5EY9KFQZZ5";
 
     @FXML
     private TextField firstNameTextField;
