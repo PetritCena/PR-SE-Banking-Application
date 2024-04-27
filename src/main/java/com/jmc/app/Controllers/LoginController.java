@@ -16,7 +16,6 @@ import java.io.IOException;
 import java.sql.*;
 
 public class LoginController {
-
     @FXML
     public Button loginButton;
     @FXML
@@ -52,6 +51,7 @@ public class LoginController {
     private boolean userAuthenticated(String email, String password) {
         final String LOGIN_QUERY = "SELECT password FROM users WHERE email = ?";
         try (Connection con = DatabaseConnector.getConnection(); // Use DatabaseConnector
+
              PreparedStatement stmt = con.prepareStatement(LOGIN_QUERY)) {
 
             stmt.setString(1, email);

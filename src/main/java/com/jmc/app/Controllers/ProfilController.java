@@ -1,19 +1,32 @@
 package com.jmc.app.Controllers;
 
 import javafx.fxml.FXML;
+
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
 import javafx.event.ActionEvent;
+/*import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.Circle;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
+import javafx.scene.image.Image;*/
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.fxml.FXMLLoader;
-
-import java.io.IOException;
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.*;
+import java.net.URL;
 import java.sql.*;
+import java.util.ResourceBundle;
 
 import static com.jmc.app.Controllers.LoginController.email1;
 import static com.jmc.app.Controllers.LoginController.password1;
@@ -51,7 +64,7 @@ public class ProfilController {
             e.printStackTrace(System.err);
         }
     }
-
+  
     private String getVorname() throws SQLException {
         final String SELECT_NAME = "SELECT vorname FROM users WHERE email = ?";
         try (Connection con = DatabaseConnector.getConnection();
@@ -85,11 +98,9 @@ public class ProfilController {
         try {
             con = DatabaseConnector.getConnection();
             con.setAutoCommit(false); // Set auto-commit to false to manage transaction manually
-
             updatePassword(con);
             updateField(con, vornameAlt, vornameFeld.getText(), "vorname");
             updateField(con, nachnameAlt, nachnameFeld.getText(), "nachname");
-
             con.commit(); // Commit the transaction if all updates are successful
         } catch (SQLException e) {
             try {
@@ -109,9 +120,7 @@ public class ProfilController {
             } catch (SQLException ex) {
                 ex.printStackTrace(System.err);
             }
-        }
     }
-
 
     private void updatePassword(Connection con) throws SQLException {
         if (!neuesPasswortFeld.getText().equals(neuesPasswortBestätigungFeld.getText())) {
@@ -129,16 +138,6 @@ public class ProfilController {
             statusLabel.setTextFill(Color.RED);
             return;
         }
-
-        final String UPDATE_PASSWORD = "UPDATE users SET password = ? WHERE email = ?";
-        try (PreparedStatement stmt = con.prepareStatement(UPDATE_PASSWORD)) {
-            statusLabel.setText("Änderungen erfolgreich gespeichert.");
-            statusLabel.setTextFill(Color.GREEN);
-            stmt.setString(1, neuesPasswortFeld.getText());
-            stmt.setString(2, email1);
-            stmt.executeUpdate();
-        }
-    }
 
     private void updateField(Connection con, String oldVal, String newVal, String field) throws SQLException {
         if (!oldVal.equals(newVal)) {
@@ -167,4 +166,70 @@ public class ProfilController {
         stage.setScene(scene);
         stage.show();
     }
+      
+    /*FileChooser fileChooser = new FileChooser();
+    public void choosePhoto(MouseEvent mouseEvent) throws SQLException {
+        fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg"));
+        File imageFile = fileChooser.showOpenDialog(new Stage());
+        //profilFoto = new ImageView();
+        savePhotoToDatabase(imageFile);
+        loadPhoto();
+        //image = new Image(imageFile.toURI().toString());
+        //profilFoto.setImage(image);
+    }
+    
+    public void savePhotoToDatabase (File file) {
+        byte[] imageBytes = null;
+        try (FileInputStream fis = new FileInputStream(file)) {
+            imageBytes = new byte[(int) file.length()];
+            fis.read(imageBytes);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        final String SET_PHOTO = "UPDATE users SET photo = ? WHERE email = ?";
+        try (Connection con = DriverManager.getConnection(URL, USER, PWD);
+             PreparedStatement stmt = con.prepareStatement(SET_PHOTO)) {
+            stmt.setBytes(1, imageBytes);
+            stmt.setString(2, email1);
+            int affectedRows = stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace(System.err);
+        }
+    }
+    
+    public void loadPhoto() throws SQLException {
+        final String GET_PHOTO = "SELECT photo FROM USERS WHERE email = ?";
+        try (Connection con = DriverManager.getConnection(URL, USER, PWD);
+             PreparedStatement stmt = con.prepareStatement(GET_PHOTO)) {
+             stmt.setString(1, email1);
+             ResultSet rs = stmt.executeQuery();
+             if (rs.next()) {
+                byte[] imageData = rs.getBytes("photo");
+                if (imageData != null && imageData.length > 0) {
+                    ByteArrayInputStream in = new ByteArrayInputStream(imageData);
+                    Image image;
+                    image = new Image(in);
+                    photoCircle.setFill(new ImagePattern(image));
+                } else if (imageData==null) {
+                    //hier kommt dein Code Fabian
+                    //falls imagedata null ist also wenn der Nutzer kein Bild hat
+                }
+            }
+        }
+    }
+
+    @Override
+    public void initialize(java.net.URL url, ResourceBundle resourceBundle) {
+        vornameFeld.setText(getVorname());
+        nachnameFeld.setText(getNachname());
+        vornameAlt = vornameFeld.getText();
+        nachnameAlt = nachnameFeld.getText();
+        fileChooser.setInitialDirectory(new File("/Users/oemer.t/Pictures"));
+        try {
+            loadPhoto();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }*/
 }
+

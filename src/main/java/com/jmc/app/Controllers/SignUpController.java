@@ -15,7 +15,6 @@ import java.io.IOException;
 import java.sql.*;
 
 public class SignUpController {
-
     @FXML
     private TextField firstNameTextField;
     @FXML

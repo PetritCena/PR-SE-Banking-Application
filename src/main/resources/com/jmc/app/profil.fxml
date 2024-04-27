@@ -6,8 +6,10 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
@@ -27,7 +29,7 @@
       </AnchorPane>
    </left>
    <center>
-      <AnchorPane prefHeight="750.0" prefWidth="672.0" style="-fx-background-color: white;" BorderPane.alignment="CENTER">
+      <AnchorPane minHeight="20.0" minWidth="20.0" prefHeight="20.0" prefWidth="20.0" style="-fx-background-color: white;" BorderPane.alignment="CENTER">
          <Text fill="#35495a" layoutX="83.0" layoutY="94.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Userdaten">
             <font>
                <Font name="System Bold" size="42.0" />
@@ -64,9 +66,9 @@
                <Font size="21.0" />
             </font>
          </Text>
-         <PasswordField fx:id="altesPasswortFeld" layoutX="88.0" layoutY="338.0" promptText="  Passwort eingeben" />
-         <PasswordField fx:id="neuesPasswortFeld" layoutX="88.0" layoutY="417.0" promptText="  Passwort eingeben" />
-         <PasswordField fx:id="neuesPasswortBestätigungFeld" layoutX="88.0" layoutY="496.0" promptText="  Passwort eingeben" />
+         <PasswordField fx:id="altesPasswortFeld" layoutX="88.0" layoutY="338.0" promptText="    Passwort eingeben" />
+         <PasswordField fx:id="neuesPasswortFeld" layoutX="88.0" layoutY="417.0" promptText="    Passwort eingeben" />
+         <PasswordField fx:id="neuesPasswortBestätigungFeld" layoutX="88.0" layoutY="496.0" promptText="    Passwort eingeben" />
          <FontAwesomeIconView fill="#d0c5c5" glyphName="LOCK" layoutX="92.0" layoutY="356.0" />
          <FontAwesomeIconView fill="#d0c5c5" glyphName="LOCK" layoutX="92.0" layoutY="435.0" />
          <FontAwesomeIconView fill="#d0c5c5" glyphName="LOCK" layoutX="92.0" layoutY="514.0" />
@@ -75,16 +77,22 @@
                <Font size="18.0" />
             </font>
          </Label>
-         <Label fx:id="statusLabel2" alignment="CENTER" contentDisplay="CENTER" layoutX="144.0" layoutY="545.0" prefHeight="23.0" prefWidth="365.0" textAlignment="CENTER" textFill="GREEN">
+         <Label fx:id="statusLabel2" alignment="CENTER" contentDisplay="CENTER" layoutX="152.0" layoutY="545.0" prefHeight="23.0" prefWidth="365.0" textAlignment="CENTER" textFill="GREEN">
             <font>
                <Font size="18.0" />
             </font>
          </Label>
-         <Button fx:id="signoutButton" layoutX="528.0" layoutY="674.0" mnemonicParsing="false" onAction="#signoutButtonOnAction" prefHeight="40.0" prefWidth="90.0" style="-fx-background-color: red;" text=" Signout       ">
+         <Button fx:id="signoutButton" layoutX="528.0" layoutY="674.0" mnemonicParsing="false" onAction="#signoutButtonOnAction" prefHeight="40.0" prefWidth="90.0" style="-fx-background-color: #dddddd; -fx-background-radius: 7;" text=" Signout       " textFill="WHITE">
             <cursor>
                <Cursor fx:constant="OPEN_HAND" />
             </cursor></Button>
-         <FontAwesomeIconView glyphName="SIGN_OUT" layoutX="594.0" layoutY="699.0" size="15" />
+         <FontAwesomeIconView fill="WHITE" glyphName="SIGN_OUT" layoutX="594.0" layoutY="699.0" size="15" />
+         <Circle fx:id="photoCircle" fill="#daecfb" layoutX="562.0" layoutY="95.0" radius="53.0" stroke="BLACK" strokeType="INSIDE" />
+         <FontAwesomeIconView fx:id="stiftIcon" fill="#35495a" glyphName="PENCIL" layoutX="606.0" layoutY="144.0" onMouseClicked="#choosePhoto" size="22">
+            <cursor>
+               <Cursor fx:constant="OPEN_HAND" />
+            </cursor></FontAwesomeIconView>
+         <ImageView fx:id="profilFoto" fitHeight="150.0" fitWidth="126.0" layoutX="417.0" layoutY="203.0" pickOnBounds="true" preserveRatio="true" />
       </AnchorPane>
    </center>
 </BorderPane>
