@@ -9,7 +9,7 @@ public class DatabaseConnector {
     // Database connection parameters
     private static final String USER = "admin";
     private static final String PASSWORD = "BigBankSoSe2024";
-    private static final String TNS_ADMIN_PATH = "C:\\Workspace\\Wallet_E4XXMJ5EY9KFQZZ5";
+    private static final String TNS_ADMIN_PATH = "/Users/petritcena/Desktop/Wallet_E4XXMJ5EY9KFQZZ5";
     private static final String CONNECTION_STRING = "jdbc:oracle:thin:@e4xxmj5ey9kfqzz5_high";
 
     static {
