@@ -1,4 +1,4 @@
-package com.jmc.bankingapplication.Models;
+package com.jmc.app.Models;
 
 public class Model {
 }

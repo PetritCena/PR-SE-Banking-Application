@@ -17,11 +17,6 @@ import java.sql.*;
 
 public class LoginController {
 
-    // Datenbankverbindungsparameter (an deine Datenbank anpassen)
-    public static final String USER = "admin";
-    public static final String PWD = "BigBankSoSe2024";
-    public static final String CONNECT_STRING = "jdbc:oracle:thin:@e4xxmj5ey9kfqzz5_high?TNS_ADMIN=/Users/petritcena/Desktop/Wallet_E4XXMJ5EY9KFQZZ5";
-
     @FXML
     public Button loginButton;
     @FXML
@@ -35,34 +30,28 @@ public class LoginController {
     @FXML
     private Button noAccountButton;
 
-    public static String password1; //Änderung
-    public static String email1;   //Änderung
+    public static String password1; // To hold user's password
+    public static String email1;    // To hold user's email
 
-    // User Input wird gecheckt
-    // also, ob alle Felder ausgefüllt wurden
-    // es wird auch überprüft, ob die User Daten wirklich existieren
-    // wenn, alles klappt wird man zur Startseite weitergeleitet
+    // Handles the login process
     public void handleLoginButtonAction(ActionEvent event) {
         if (emailField.getText().isEmpty() || passwordField.getText().isEmpty()){
             statusLabel.setText("Bitte E-Mail und Passwort eingeben!");
-        }
-        else {
-            password1 = passwordField.getText(); //Änderung
-            email1 = emailField.getText();       //Änderung
-            if (userAuthenticated(emailField.getText(), passwordField.getText())) {
+        } else {
+            password1 = passwordField.getText(); // Store password
+            email1 = emailField.getText();       // Store email
+            if (userAuthenticated(email1, password1)) {
                 loadDashboardView();
-            }
-            else {
+            } else {
                 statusLabel.setText("Login fehlgeschlagen. Überprüfen Sie Ihre Eingaben.");
             }
         }
     }
 
-    //Hilfsmethode, um zu checken, ob User Input in der Datenbank vorhanden sind
+    // Helper method to check if user exists and password is correct
     private boolean userAuthenticated(String email, String password) {
         final String LOGIN_QUERY = "SELECT password FROM users WHERE email = ?";
-
-        try (Connection con = DriverManager.getConnection(CONNECT_STRING, USER, PWD);
+        try (Connection con = DatabaseConnector.getConnection(); // Use DatabaseConnector
              PreparedStatement stmt = con.prepareStatement(LOGIN_QUERY)) {
 
             stmt.setString(1, email);
@@ -70,7 +59,6 @@ public class LoginController {
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
                     String retrievedPassword = rs.getString("password");
-                    // Vergleiche das Passwort
                     return password.equals(retrievedPassword);
                 }
             }
@@ -81,7 +69,7 @@ public class LoginController {
         return false;
     }
 
-    // Hilfsmethode, um Startseite zu laden
+    // Helper method to load the Dashboard view
     private void loadDashboardView() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/jmc/app/Dashboard.fxml"));
@@ -96,7 +84,7 @@ public class LoginController {
         }
     }
 
-    // wenn Text "Noch kein Konto? Hier registrieren" gedrückt wird, wird man zur SignUp Seite weitergeleitet
+    // Redirect to the SignUp page
     public void noAccountButtonAction(ActionEvent event) throws IOException {
         Parent fxmlLoader = FXMLLoader.load(getClass().getResource("/com/jmc/app/signup.fxml"));
         Scene scene = new Scene(fxmlLoader, 520, 400);
