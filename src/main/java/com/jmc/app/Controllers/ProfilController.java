@@ -91,8 +91,6 @@ public class ProfilController {
             updateField(con, nachnameAlt, nachnameFeld.getText(), "nachname");
 
             con.commit(); // Commit the transaction if all updates are successful
-            statusLabel.setText("Änderungen erfolgreich gespeichert.");
-            statusLabel.setTextFill(Color.GREEN);
         } catch (SQLException e) {
             try {
                 if (con != null) {
@@ -118,15 +116,24 @@ public class ProfilController {
     private void updatePassword(Connection con) throws SQLException {
         if (!neuesPasswortFeld.getText().equals(neuesPasswortBestätigungFeld.getText())) {
             statusLabel.setText("Die Passwörter stimmen nicht überein.");
+            statusLabel.setTextFill(Color.RED);
             return;
         }
         if (!altesPasswortFeld.getText().equals(password1)) {
             statusLabel.setText("Falsches altes Passwort.");
+            statusLabel.setTextFill(Color.RED);
+            return;
+        }
+        if (altesPasswortFeld.getText().equals(neuesPasswortFeld.getText())) {
+            statusLabel.setText("Neues passwort ist gleich wie altes Passwort");
+            statusLabel.setTextFill(Color.RED);
             return;
         }
 
         final String UPDATE_PASSWORD = "UPDATE users SET password = ? WHERE email = ?";
         try (PreparedStatement stmt = con.prepareStatement(UPDATE_PASSWORD)) {
+            statusLabel.setText("Änderungen erfolgreich gespeichert.");
+            statusLabel.setTextFill(Color.GREEN);
             stmt.setString(1, neuesPasswortFeld.getText());
             stmt.setString(2, email1);
             stmt.executeUpdate();
