@@ -17,7 +17,7 @@ public class App extends Application {
     public void start(Stage stage) throws IOException {
 
         // Set system properties for Oracle JDBC connection
-        System.setProperty("oracle.net.tns_admin", "/Users/petritcena/Desktop/Wallet_E4XXMJ5EY9KFQZZ5");
+        System.setProperty("oracle.net.tns_admin", "/Users/perseus/Desktop/Wallet_E4XXMJ5EY9KFQZZ5");
 
         // Now try to connect using the JDBC URL
         try {
