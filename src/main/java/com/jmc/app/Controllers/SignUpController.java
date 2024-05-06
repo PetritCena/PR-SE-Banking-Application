@@ -1,5 +1,6 @@
 package com.jmc.app.Controllers;
 
+import com.jmc.app.Models.DatabaseConnector;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -32,7 +33,7 @@ public class SignUpController {
     @FXML
     private Button haveAcccountButton;
 
-    public void registerButtonAction(ActionEvent actionEvent) throws IOException {
+    public void registerButtonAction(ActionEvent actionEvent) throws IOException, SQLException {
         if (firstNameTextField.getText().isBlank() || lastNameTextField.getText().isBlank() || emailTextField.getText().isBlank() || passwordTextField.getText().isBlank() || passwordAgainTextField.getText().isBlank()) {
             messageLabel.setText("Please fill in all the fields");
             return;
@@ -46,30 +47,7 @@ public class SignUpController {
         String email = emailTextField.getText();
         String password = passwordTextField.getText();
 
-        try (Connection con = DatabaseConnector.getConnection()) {
-            String checkEmail = "SELECT 1 FROM users WHERE email = ?";
-            try (PreparedStatement checkStmt = con.prepareStatement(checkEmail)) {
-                checkStmt.setString(1, email);
-                ResultSet rs = checkStmt.executeQuery();
-                if (rs.next()) {
-                    messageLabel.setText("Email is already in use");
-                    return;
-                }
-            }
-
-            String query = "INSERT INTO users (vorname, nachname, email, password) VALUES (?, ?, ?, ?)";
-            try (PreparedStatement insert = con.prepareStatement(query)) {
-                insert.setString(1, firstName);
-                insert.setString(2, lastName);
-                insert.setString(3, email);
-                insert.setString(4, password);
-                insert.executeUpdate();
-            }
-        } catch (SQLException e) {
-            System.out.println("Database error during registration");
-            e.printStackTrace(System.err);
-            messageLabel.setText("Database error: " + e.getMessage());
-        }
+        DatabaseConnector.registerUser(firstName,lastName,email,password);
 
         // If registration is successful, redirect to login view
         Stage stage = (Stage) registerButton.getScene().getWindow();
