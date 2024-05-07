@@ -1,34 +1,53 @@
 package com.jmc.app.Models;
 
-public class User {
-    private static String email;
-    private static String password;
-    private static String firstName;
-    private static String lastName;
-    private static String pic;
-    // Weitere Attribute können hier hinzugefügt werden
 
-    public User(String firstName, String lastName, String email, String password, String pic) {
+import java.io.File;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+public class User {
+    private final DatabaseConnector dbConnector;
+    private final String email;
+    private String password;
+    private String firstName;
+    private String lastName;
+    private byte[] pic;
+    private final ArrayList<Account> accounts;
+
+    public User(String firstName, String lastName, String email, String password, byte[] pic, ArrayList<Account> accounts) {
+        this.dbConnector = new DatabaseConnector();
         this.email = email;
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
         this.pic = pic;
+        this.accounts = accounts;
     }
 
-    // Getter und Setter
-    public static String getEmail() { return email; }
-    public void setEmail(String email) { this.email = email; }
+    public String getEmail() { return email; }
 
-    public static String getPassword() { return password; }
-    public void setPassword(String password) { this.password = password; }
+    public String getPassword() { return password; }
+    public void setPassword(String newPassword) throws SQLException {
+        dbConnector.updateField(email, newPassword, "password");
+        this.password = newPassword;
+    }
 
-    public static String getFirstName() { return firstName; }
-    public void setFirstName(String firstName) { this.firstName = firstName; }
+    public String getFirstName() { return firstName; }
+    public void setFirstName(String newFirstName) throws SQLException {
+        dbConnector.updateField(email, newFirstName, "vorname");
+        this.firstName = newFirstName;
+    }
 
-    public static String getLastName() { return lastName; }
-    public void setLastName(String lastName) { this.lastName = lastName; }
+    public String getLastName() { return lastName; }
+    public void setLastName(String newLastName) throws SQLException {
+        dbConnector.updateField(email, newLastName, "nachname");
+        this.lastName = lastName;
+    }
 
-    public static String getPic() { return pic;}
-    public void setPic(String pic) { this.pic = pic; }
+    public byte[] getPic() { return pic;}
+    public void setPic(File newPic) throws SQLException {
+        dbConnector.savePhoto(email, newPic);
+        this.pic = new byte[(int) newPic.length()];
+    }
+    public ArrayList<Account> getAccounts() { return accounts; }
 }

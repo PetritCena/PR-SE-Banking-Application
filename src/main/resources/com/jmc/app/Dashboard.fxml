@@ -40,7 +40,7 @@
             </font>
          </Label>
          <FontAwesomeIconView fill="#35495a" glyphName="HOME" layoutX="280.0" layoutY="132.0" size="50" />
-         <Label alignment="CENTER" contentDisplay="CENTER" layoutX="123.0" layoutY="356.0" prefHeight="17.0" prefWidth="428.0" text="Keine Produkte vorhanden" textFill="#35495a">
+         <Label fx:id="statusLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="123.0" layoutY="356.0" prefHeight="17.0" prefWidth="428.0" text="Keine Produkte vorhanden" textFill="#35495a">
             <font>
                <Font name="Arial Bold" size="30.0" />
             </font>

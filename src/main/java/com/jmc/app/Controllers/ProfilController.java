@@ -1,6 +1,5 @@
 package com.jmc.app.Controllers;
 
-import com.jmc.app.Models.DatabaseConnector;
 import com.jmc.app.Models.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -33,41 +32,38 @@ public class ProfilController {
     @FXML
     private Button signoutButton, startSeiteButton, produktSeiteButton;
 
-    private FileChooser fileChooser = new FileChooser();
-    private String password;
+    private final FileChooser fileChooser = new FileChooser();
+    private User user;
 
     @FXML
-    public void initialize() {
+    public void initialize(User user) {
+        this.user = user;
         fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
-        String photoAsString = User.getPic();
-        byte[] photo = photoAsString.getBytes();
-
-        Image image = null;
-        if (photo != null && photo.length > 0) {
-            image = new Image(new ByteArrayInputStream(photo));
-        }
-        //Image image = DatabaseConnector.loadPhoto(User.getEmail());
-        if (image != null) {
+        if (user.getPic() != null && user.getPic().length > 0) {
+            Image image = new Image(new ByteArrayInputStream(user.getPic()));
             photoCircle.setFill(new ImagePattern(image));
         }
         loadUserData();
     }
 
     private void loadUserData() {
-        vornameFeld.setText(User.getFirstName());
-        nachnameFeld.setText(User.getLastName());
-        password = User.getPassword();
+        vornameFeld.setText(user.getFirstName());
+        nachnameFeld.setText(user.getLastName());
     }
     public void datenÄndern(ActionEvent actionEvent) {
-        updateUserData();
-        updatePassword();
+        if(!vornameFeld.getText().equals(user.getFirstName()) || !nachnameFeld.getText().equals(user.getLastName())) updateUserData();
+        else if(!neuesPasswortFeld.getText().isEmpty()) updatePassword();
+        else {
+            statusLabel.setText("Es wurde nichts geändert.");
+            statusLabel.setTextFill(Color.RED);
+        }
     }
 
     public void choosePhoto(MouseEvent event) throws SQLException {
         fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg"));
         File imageFile = fileChooser.showOpenDialog(new Stage());
         if (imageFile != null) {
-            DatabaseConnector.savePhoto(LoginController.email, imageFile);
+            user.setPic(imageFile);
             Image image = new Image(imageFile.toURI().toString());
             photoCircle.setFill(new ImagePattern(image));
         }
@@ -75,8 +71,8 @@ public class ProfilController {
 
     private void updateUserData() {
         try {
-            DatabaseConnector.updateField(LoginController.email, vornameFeld.getText(), "vorname");
-            DatabaseConnector.updateField(LoginController.email, nachnameFeld.getText(), "nachname");
+            user.setFirstName(vornameFeld.getText());
+            user.setLastName(nachnameFeld.getText());
             statusLabel.setText("Benutzerdaten erfolgreich aktualisiert.");
             statusLabel.setTextFill(Color.GREEN);
         } catch (SQLException e) {
@@ -87,8 +83,8 @@ public class ProfilController {
     }
 
     private void updatePassword() {
-        if(!altesPasswortFeld.getText().equals(password)){
-            statusLabel.setText("Das alte Passwort stimmt nicht. " + password);
+        if(!altesPasswortFeld.getText().equals(user.getPassword())){
+            statusLabel.setText("Das alte Passwort stimmt nicht. ");
             statusLabel.setTextFill(Color.RED);
             return;
         }
@@ -98,7 +94,7 @@ public class ProfilController {
             return;
         }
         try {
-            DatabaseConnector.updateField(LoginController.email, neuesPasswortFeld.getText(), "password");
+            user.setPassword(neuesPasswortFeld.getText());
             statusLabel.setText("Passwort erfolgreich geändert. ");
             statusLabel.setTextFill(Color.GREEN);
         } catch (SQLException e) {
@@ -109,23 +105,33 @@ public class ProfilController {
     }
 
     public void signoutButtonOnAction(ActionEvent event) throws IOException {
-        changeScene("/com/jmc/app/login.fxml", 520, 400, "Login", signoutButton);
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/jmc/app/login.fxml"));
+        Parent root = loader.load();
+        Scene scene = new Scene(root);
+        Stage stage = (Stage) signoutButton.getScene().getWindow();
+        stage.setTitle("Login");
+        stage.setScene(scene);
+        stage.show();
     }
 
     public void startSeiteButtonOnAction(ActionEvent event) throws IOException {
-        changeScene("/com/jmc/app/Dashboard.fxml", 850, 750, "Startseite", startSeiteButton);
-    }
-
-    public void goToProduktSeite(ActionEvent event) throws IOException {
-        changeScene("/com/jmc/app/Produktseite.fxml", 850, 750, "Produkte", produktSeiteButton);
-    }
-
-    private void changeScene(String fxmlPath, int width, int height, String title, Button button) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/jmc/app/Dashboard.fxml"));
         Parent root = loader.load();
-        Scene scene = new Scene(root, width, height);
-        Stage stage = (Stage) button.getScene().getWindow();
-        stage.setTitle(title);
+        DashboardController controller = loader.getController();
+        controller.initialize(user);
+        Scene scene = new Scene(root);
+        Stage stage = (Stage) startSeiteButton.getScene().getWindow();
+        stage.setTitle("Startseite");
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    public void produktSeiteButtonOnAction(ActionEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/jmc/app/Produktseite.fxml"));
+        Parent root = loader.load();
+        Scene scene = new Scene(root);
+        Stage stage = (Stage) produktSeiteButton.getScene().getWindow();
+        stage.setTitle("Produktseite");
         stage.setScene(scene);
         stage.show();
     }
