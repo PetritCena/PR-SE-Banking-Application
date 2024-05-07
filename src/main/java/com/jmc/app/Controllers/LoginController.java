@@ -33,6 +33,7 @@ public class LoginController {
 
     public static String email;    // To hold user's email
     private static String password;
+
     // Handles the login process
     public void handleLoginButtonAction(ActionEvent event) throws SQLException {
         if (emailField.getText().isEmpty() || passwordField.getText().isEmpty()){
@@ -46,8 +47,8 @@ public class LoginController {
                 statusLabel.setText("Login fehlgeschlagen. Überprüfen Sie Ihre Eingaben.");
             }
         }
-        String[] userData = DatabaseConnector.getUserData(email);
-        User user = new User(userData[0], userData[1], email, password, userData[3]);
+        Object[] userData = DatabaseConnector.getUserData(email);
+        User user = new User((String) userData[0], (String) userData[1], email, password, (byte[]) userData[3]);
     }
 
     // Helper method to load the Dashboard view
