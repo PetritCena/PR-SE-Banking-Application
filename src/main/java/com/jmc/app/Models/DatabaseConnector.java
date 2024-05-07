@@ -1,17 +1,12 @@
 package com.jmc.app.Models;
 
 import javafx.scene.image.Image;
-
-import java.awt.*;
 import java.io.*;
-import java.lang.reflect.Type;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.Arrays;
 
 public class DatabaseConnector {
 
-    private static final String CONNECTION_STRING = "jdbc:oracle:thin:@e4xxmj5ey9kfqzz5_high?TNS_ADMIN=/Users/perseus/Desktop/Wallet_E4XXMJ5EY9KFQZZ5";
+    private static final String CONNECTION_STRING = "jdbc:oracle:thin:@e4xxmj5ey9kfqzz5_high?TNS_ADMIN=/Users/petritcena/Desktop/Wallet_E4XXMJ5EY9KFQZZ5";
     private static final String USER = "admin";
     private static final String PWD = "BigBankSoSe2024";
 
@@ -77,9 +72,9 @@ public class DatabaseConnector {
         return null;
     }
 
-    public static String[] getUserData(String email) throws SQLException {
+    public static Object[] getUserData(String email) throws SQLException {
         final String QUERY = "SELECT vorname, nachname, password, photo FROM users WHERE email = ?";
-        String[] result = new String[4];  // Array to hold first name and last name
+        Object[] result = new Object[4];  // Array to hold first name and last name
         try (Connection con = getConnection();
              PreparedStatement stmt = con.prepareStatement(QUERY)) {
             stmt.setString(1, email);
@@ -88,14 +83,14 @@ public class DatabaseConnector {
                     result[0] = rs.getString("vorname");  // First name
                     result[1] = rs.getString("nachname"); // Last name
                     result[2] = rs.getString("password");
-                    result[3] = Arrays.toString(rs.getBytes("photo"));
+                    result[3] = rs.getBytes("photo");
                 }
             }
         }
         return result;
     }
 
-    public static void registerUser(String vorname, String nachname,String email, String password) {
+    public static void registerUser(String vorname, String nachname, String email, String password) {
         final String QUERY = "INSERT INTO users (vorname, nachname, email, password) VALUES (?, ?, ?, ?)";
         try (Connection con = getConnection(); PreparedStatement stmt = con.prepareStatement(QUERY)) {
             stmt.setString(1, vorname);
@@ -107,9 +102,4 @@ public class DatabaseConnector {
             e.printStackTrace(System.err);
         }
     }
-
-
-
-
-
 }

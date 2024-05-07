@@ -1,6 +1,5 @@
 package com.jmc.app.Controllers;
 
-import com.jmc.app.Models.DatabaseConnector;
 import com.jmc.app.Models.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -33,21 +32,15 @@ public class ProfilController {
     @FXML
     private Button signoutButton, startSeiteButton, produktSeiteButton;
 
-    private FileChooser fileChooser = new FileChooser();
+    private final FileChooser fileChooser = new FileChooser();
     private String password;
 
     @FXML
     public void initialize() {
         fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
-        String photoAsString = User.getPic();
-        byte[] photo = photoAsString.getBytes();
-
-        Image image = null;
-        if (photo != null && photo.length > 0) {
-            image = new Image(new ByteArrayInputStream(photo));
-        }
-        //Image image = DatabaseConnector.loadPhoto(User.getEmail());
-        if (image != null) {
+        Image image;
+        if (User.getPic() != null && User.getPic().length > 0) {
+            image = new Image(new ByteArrayInputStream(User.getPic()));
             photoCircle.setFill(new ImagePattern(image));
         }
         loadUserData();
@@ -59,15 +52,19 @@ public class ProfilController {
         password = User.getPassword();
     }
     public void datenÄndern(ActionEvent actionEvent) {
-        updateUserData();
-        updatePassword();
+        if(!vornameFeld.getText().equals(User.getFirstName()) || !nachnameFeld.getText().equals(User.getLastName())) updateUserData();
+        else if(!neuesPasswortFeld.getText().isEmpty()) updatePassword();
+        else {
+            statusLabel.setText("Es wurde nichts geändert.");
+            statusLabel.setTextFill(Color.RED);
+        }
     }
 
     public void choosePhoto(MouseEvent event) throws SQLException {
         fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg"));
         File imageFile = fileChooser.showOpenDialog(new Stage());
         if (imageFile != null) {
-            DatabaseConnector.savePhoto(LoginController.email, imageFile);
+            User.setPic(imageFile);
             Image image = new Image(imageFile.toURI().toString());
             photoCircle.setFill(new ImagePattern(image));
         }
@@ -75,8 +72,8 @@ public class ProfilController {
 
     private void updateUserData() {
         try {
-            DatabaseConnector.updateField(LoginController.email, vornameFeld.getText(), "vorname");
-            DatabaseConnector.updateField(LoginController.email, nachnameFeld.getText(), "nachname");
+            User.setFirstName(vornameFeld.getText());
+            User.setLastName(nachnameFeld.getText());
             statusLabel.setText("Benutzerdaten erfolgreich aktualisiert.");
             statusLabel.setTextFill(Color.GREEN);
         } catch (SQLException e) {
@@ -88,7 +85,7 @@ public class ProfilController {
 
     private void updatePassword() {
         if(!altesPasswortFeld.getText().equals(password)){
-            statusLabel.setText("Das alte Passwort stimmt nicht. " + password);
+            statusLabel.setText("Das alte Passwort stimmt nicht. ");
             statusLabel.setTextFill(Color.RED);
             return;
         }
@@ -98,7 +95,7 @@ public class ProfilController {
             return;
         }
         try {
-            DatabaseConnector.updateField(LoginController.email, neuesPasswortFeld.getText(), "password");
+            User.setPassword(neuesPasswortFeld.getText());
             statusLabel.setText("Passwort erfolgreich geändert. ");
             statusLabel.setTextFill(Color.GREEN);
         } catch (SQLException e) {
@@ -116,7 +113,7 @@ public class ProfilController {
         changeScene("/com/jmc/app/Dashboard.fxml", 850, 750, "Startseite", startSeiteButton);
     }
 
-    public void goToProduktSeite(ActionEvent event) throws IOException {
+    public void produktSeiteButtonOnAction(ActionEvent event) throws IOException {
         changeScene("/com/jmc/app/Produktseite.fxml", 850, 750, "Produkte", produktSeiteButton);
     }
 

@@ -1,34 +1,50 @@
 package com.jmc.app.Models;
 
+import com.jmc.app.Controllers.LoginController;
+
+import java.io.File;
+import java.sql.SQLException;
+
 public class User {
     private static String email;
     private static String password;
     private static String firstName;
     private static String lastName;
-    private static String pic;
+    private static byte[] pic;
     // Weitere Attribute können hier hinzugefügt werden
 
-    public User(String firstName, String lastName, String email, String password, String pic) {
-        this.email = email;
-        this.password = password;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.pic = pic;
+    public User(String firstName, String lastName, String email, String password, byte[] pic) {
+        User.email = email;
+        User.password = password;
+        User.firstName = firstName;
+        User.lastName = lastName;
+        User.pic = pic;
     }
 
     // Getter und Setter
     public static String getEmail() { return email; }
-    public void setEmail(String email) { this.email = email; }
 
     public static String getPassword() { return password; }
-    public void setPassword(String password) { this.password = password; }
+    public static void setPassword(String newPassword) throws SQLException {
+        DatabaseConnector.updateField(User.email, newPassword, "password");
+        User.password = newPassword;
+    }
 
     public static String getFirstName() { return firstName; }
-    public void setFirstName(String firstName) { this.firstName = firstName; }
+    public static void setFirstName(String newFirstName) throws SQLException {
+        DatabaseConnector.updateField(User.email, newFirstName, "vorname");
+        User.firstName = newFirstName;
+    }
 
     public static String getLastName() { return lastName; }
-    public void setLastName(String lastName) { this.lastName = lastName; }
+    public static void setLastName(String newLastName) throws SQLException {
+        DatabaseConnector.updateField(User.email, newLastName, "nachname");
+        User.lastName = lastName;
+    }
 
-    public static String getPic() { return pic;}
-    public void setPic(String pic) { this.pic = pic; }
+    public static byte[] getPic() { return pic;}
+    public static void setPic(File newPic) throws SQLException {
+        DatabaseConnector.savePhoto(LoginController.email, newPic);
+        User.pic = new byte[(int) newPic.length()];
+    }
 }
