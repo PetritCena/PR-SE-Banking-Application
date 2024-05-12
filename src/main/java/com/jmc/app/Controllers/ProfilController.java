@@ -3,6 +3,9 @@ package com.jmc.app.Controllers;
 import com.jmc.app.Models.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
@@ -11,6 +14,7 @@ import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
@@ -26,7 +30,8 @@ public class ProfilController {
     @FXML
     private Circle photoCircle;
     @FXML
-    private Button startSeiteButton;
+    private Button signoutButton, startSeiteButton, produktSeiteButton;
+
     private final FileChooser fileChooser = new FileChooser();
     private String password;
 
@@ -101,12 +106,24 @@ public class ProfilController {
     }
 
     public void signoutButtonOnAction(ActionEvent event) throws IOException {
-        SceneChanger.changeScene("/com/jmc/app/login.fxml", 520, 400, "Login", startSeiteButton);
+        changeScene("/com/jmc/app/login.fxml", 520, 400, "Login", signoutButton);
     }
-    public void startSeiteButtonOnAction(MouseEvent event) throws IOException {
-        SceneChanger.changeScene("/com/jmc/app/Dashboard.fxml", 850, 750, "Startseite", startSeiteButton);
+
+    public void startSeiteButtonOnAction(ActionEvent event) throws IOException {
+        changeScene("/com/jmc/app/Dashboard.fxml", 850, 750, "Startseite", startSeiteButton);
     }
+
     public void produktSeiteButtonOnAction(ActionEvent event) throws IOException {
-        SceneChanger.changeScene("/com/jmc/app/Produktseite.fxml", 850, 750, "Produkte", startSeiteButton);
+        changeScene("/com/jmc/app/Produktseite.fxml", 850, 750, "Produkte", produktSeiteButton);
+    }
+
+    private void changeScene(String fxmlPath, int width, int height, String title, Button button) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
+        Parent root = loader.load();
+        Scene scene = new Scene(root, width, height);
+        Stage stage = (Stage) button.getScene().getWindow();
+        stage.setTitle(title);
+        stage.setScene(scene);
+        stage.show();
     }
 }

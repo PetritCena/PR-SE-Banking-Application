@@ -6,7 +6,7 @@ import java.sql.*;
 
 public class DatabaseConnector {
 
-    private static final String CONNECTION_STRING = "jdbc:oracle:thin:@e4xxmj5ey9kfqzz5_high?TNS_ADMIN=/Users/oemer.t/Downloads/Wallet_E4XXMJ5EY9KFQZZ5";
+    private static final String CONNECTION_STRING = "jdbc:oracle:thin:@e4xxmj5ey9kfqzz5_high?TNS_ADMIN=/Users/petritcena/Desktop/Wallet_E4XXMJ5EY9KFQZZ5";
     private static final String USER = "admin";
     private static final String PWD = "BigBankSoSe2024";
 

@@ -2,11 +2,16 @@ package com.jmc.app.Controllers;
 
 import com.jmc.app.Models.DatabaseConnector;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.event.ActionEvent;
+import javafx.stage.Stage;
+
 import java.io.IOException;
 import java.sql.*;
 
@@ -25,8 +30,10 @@ public class SignUpController {
     private Button registerButton;
     @FXML
     private Label messageLabel;
+    @FXML
+    private Button haveAcccountButton;
 
-    public void registerButtonAction(ActionEvent event) throws IOException, SQLException {
+    public void registerButtonAction(ActionEvent actionEvent) throws IOException, SQLException {
         if (firstNameTextField.getText().isBlank() || lastNameTextField.getText().isBlank() || emailTextField.getText().isBlank() || passwordTextField.getText().isBlank() || passwordAgainTextField.getText().isBlank()) {
             messageLabel.setText("Please fill in all the fields");
             return;
@@ -43,11 +50,20 @@ public class SignUpController {
         DatabaseConnector.registerUser(firstName,lastName,email,password);
 
         // If registration is successful, redirect to login view
-        //Stage stage = (Stage) registerButton.getScene().getWindow();
-        loadLoginView(event);
+        Stage stage = (Stage) registerButton.getScene().getWindow();
+        loadLoginView(stage);
     }
 
-    public void loadLoginView(ActionEvent event) throws IOException {
-        SceneChanger.changeScene("/com/jmc/app/login.fxml", 520, 400, "Signup", registerButton);
+    private void loadLoginView(Stage stage) throws IOException {
+        Parent fxmlLoader = FXMLLoader.load(getClass().getResource("/com/jmc/app/login.fxml"));
+        Scene scene = new Scene(fxmlLoader, 520, 400);
+        stage.setTitle("Signup");
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    public void haveAcccountButtonAction(ActionEvent actionEvent) throws IOException {
+        Stage stage = (Stage) haveAcccountButton.getScene().getWindow();
+        loadLoginView(stage);
     }
 }
