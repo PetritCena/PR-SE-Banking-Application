@@ -19,36 +19,31 @@ import java.sql.*;
 
 public class LoginController {
     @FXML
-    public Button loginButton;
-    @FXML
-    public AnchorPane mainPain;
+    public Button loginButton, noAccountButton;
     @FXML
     private TextField emailField;
     @FXML
     private PasswordField passwordField;
     @FXML
     private Label statusLabel;
-    @FXML
-    private Button noAccountButton;
 
-    public static String email;    // To hold user's email
-    private static String password;
+    private User user;
 
     // Handles the login process
-    public void handleLoginButtonAction(ActionEvent event) throws SQLException {
+    public void handleLoginButtonAction(ActionEvent event) {
         if (emailField.getText().isEmpty() || passwordField.getText().isEmpty()){
             statusLabel.setText("Bitte E-Mail und Passwort eingeben!");
         } else {
-            password = passwordField.getText(); // Store password
-            email = emailField.getText();       // Store email
-            if (DatabaseConnector.authenticateUser(email, password)) {
+            String password = passwordField.getText();
+            String email = emailField.getText();
+            DatabaseConnector dbConnector = new DatabaseConnector();
+            user = dbConnector.authenticateUser(email, password);
+            if (user != null){
                 loadDashboardView();
             } else {
                 statusLabel.setText("Login fehlgeschlagen. Überprüfen Sie Ihre Eingaben.");
             }
         }
-        Object[] userData = DatabaseConnector.getUserData(email);
-        User user = new User((String) userData[0], (String) userData[1], email, password, (byte[]) userData[3]);
     }
 
     // Helper method to load the Dashboard view
@@ -56,11 +51,14 @@ public class LoginController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/jmc/app/Dashboard.fxml"));
             Parent root = loader.load();
-            Stage stage = (Stage) emailField.getScene().getWindow();
+            DashboardController controller = loader.getController();
+            controller.initialize(user);
+            Stage stage = (Stage) loginButton.getScene().getWindow();
             stage.setTitle("Startseite");
             stage.setScene(new Scene(root));
             stage.show();
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             e.printStackTrace(System.err);
             statusLabel.setText("Fehler beim Laden des Dashboards.");
         }
@@ -68,11 +66,11 @@ public class LoginController {
 
     // Redirect to the SignUp page
     public void noAccountButtonAction(ActionEvent event) throws IOException {
-        Parent fxmlLoader = FXMLLoader.load(getClass().getResource("/com/jmc/app/signup.fxml"));
-        Scene scene = new Scene(fxmlLoader, 520, 400);
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/jmc/app/Signup.fxml"));
+        Parent root = loader.load();
         Stage stage = (Stage) noAccountButton.getScene().getWindow();
         stage.setTitle("Signup");
-        stage.setScene(scene);
+        stage.setScene(new Scene(root));
         stage.show();
     }
 }

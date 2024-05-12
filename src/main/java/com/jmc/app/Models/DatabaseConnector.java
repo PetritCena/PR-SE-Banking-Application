@@ -1,21 +1,21 @@
 package com.jmc.app.Models;
 
-import javafx.scene.image.Image;
 import java.io.*;
 import java.sql.*;
+import java.util.ArrayList;
 
 public class DatabaseConnector {
 
-    private static final String CONNECTION_STRING = "jdbc:oracle:thin:@e4xxmj5ey9kfqzz5_high?TNS_ADMIN=/Users/petritcena/Desktop/Wallet_E4XXMJ5EY9KFQZZ5";
-    private static final String USER = "admin";
-    private static final String PWD = "BigBankSoSe2024";
+    private final String CONNECTION_STRING = "jdbc:oracle:thin:@e4xxmj5ey9kfqzz5_high?TNS_ADMIN=/Users/petritcena/Desktop/Wallet_E4XXMJ5EY9KFQZZ5";
+    private final String USER = "admin";
+    private final String PWD = "BigBankSoSe2024";
 
-    public static Connection getConnection() throws SQLException {
+    public Connection getConnection() throws SQLException {
         return DriverManager.getConnection(CONNECTION_STRING, USER, PWD);
     }
 
-    public static boolean authenticateUser(String email, String password) {
-        final String LOGIN_QUERY = "SELECT password FROM users WHERE email = ?";
+    public User authenticateUser(String email, String password) {
+        final String LOGIN_QUERY = "SELECT vorname, nachname, password, photo FROM users WHERE email = ?";
         try (Connection con = getConnection();
              PreparedStatement stmt = con.prepareStatement(LOGIN_QUERY)) {
 
@@ -23,16 +23,18 @@ public class DatabaseConnector {
             ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
-                return password.equals(rs.getString("password"));
+                if(password.equals(rs.getString("password"))){
+                    return new User(rs.getString("vorname"), rs.getString("nachname"), email, password, rs.getBytes("photo"), getAllAccounts(email));
+                };
             }
         } catch (SQLException e) {
             System.err.println("Datenbankfehler: " + e.getMessage());
             e.printStackTrace(System.err);
         }
-        return false;
+        return null;
     }
 
-    public static void updateField(String email, String newValue, String field) throws SQLException {
+    public void updateField(String email, String newValue, String field) throws SQLException {
         String sql = "UPDATE users SET " + field + " = ? WHERE email = ?";
         try (Connection con = getConnection(); PreparedStatement stmt = con.prepareStatement(sql)) {
             stmt.setString(1, newValue);
@@ -41,7 +43,7 @@ public class DatabaseConnector {
         }
     }
 
-    public static void savePhoto(String email, File file) throws SQLException {
+    public void savePhoto(String email, File file) throws SQLException {
         byte[] imageBytes = null;
         try (FileInputStream fis = new FileInputStream(file)) {
             imageBytes = new byte[(int) file.length()];
@@ -57,40 +59,7 @@ public class DatabaseConnector {
         }
     }
 
-    public static Image loadPhoto(String email) throws SQLException {
-        String sql = "SELECT photo FROM users WHERE email = ?";
-        try (Connection con = getConnection(); PreparedStatement stmt = con.prepareStatement(sql)) {
-            stmt.setString(1, email);
-            ResultSet rs = stmt.executeQuery();
-            if (rs.next()) {
-                byte[] imageData = rs.getBytes("photo");
-                if (imageData != null && imageData.length > 0) {
-                    return new Image(new ByteArrayInputStream(imageData));
-                }
-            }
-        }
-        return null;
-    }
-
-    public static Object[] getUserData(String email) throws SQLException {
-        final String QUERY = "SELECT vorname, nachname, password, photo FROM users WHERE email = ?";
-        Object[] result = new Object[4];  // Array to hold first name and last name
-        try (Connection con = getConnection();
-             PreparedStatement stmt = con.prepareStatement(QUERY)) {
-            stmt.setString(1, email);
-            try (ResultSet rs = stmt.executeQuery()) {
-                if (rs.next()) {
-                    result[0] = rs.getString("vorname");  // First name
-                    result[1] = rs.getString("nachname"); // Last name
-                    result[2] = rs.getString("password");
-                    result[3] = rs.getBytes("photo");
-                }
-            }
-        }
-        return result;
-    }
-
-    public static void registerUser(String vorname, String nachname, String email, String password) {
+    public void registerUser(String vorname, String nachname, String email, String password) {
         final String QUERY = "INSERT INTO users (vorname, nachname, email, password) VALUES (?, ?, ?, ?)";
         try (Connection con = getConnection(); PreparedStatement stmt = con.prepareStatement(QUERY)) {
             stmt.setString(1, vorname);
@@ -101,5 +70,39 @@ public class DatabaseConnector {
         }catch (SQLException e){
             e.printStackTrace(System.err);
         }
+    }
+
+    private ArrayList<Account> getAllAccounts(String email) throws SQLException {
+        ArrayList<Account> accounts = new ArrayList<>();
+        final String QUERY = "SELECT * FROM accounts WHERE user_email = ?";
+        try (Connection con = getConnection(); PreparedStatement stmt = con.prepareStatement(QUERY)) {
+            stmt.setString(1, email);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                String iban = rs.getString("iban");
+                float saldo = rs.getFloat("saldo");
+                String typ = rs.getString("typ");
+                accounts.add(new Account(iban, saldo, typ, email, getAllCards(iban)));
+            }
+        }
+        return accounts;
+    }
+
+    private ArrayList<Card> getAllCards(String iban) throws SQLException {
+        ArrayList<Card> cards = new ArrayList<>();
+        final String QUERY = "SELECT * FROM cards WHERE iban = ?";
+        try (Connection con = getConnection(); PreparedStatement stmt = con.prepareStatement(QUERY)) {
+            stmt.setString(1, iban);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                float kartenlimit = rs.getFloat("kartenlimit");
+                float kartennummer = rs.getFloat("kartennumer");
+                int folgenummer = rs.getInt("folgenummer");
+                String typ = rs.getString("typ");
+                int geheimzahl = rs.getInt("geheimzahl");
+                cards.add(new Card(iban, kartenlimit, kartennummer, folgenummer, typ, geheimzahl));
+            }
+        }
+        return cards;
     }
 }
