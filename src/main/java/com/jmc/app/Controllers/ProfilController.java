@@ -6,17 +6,12 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.SnapshotParameters;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
-import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -38,28 +33,26 @@ public class ProfilController {
     private Button signoutButton, startSeiteButton, produktSeiteButton;
 
     private final FileChooser fileChooser = new FileChooser();
-    private User user;
+    private String password;
 
     @FXML
-    public void initialize(User user) {
-        this.user = user;
+    public void initialize() {
         fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
-        if (user.getPic() != null && user.getPic().length > 0) {
-            Image image = new Image(new ByteArrayInputStream(user.getPic()));
+        Image image;
+        if (User.getPic() != null && User.getPic().length > 0) {
+            image = new Image(new ByteArrayInputStream(User.getPic()));
             photoCircle.setFill(new ImagePattern(image));
-        }
-        else{
-            displayInitialsInCircle();
         }
         loadUserData();
     }
 
     private void loadUserData() {
-        vornameFeld.setText(user.getFirstName());
-        nachnameFeld.setText(user.getLastName());
+        vornameFeld.setText(User.getFirstName());
+        nachnameFeld.setText(User.getLastName());
+        password = User.getPassword();
     }
     public void datenÄndern(ActionEvent actionEvent) {
-        if(!vornameFeld.getText().equals(user.getFirstName()) || !nachnameFeld.getText().equals(user.getLastName())) updateUserData();
+        if(!vornameFeld.getText().equals(User.getFirstName()) || !nachnameFeld.getText().equals(User.getLastName())) updateUserData();
         else if(!neuesPasswortFeld.getText().isEmpty()) updatePassword();
         else {
             statusLabel.setText("Es wurde nichts geändert.");
@@ -71,45 +64,16 @@ public class ProfilController {
         fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg"));
         File imageFile = fileChooser.showOpenDialog(new Stage());
         if (imageFile != null) {
-            user.setPic(imageFile);
+            User.setPic(imageFile);
             Image image = new Image(imageFile.toURI().toString());
             photoCircle.setFill(new ImagePattern(image));
         }
     }
 
-    private String getInitials(String firstName, String lastName) {
-        String initials = "";
-        if (firstName != null && !firstName.isEmpty()) {
-            initials += firstName.substring(0, 1).toUpperCase();
-        }
-        if (lastName != null && !lastName.isEmpty()) {
-            initials += " " + lastName.substring(0, 1).toUpperCase();
-        }
-        return initials;
-    }
-
-    public void displayInitialsInCircle() {
-        Text text = new Text(getInitials(user.getFirstName(), user.getLastName()));
-        text.setFont(Font.font("Arial", FontWeight.BOLD, 20));
-        text.setFill(Color.rgb(53, 73, 90));
-
-        Circle background = new Circle(photoCircle.getRadius(), Color.rgb(218, 236, 251));
-        StackPane stackPane = new StackPane();
-        stackPane.getChildren().addAll(background, text);
-        stackPane.setMinSize(photoCircle.getRadius() * 2, photoCircle.getRadius() * 2);
-        stackPane.setMaxSize(photoCircle.getRadius() * 2, photoCircle.getRadius() * 2);
-
-        SnapshotParameters parameters = new SnapshotParameters();
-        parameters.setFill(Color.TRANSPARENT);
-        Image image = stackPane.snapshot(parameters, null);
-
-        photoCircle.setFill(new ImagePattern(image));
-    }
-
     private void updateUserData() {
         try {
-            user.setFirstName(vornameFeld.getText());
-            user.setLastName(nachnameFeld.getText());
+            User.setFirstName(vornameFeld.getText());
+            User.setLastName(nachnameFeld.getText());
             statusLabel.setText("Benutzerdaten erfolgreich aktualisiert.");
             statusLabel.setTextFill(Color.GREEN);
         } catch (SQLException e) {
@@ -120,7 +84,7 @@ public class ProfilController {
     }
 
     private void updatePassword() {
-        if(!altesPasswortFeld.getText().equals(user.getPassword())){
+        if(!altesPasswortFeld.getText().equals(password)){
             statusLabel.setText("Das alte Passwort stimmt nicht. ");
             statusLabel.setTextFill(Color.RED);
             return;
@@ -131,7 +95,7 @@ public class ProfilController {
             return;
         }
         try {
-            user.setPassword(neuesPasswortFeld.getText());
+            User.setPassword(neuesPasswortFeld.getText());
             statusLabel.setText("Passwort erfolgreich geändert. ");
             statusLabel.setTextFill(Color.GREEN);
         } catch (SQLException e) {
@@ -142,33 +106,23 @@ public class ProfilController {
     }
 
     public void signoutButtonOnAction(ActionEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/jmc/app/login.fxml"));
-        Parent root = loader.load();
-        Scene scene = new Scene(root);
-        Stage stage = (Stage) signoutButton.getScene().getWindow();
-        stage.setTitle("Login");
-        stage.setScene(scene);
-        stage.show();
+        changeScene("/com/jmc/app/login.fxml", 520, 400, "Login", signoutButton);
     }
 
     public void startSeiteButtonOnAction(ActionEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/jmc/app/Dashboard.fxml"));
-        Parent root = loader.load();
-        DashboardController controller = loader.getController();
-        controller.initialize(user);
-        Scene scene = new Scene(root);
-        Stage stage = (Stage) startSeiteButton.getScene().getWindow();
-        stage.setTitle("Startseite");
-        stage.setScene(scene);
-        stage.show();
+        changeScene("/com/jmc/app/Dashboard.fxml", 850, 750, "Startseite", startSeiteButton);
     }
 
     public void produktSeiteButtonOnAction(ActionEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/jmc/app/Produktseite.fxml"));
+        changeScene("/com/jmc/app/Produktseite.fxml", 850, 750, "Produkte", produktSeiteButton);
+    }
+
+    private void changeScene(String fxmlPath, int width, int height, String title, Button button) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
         Parent root = loader.load();
-        Scene scene = new Scene(root);
-        Stage stage = (Stage) produktSeiteButton.getScene().getWindow();
-        stage.setTitle("Produktseite");
+        Scene scene = new Scene(root, width, height);
+        Stage stage = (Stage) button.getScene().getWindow();
+        stage.setTitle(title);
         stage.setScene(scene);
         stage.show();
     }
