@@ -18,7 +18,7 @@
                <Cursor fx:constant="OPEN_HAND" />
             </cursor>
          </Button>
-         <Button fx:id="produktSeiteButton" alignment="CENTER" contentDisplay="CENTER" layoutX="46.0" layoutY="418.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="90.0" style="-fx-background-color: #35495a;" text="Produkte" textFill="#daecfb">
+         <Button fx:id="produktSeiteButton" alignment="CENTER" contentDisplay="CENTER" layoutX="46.0" layoutY="418.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="90.0" style="-fx-background-color: #35495a;" text="Produkte" textFill="#daecfb" onAction="#produktSeiteButtonOnAction">
             <opaqueInsets>
                <Insets />
             </opaqueInsets>
@@ -26,7 +26,7 @@
                <Cursor fx:constant="OPEN_HAND" />
             </cursor>
          </Button>
-         <FontAwesomeIconView fx:id="profilButton" fill="#35495a" glyphName="USER" layoutX="80.0" layoutY="700.0" onMouseClicked="#loadProfilView" size="30" text="" wrappingWidth="24.285714149475098"> <!--fx id hinzufügt, onMouseClicked hinzufügt-->
+         <FontAwesomeIconView fx:id="profilButton" fill="#35495a" glyphName="USER" layoutX="80.0" layoutY="700.0" onMouseClicked="#profilOnAction" size="30" text="" wrappingWidth="24.285714149475098"> <!--fx id hinzufügt, onMouseClicked hinzufügt-->
             <cursor>
                <Cursor fx:constant="OPEN_HAND" />
             </cursor></FontAwesomeIconView>
