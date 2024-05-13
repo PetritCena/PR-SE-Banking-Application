@@ -23,8 +23,8 @@ public class KarteBestellenController {
     @FXML
     private ComboBox<String> accountComboBox;
 
-    User user;
-    boolean b = true;
+    private User user;
+    private boolean b = true;
 
     @FXML
     public void initialize(User user) {

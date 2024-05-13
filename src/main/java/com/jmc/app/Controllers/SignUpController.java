@@ -17,21 +17,13 @@ import java.sql.*;
 
 public class SignUpController {
     @FXML
-    private TextField firstNameTextField;
+    private TextField firstNameTextField, lastNameTextField, emailTextField;
     @FXML
-    private TextField lastNameTextField;
+    private PasswordField passwordTextField, passwordAgainTextField;
     @FXML
-    private TextField emailTextField;
-    @FXML
-    private PasswordField passwordTextField;
-    @FXML
-    private PasswordField passwordAgainTextField;
-    @FXML
-    private Button registerButton;
+    private Button registerButton, haveAcccountButton;
     @FXML
     private Label messageLabel;
-    @FXML
-    private Button haveAcccountButton;
 
     public void registerButtonAction(ActionEvent actionEvent) throws IOException, SQLException {
         if (firstNameTextField.getText().isBlank() || lastNameTextField.getText().isBlank() || emailTextField.getText().isBlank() || passwordTextField.getText().isBlank() || passwordAgainTextField.getText().isBlank()) {
@@ -47,7 +39,8 @@ public class SignUpController {
         String email = emailTextField.getText();
         String password = passwordTextField.getText();
 
-        DatabaseConnector.registerUser(firstName,lastName,email,password);
+        DatabaseConnector db = new DatabaseConnector();
+        db.registerUser(firstName,lastName,email,password);
 
         // If registration is successful, redirect to login view
         Stage stage = (Stage) registerButton.getScene().getWindow();

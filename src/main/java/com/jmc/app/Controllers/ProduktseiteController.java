@@ -19,7 +19,7 @@ public class ProduktseiteController {
     @FXML
     private Button startSeiteButton, produktseiteButton, spaceButton, karteButton;
 
-    User user;
+    private User user;
     
     @FXML
     public void initialize(User user) {

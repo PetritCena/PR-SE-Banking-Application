@@ -26,7 +26,6 @@ public class DatabaseConnector {
                 if (password.equals(rs.getString("password"))) {
                     return new User(rs.getString("vorname"), rs.getString("nachname"), email, password, rs.getBytes("photo"), getAllAccounts(email));
                 }
-                ;
             }
         } catch (SQLException e) {
             System.err.println("Datenbankfehler: " + e.getMessage());

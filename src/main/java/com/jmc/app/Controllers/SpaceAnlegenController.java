@@ -20,7 +20,7 @@ public class SpaceAnlegenController {
     @FXML
     private FontAwesomeIconView profilIcon;
 
-    User user;
+    private User user;
 
     @FXML
     public void initialize(User user) {
