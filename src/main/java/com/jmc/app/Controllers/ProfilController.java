@@ -163,9 +163,11 @@ public class ProfilController {
         stage.show();
     }
 
-    public void produktSeiteButtonOnAction(ActionEvent event) throws IOException {
+    public void produktSeiteButtonOnAction(MouseEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/jmc/app/Produktseite.fxml"));
         Parent root = loader.load();
+        ProduktseiteController controller = loader.getController();
+        controller.initialize(user);
         Scene scene = new Scene(root);
         Stage stage = (Stage) produktSeiteButton.getScene().getWindow();
         stage.setTitle("Produktseite");

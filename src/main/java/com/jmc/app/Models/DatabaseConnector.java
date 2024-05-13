@@ -44,7 +44,7 @@ public class DatabaseConnector {
     }
 
     public void savePhoto(String email, File file) throws SQLException {
-        byte[] imageBytes = null;
+        byte[] imageBytes;
         try (FileInputStream fis = new FileInputStream(file)) {
             imageBytes = new byte[(int) file.length()];
             fis.read(imageBytes);
@@ -96,7 +96,7 @@ public class DatabaseConnector {
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
                 float kartenlimit = rs.getFloat("kartenlimit");
-                float kartennummer = rs.getFloat("kartennumer");
+                float kartennummer = rs.getFloat("kartennummer");
                 int folgenummer = rs.getInt("folgenummer");
                 String typ = rs.getString("typ");
                 int geheimzahl = rs.getInt("geheimzahl");

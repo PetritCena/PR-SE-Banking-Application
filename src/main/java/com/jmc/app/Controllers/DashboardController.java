@@ -6,9 +6,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.fxml.FXML;
 import javafx.scene.image.Image;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
@@ -21,16 +21,17 @@ import javafx.stage.Stage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class DashboardController {
+    @FXML
+    private Text nameHauptkonto, ibanHauptkonto, saldoHauptkonto, typ;
     @FXML
     private Circle photoCircle;
     @FXML
     private FontAwesomeIconView profilButton;
     @FXML
-    private Label statusLabel;
-    @FXML
-    private Button startSeiteButton, produktSeiteButton;
+    private Button startSeiteButton, produktSeiteButton, hauptKontoButton;
 
     private User user;
     private ArrayList<Account> accounts;
@@ -40,16 +41,24 @@ public class DashboardController {
     public void initialize(User user) {
         this.user = user;
         accounts = user.getAccounts();
+        Account hauptkonto = null;
         for(Account account : accounts) {
+            if(Objects.equals(account.getTyp(), "Hauptkonto")){
+                hauptkonto = account;
+            }
             cards.addAll(account.getCards());
         }
         if (user.getPic() != null && user.getPic().length > 0) {
             Image image = new Image(new ByteArrayInputStream(user.getPic()));
             photoCircle.setFill(new ImagePattern(image));
         }
-        else{
+        else {
             displayInitialsInCircle();
         }
+        typ.setText(hauptkonto.getTyp());
+        nameHauptkonto.setText(user.getFirstName() + " " + user.getLastName());
+        ibanHauptkonto.setText(hauptkonto.getIban());
+        saldoHauptkonto.setText(hauptkonto.getSaldo() + "€");
     }
 
     private String getInitials(String firstName, String lastName) {
@@ -94,5 +103,17 @@ public class DashboardController {
         } catch (IOException e) {
             e.printStackTrace(System.err);
         }
+    }
+
+    public void produktButtonOnAction(MouseEvent mouseEvent) throws IOException {
+        FXMLLoader loader = new FXMLLoader(SceneChanger.class.getResource("/com/jmc/app/Produktseite.fxml"));
+        Parent root = loader.load();
+        ProduktseiteController controller = loader.getController();
+        controller.initialize(user);
+        Scene scene = new Scene(root);
+        Stage stage = (Stage) produktSeiteButton.getScene().getWindow();
+        stage.setTitle("Startseite");
+        stage.setScene(scene);
+        stage.show();
     }
 }

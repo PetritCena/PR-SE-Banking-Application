@@ -32,4 +32,7 @@ public class Account {
     public ArrayList<Card> getCards() {
         return cards;
     }
+    public String toString() {
+        return iban;
+    }
 }

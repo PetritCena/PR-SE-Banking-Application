@@ -7,9 +7,10 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.text.Font?>
-
 <?import javafx.scene.shape.Circle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
 <BorderPane prefHeight="750.0" prefWidth="850.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jmc.app.Controllers.DashboardController">
    <left>
       <AnchorPane prefHeight="400.0" prefWidth="182.0" style="-fx-background-color: #DAECFB;" BorderPane.alignment="CENTER">
@@ -19,7 +20,7 @@
                <Cursor fx:constant="OPEN_HAND" />
             </cursor>
          </Button>
-         <Button fx:id="produktSeiteButton" alignment="CENTER" contentDisplay="CENTER" layoutX="46.0" layoutY="418.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="90.0" style="-fx-background-color: #35495a;" text="Produkte" textFill="#daecfb">
+         <Button fx:id="produktSeiteButton" alignment="CENTER" contentDisplay="CENTER" layoutX="46.0" layoutY="418.0" mnemonicParsing="false" onMouseClicked="#produktButtonOnAction" prefHeight="40.0" prefWidth="90.0" style="-fx-background-color: #35495a;" text="Produkte" textFill="#daecfb">
             <opaqueInsets>
                <Insets />
             </opaqueInsets>
@@ -41,12 +42,50 @@
             </font>
          </Label>
          <FontAwesomeIconView fill="#35495a" glyphName="HOME" layoutX="280.0" layoutY="132.0" size="50" />
-         <Label fx:id="statusLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="123.0" layoutY="356.0" prefHeight="17.0" prefWidth="428.0" text="Keine Produkte vorhanden" textFill="#35495a">
-            <font>
-               <Font name="Arial Bold" size="30.0" />
-            </font>
-         </Label>
          <Circle fx:id="photoCircle" fill="#daecfb" layoutX="562.0" layoutY="95.0" radius="53.0" stroke="BLACK" strokeType="INSIDE" />
+         <Button fx:id="hauptKontoButton" layoutX="44.0" layoutY="228.0" mnemonicParsing="false" prefHeight="110.0" prefWidth="319.0" style="-fx-background-radius: 20; -fx-background-color: DAECFB;">
+            <cursor>
+               <Cursor fx:constant="OPEN_HAND" />
+            </cursor>
+         </Button>
+         <Text fill="#35495a" layoutX="60.0" layoutY="283.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name :" wrappingWidth="45.5186767578125">
+            <cursor>
+               <Cursor fx:constant="OPEN_HAND" />
+            </cursor>
+         </Text>
+         <Text fx:id="nameHauptkonto" fill="#35495a" layoutX="106.0" layoutY="283.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="137.5186767578125">
+            <cursor>
+               <Cursor fx:constant="OPEN_HAND" />
+            </cursor>
+         </Text>
+         <Text fill="#35495a" layoutX="60.0" layoutY="300.0" strokeType="OUTSIDE" strokeWidth="0.0" text="IBAN  :" wrappingWidth="45.5186767578125">
+            <cursor>
+               <Cursor fx:constant="OPEN_HAND" />
+            </cursor>
+         </Text>
+         <Text fx:id="ibanHauptkonto" fill="#35495a" layoutX="106.0" layoutY="300.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="186.32290649414062">
+            <cursor>
+               <Cursor fx:constant="OPEN_HAND" />
+            </cursor>
+         </Text>
+         <Text fill="#35495a" layoutX="60.0" layoutY="317.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Saldo :" wrappingWidth="41.601226806640625">
+            <cursor>
+               <Cursor fx:constant="OPEN_HAND" />
+            </cursor>
+         </Text>
+         <Text fx:id="saldoHauptkonto" fill="#35495a" layoutX="106.0" layoutY="317.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="137.5186767578125">
+            <cursor>
+               <Cursor fx:constant="OPEN_HAND" />
+            </cursor>
+         </Text>
+         <Text fx:id="typ" fill="#35495a" layoutX="60.0" layoutY="259.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="128.5186767578125">
+            <cursor>
+               <Cursor fx:constant="OPEN_HAND" />
+            </cursor>
+            <font>
+               <Font name="System Bold" size="18.0" />
+            </font>
+         </Text>
       </AnchorPane>
    </center>
 </BorderPane>
