@@ -1,5 +1,6 @@
 package com.jmc.app.Controllers;
 
+import com.jmc.app.Models.DatabaseConnector;
 import com.jmc.app.Models.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

@@ -23,9 +23,10 @@ public class DatabaseConnector {
             ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
-                if(password.equals(rs.getString("password"))){
+                if (password.equals(rs.getString("password"))) {
                     return new User(rs.getString("vorname"), rs.getString("nachname"), email, password, rs.getBytes("photo"), getAllAccounts(email));
-                };
+                }
+                ;
             }
         } catch (SQLException e) {
             System.err.println("Datenbankfehler: " + e.getMessage());
@@ -67,12 +68,12 @@ public class DatabaseConnector {
             stmt.setString(3, email);
             stmt.setString(4, password);
             stmt.executeUpdate();
-        }catch (SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace(System.err);
         }
     }
 
-    private ArrayList<Account> getAllAccounts(String email) throws SQLException {
+    public ArrayList<Account> getAllAccounts(String email) throws SQLException {
         ArrayList<Account> accounts = new ArrayList<>();
         final String QUERY = "SELECT * FROM accounts WHERE user_email = ?";
         try (Connection con = getConnection(); PreparedStatement stmt = con.prepareStatement(QUERY)) {
@@ -88,7 +89,7 @@ public class DatabaseConnector {
         return accounts;
     }
 
-    private ArrayList<Card> getAllCards(String iban) throws SQLException {
+    public ArrayList<Card> getAllCards(String iban) throws SQLException {
         ArrayList<Card> cards = new ArrayList<>();
         final String QUERY = "SELECT * FROM cards WHERE iban = ?";
         try (Connection con = getConnection(); PreparedStatement stmt = con.prepareStatement(QUERY)) {
@@ -105,4 +106,25 @@ public class DatabaseConnector {
         }
         return cards;
     }
+
+    public void createSpace(float saldo, String typ, String email) throws SQLException {
+        final String INSERT_QUERY = "INSERT INTO accounts (saldo, typ, user_email) VALUES (?, ?, ?)";
+        try (Connection con = getConnection(); PreparedStatement stmt = con.prepareStatement(INSERT_QUERY)) {
+            stmt.setFloat(1, saldo);
+            stmt.setString(2, typ);
+            stmt.setString(3, email);
+            stmt.executeUpdate();
+        }
+    }
+
+    public void karteBestellen(String iban, int kartenLimit, String typ) throws SQLException {
+        final String INSERT_QUERY = "INSERT INTO cards (iban, kartenlimit, typ) VALUES (?, ?, ?)";
+        try (Connection con = getConnection(); PreparedStatement stmt = con.prepareStatement(INSERT_QUERY)) {
+            stmt.setString(1, iban);
+            stmt.setInt(2, kartenLimit);
+            stmt.setString(3, typ);
+            stmt.executeUpdate();
+        }
+    }
+
 }

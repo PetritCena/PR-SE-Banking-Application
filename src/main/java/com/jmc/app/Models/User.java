@@ -46,6 +46,7 @@ public class User {
 
     public byte[] getPic() { return pic;}
     public void setPic(File newPic) throws SQLException {
+
         dbConnector.savePhoto(email, newPic);
         this.pic = new byte[(int) newPic.length()];
     }
