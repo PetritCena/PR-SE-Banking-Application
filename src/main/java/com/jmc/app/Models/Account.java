@@ -11,7 +11,7 @@ public class Account {
 
     public Account(String iban, float saldo, String typ, String user_email, ArrayList<Card> cards) {
         this.iban = iban;
-        this.saldo = saldo;
+        this.saldo = saldo; //Bug
         this.typ = typ;
         this.user_email = user_email;
         this.cards = cards;

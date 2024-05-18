@@ -7,12 +7,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.Label;
-import javafx.scene.layout.AnchorPane;
-import javafx.stage.Stage;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.fxml.FXMLLoader;
-
 import javafx.event.ActionEvent;
 import java.io.IOException;
 import java.sql.*;
@@ -26,7 +20,6 @@ public class LoginController {
     private PasswordField passwordField;
     @FXML
     private Label statusLabel;
-
     private User user;
 
     // Handles the login process
@@ -50,14 +43,7 @@ public class LoginController {
     // Helper method to load the Dashboard view
     private void loadDashboardView() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/jmc/app/Dashboard.fxml"));
-            Parent root = loader.load();
-            DashboardController controller = loader.getController();
-            controller.initialize(user);
-            Stage stage = (Stage) emailField.getScene().getWindow();
-            stage.setTitle("Startseite");
-            stage.setScene(new Scene(root));
-            stage.show();
+            SceneChanger.changeScene("/com/jmc/app/Dashboard.fxml", 850, 750, loginButton, user);
         } catch (IOException e) {
             e.printStackTrace(System.err);
             statusLabel.setText("Fehler beim Laden des Dashboards.");
@@ -66,11 +52,6 @@ public class LoginController {
 
     // Redirect to the SignUp page
     public void noAccountButtonAction(ActionEvent event) throws IOException {
-        Parent fxmlLoader = FXMLLoader.load(getClass().getResource("/com/jmc/app/signup.fxml"));
-        Scene scene = new Scene(fxmlLoader, 520, 400);
-        Stage stage = (Stage) noAccountButton.getScene().getWindow();
-        stage.setTitle("Signup");
-        stage.setScene(scene);
-        stage.show();
+        SceneChanger.changeScene("/com/jmc/app/signup.fxml", 520, 400, loginButton, user);
     }
 }

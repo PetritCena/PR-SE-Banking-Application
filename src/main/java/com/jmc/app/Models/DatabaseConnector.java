@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public class DatabaseConnector {
 
-    private final String CONNECTION_STRING = "jdbc:oracle:thin:@e4xxmj5ey9kfqzz5_high?TNS_ADMIN=/Users/petritcena/Desktop/Wallet_E4XXMJ5EY9KFQZZ5";
+    private final String CONNECTION_STRING = "jdbc:oracle:thin:@e4xxmj5ey9kfqzz5_high?TNS_ADMIN=/Users/oemer.t/Downloads/Wallet_E4XXMJ5EY9KFQZZ5";
     private final String USER = "admin";
     private final String PWD = "BigBankSoSe2024";
 
@@ -126,4 +126,14 @@ public class DatabaseConnector {
         }
     }
 
+    public void geldAbziehen(String email){
+        final String UPDATE = "UPDATE ACCOUNTS SET saldo = saldo -10 WHERE typ = 'Hauptkonto' AND user_email = ?";
+        try (Connection con = getConnection(); PreparedStatement stmt = con.prepareStatement(UPDATE)) {
+            stmt.setString(1, email);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
+

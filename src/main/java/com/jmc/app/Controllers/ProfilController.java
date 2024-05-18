@@ -1,6 +1,6 @@
 package com.jmc.app.Controllers;
 
-import com.jmc.app.Models.DatabaseConnector;
+
 import com.jmc.app.Models.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -20,13 +20,12 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 
-public class ProfilController {
+public class ProfilController implements Controller{
     @FXML
     private TextField vornameFeld, nachnameFeld;
     @FXML
@@ -36,7 +35,7 @@ public class ProfilController {
     @FXML
     private Circle photoCircle;
     @FXML
-    private Button signoutButton, startSeiteButton, produktSeiteButton;
+    private Button startSeiteButton;
 
     private final FileChooser fileChooser = new FileChooser();
     private User user;
@@ -143,36 +142,14 @@ public class ProfilController {
     }
 
     public void signoutButtonOnAction(ActionEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/jmc/app/login.fxml"));
-        Parent root = loader.load();
-        Scene scene = new Scene(root);
-        Stage stage = (Stage) signoutButton.getScene().getWindow();
-        stage.setTitle("Login");
-        stage.setScene(scene);
-        stage.show();
+        SceneChanger.changeScene("/com/jmc/app/login.fxml", 520, 400, startSeiteButton);
     }
 
     public void startSeiteButtonOnAction(ActionEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/jmc/app/Dashboard.fxml"));
-        Parent root = loader.load();
-        DashboardController controller = loader.getController();
-        controller.initialize(user);
-        Scene scene = new Scene(root);
-        Stage stage = (Stage) startSeiteButton.getScene().getWindow();
-        stage.setTitle("Startseite");
-        stage.setScene(scene);
-        stage.show();
+        SceneChanger.changeScene("/com/jmc/app/Dashboard.fxml", 850, 750, startSeiteButton, user);
     }
 
     public void produktSeiteButtonOnAction(MouseEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/jmc/app/Produktseite.fxml"));
-        Parent root = loader.load();
-        ProduktseiteController controller = loader.getController();
-        controller.initialize(user);
-        Scene scene = new Scene(root);
-        Stage stage = (Stage) produktSeiteButton.getScene().getWindow();
-        stage.setTitle("Produktseite");
-        stage.setScene(scene);
-        stage.show();
+        SceneChanger.changeScene("/com/jmc/app/Produktseite.fxml", 850, 750, startSeiteButton, user);
     }
 }

@@ -1,0 +1,8 @@
+.scroll-pane {
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+    -fx-background-color: transparent; /* Stellt sicher, dass kein Hintergrund gezeichnet wird */
+    -fx-border-color: transparent; /* Stellt sicher, dass keine Grenze gezeichnet wird */
+    -fx-effect: null; /* Entfernt jegliche Effekte wie Schatten */
+}
+

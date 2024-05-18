@@ -1,38 +1,38 @@
 package com.jmc.app.Controllers;
+
 import com.jmc.app.Models.*;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
+import javafx.geometry.Insets;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.control.Button;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
-
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class DashboardController {
+public class DashboardController implements Controller{
+    @FXML
+    public ScrollPane scrollpane;
+    @FXML
+    public HBox hbox;
     @FXML
     private Text nameHauptkonto, ibanHauptkonto, saldoHauptkonto, typ;
     @FXML
     private Circle photoCircle;
     @FXML
-    private FontAwesomeIconView profilButton;
-    @FXML
-    private Button startSeiteButton, produktSeiteButton, hauptKontoButton;
-
+    private Button startSeiteButton;
     private User user;
     private ArrayList<Account> accounts;
     private ArrayList<Card> cards = new ArrayList<>();
@@ -59,6 +59,7 @@ public class DashboardController {
         nameHauptkonto.setText(user.getFirstName() + " " + user.getLastName());
         ibanHauptkonto.setText(hauptkonto.getIban());
         saldoHauptkonto.setText(hauptkonto.getSaldo() + "€");
+        addBoxFromDatabase();
     }
 
     private String getInitials(String firstName, String lastName) {
@@ -90,30 +91,45 @@ public class DashboardController {
         photoCircle.setFill(new ImagePattern(image));
     }
     // man drückt Account Icon und wird zur Profilseite weitergeleitet
-    public void loadProfilView() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/jmc/app/profil.fxml"));
-            Parent root = loader.load();
-            ProfilController controller = loader.getController();
-            controller.initialize(user);
-            Scene scene = new Scene(root);
-            Stage stage = (Stage) profilButton.getScene().getWindow();
-            stage.setScene(scene);
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace(System.err);
-        }
+    public void loadProfilView() throws IOException {
+        SceneChanger.changeScene("/com/jmc/app/profil.fxml", 850, 750, startSeiteButton, user);
+    }
+    public void produktButtonOnAction(MouseEvent mouseEvent) throws IOException {
+        SceneChanger.changeScene("/com/jmc/app/Produktseite.fxml", 850, 750, startSeiteButton, user);
     }
 
-    public void produktButtonOnAction(MouseEvent mouseEvent) throws IOException {
-        FXMLLoader loader = new FXMLLoader(SceneChanger.class.getResource("/com/jmc/app/Produktseite.fxml"));
-        Parent root = loader.load();
-        ProduktseiteController controller = loader.getController();
-        controller.initialize(user);
-        Scene scene = new Scene(root);
-        Stage stage = (Stage) produktSeiteButton.getScene().getWindow();
-        stage.setTitle("Startseite");
-        stage.setScene(scene);
-        stage.show();
+    public void addBoxFromDatabase() {
+        DatabaseConnector db = new DatabaseConnector();
+        final String QUERY = "SELECT iban, saldo from accounts where USER_EMAIL = ? AND TYP = 'Spacekonto'";
+        try (Connection con = db.getConnection(); PreparedStatement pst = con.prepareStatement(QUERY)){
+
+             pst.setString(1, user.getEmail());
+             ResultSet rs = pst.executeQuery();
+
+            while (rs.next()) {
+                VBox spaceBox = new VBox();
+                hbox.getChildren().add(spaceBox);
+                Label spacekonto = new Label("Spacekonto");
+                spacekonto.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
+                Label name = new Label("Name: " + user.getFirstName() + " " + user.getLastName());
+                Label ibannummer = new Label("IBAN: " + rs.getString("iban"));
+                Label sal = new Label("Saldo: " + rs.getFloat("saldo") + "€");
+
+                spaceBox.getChildren().add(spacekonto);
+                spaceBox.getChildren().add(name);
+                spaceBox.getChildren().add(ibannummer);
+                spaceBox.getChildren().add(sal);
+                //design
+                BackgroundFill backgroundFill = new BackgroundFill(Color.rgb(218,	236,	251), new CornerRadii(20), null);
+                Background background = new Background(backgroundFill);
+                spaceBox.setBackground(background);
+                spaceBox.setMaxSize(250, 110);
+                spaceBox.setMinSize(250, 110);
+                spaceBox.setPadding(new Insets(17));
+            }
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

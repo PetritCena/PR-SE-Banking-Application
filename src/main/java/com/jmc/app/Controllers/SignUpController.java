@@ -15,7 +15,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.sql.*;
 
-public class SignUpController {
+public class SignUpController implements Controller{
     @FXML
     private TextField firstNameTextField, lastNameTextField, emailTextField;
     @FXML
@@ -48,11 +48,7 @@ public class SignUpController {
     }
 
     private void loadLoginView(Stage stage) throws IOException {
-        Parent fxmlLoader = FXMLLoader.load(getClass().getResource("/com/jmc/app/login.fxml"));
-        Scene scene = new Scene(fxmlLoader, 520, 400);
-        stage.setTitle("Signup");
-        stage.setScene(scene);
-        stage.show();
+        SceneChanger.changeScene("/com/jmc/app/login.fxml", 520, 400, registerButton);
     }
 
     public void haveAcccountButtonAction(ActionEvent actionEvent) throws IOException {
