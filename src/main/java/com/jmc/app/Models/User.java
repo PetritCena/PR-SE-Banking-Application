@@ -2,6 +2,8 @@ package com.jmc.app.Models;
 
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -12,7 +14,7 @@ public class User {
     private String firstName;
     private String lastName;
     private byte[] pic;
-    private final ArrayList<Account> accounts;
+    private ArrayList<Account> accounts;
 
     public User(String firstName, String lastName, String email, String password, byte[] pic, ArrayList<Account> accounts) {
         this.dbConnector = new DatabaseConnector();
@@ -45,10 +47,12 @@ public class User {
     }
 
     public byte[] getPic() { return pic;}
-    public void setPic(File newPic) throws SQLException {
-
+    public void setPic(File newPic) throws SQLException, IOException {
         dbConnector.savePhoto(email, newPic);
-        this.pic = new byte[(int) newPic.length()];
+        this.pic = Files.readAllBytes(newPic.toPath());
     }
     public ArrayList<Account> getAccounts() { return accounts; }
+    public void setAccounts(ArrayList<Account> accounts) {
+        this.accounts = accounts;
+    }
 }

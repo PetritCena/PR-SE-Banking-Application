@@ -6,14 +6,14 @@ public class Account {
     private final String iban;
     private final float saldo;
     private final String typ;
-    private final String user_email;
+    private final User user;
     private final ArrayList<Card> cards;
 
-    public Account(String iban, float saldo, String typ, String user_email, ArrayList<Card> cards) {
+    public Account(String iban, float saldo, String typ, User user, ArrayList<Card> cards) {
         this.iban = iban;
         this.saldo = saldo; //Bug
         this.typ = typ;
-        this.user_email = user_email;
+        this.user = user;
         this.cards = cards;
     }
 
@@ -26,8 +26,8 @@ public class Account {
     public String getTyp() {
         return typ;
     }
-    public String getUser_email() {
-        return user_email;
+    public User getUser() {
+        return user;
     }
     public ArrayList<Card> getCards() {
         return cards;

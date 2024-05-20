@@ -14,24 +14,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="850.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jmc.app.Controllers.KarteBestellenController">
-   <left>
-      <AnchorPane prefHeight="750.0" prefWidth="182.0" style="-fx-background-color: DAECFB;" BorderPane.alignment="CENTER">
-         <FontAwesomeIconView fx:id="profilIcon" fill="#35495a" glyphName="USER" layoutX="80.0" layoutY="700.0" onMouseClicked="#profilOnAction" size="30" text="">
-            <cursor>
-               <Cursor fx:constant="OPEN_HAND" />
-            </cursor></FontAwesomeIconView>
-         <FontAwesomeIconView fill="#35495a" glyphName="BANK" layoutX="55.0" layoutY="108.0" size="70" text="" />
-         <Button fx:id="startSeiteButton" layoutX="46.0" layoutY="325.0" mnemonicParsing="false" onMouseClicked="#startSeiteButtonOnAction" prefHeight="40.0" prefWidth="90.0" style="-fx-background-color: #35495a; -fx-background-radius: 4;" text="Startseite" textFill="#daecfb">
-            <cursor>
-               <Cursor fx:constant="OPEN_HAND" />
-            </cursor></Button>
-         <Button fx:id="produktSeiteButton" layoutX="46.0" layoutY="418.0" mnemonicParsing="false" onMouseClicked="#produktSeiteButtonOnAction" prefHeight="40.0" prefWidth="90.0" style="-fx-background-color: #35495a; -fx-background-radius: 4;" text="Produkte" textFill="#daecfb">
-            <cursor>
-               <Cursor fx:constant="OPEN_HAND" />
-            </cursor></Button>
-      </AnchorPane>
-   </left>
+<BorderPane fx:id="borderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="850.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jmc.app.Controllers.KarteBestellenController">
    <center>
       <AnchorPane minHeight="20.0" minWidth="20.0" prefHeight="20.0" prefWidth="20.0" style="-fx-background-color: white;" BorderPane.alignment="CENTER">
          <Text fill="#35495a" layoutX="41.0" layoutY="94.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Karte bestellen">

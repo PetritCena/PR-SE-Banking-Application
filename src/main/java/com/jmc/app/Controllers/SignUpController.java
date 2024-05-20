@@ -2,9 +2,6 @@ package com.jmc.app.Controllers;
 
 import com.jmc.app.Models.DatabaseConnector;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
@@ -15,7 +12,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.sql.*;
 
-public class SignUpController implements Controller{
+public class SignUpController {
     @FXML
     private TextField firstNameTextField, lastNameTextField, emailTextField;
     @FXML
@@ -48,7 +45,7 @@ public class SignUpController implements Controller{
     }
 
     private void loadLoginView(Stage stage) throws IOException {
-        SceneChanger.changeScene("/com/jmc/app/login.fxml", 520, 400, registerButton);
+        SceneChanger.changeScene("/com/jmc/app/login.fxml", stage, null);
     }
 
     public void haveAcccountButtonAction(ActionEvent actionEvent) throws IOException {

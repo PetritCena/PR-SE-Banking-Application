@@ -1,0 +1,14 @@
+.accordion .titled-pane .title {
+    -fx-background-color: transparent;
+}
+
+.accordion .titled-pane>*.content{
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.accordion .titled-pane>.title>.arrow-button>.arrow {
+    -fx-font-size: 20;
+    -fx-background-color: #35495a;
+    -fx-effect: null;
+}

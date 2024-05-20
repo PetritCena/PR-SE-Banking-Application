@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public class DatabaseConnector {
 
-    private final String CONNECTION_STRING = "jdbc:oracle:thin:@e4xxmj5ey9kfqzz5_high?TNS_ADMIN=/Users/oemer.t/Downloads/Wallet_E4XXMJ5EY9KFQZZ5";
+    private final String CONNECTION_STRING = "jdbc:oracle:thin:@e4xxmj5ey9kfqzz5_high?TNS_ADMIN=/Users/petritcena/Desktop/Wallet_E4XXMJ5EY9KFQZZ5";
     private final String USER = "admin";
     private final String PWD = "BigBankSoSe2024";
 
@@ -24,7 +24,9 @@ public class DatabaseConnector {
 
             if (rs.next()) {
                 if (password.equals(rs.getString("password"))) {
-                    return new User(rs.getString("vorname"), rs.getString("nachname"), email, password, rs.getBytes("photo"), getAllAccounts(email));
+                    User user = new User(rs.getString("vorname"), rs.getString("nachname"), email, password, rs.getBytes("photo"), null);
+                    user.setAccounts(getAllAccounts(user));
+                    return user;
                 }
             }
         } catch (SQLException e) {
@@ -72,17 +74,17 @@ public class DatabaseConnector {
         }
     }
 
-    public ArrayList<Account> getAllAccounts(String email) throws SQLException {
+    public ArrayList<Account> getAllAccounts(User user) throws SQLException {
         ArrayList<Account> accounts = new ArrayList<>();
         final String QUERY = "SELECT * FROM accounts WHERE user_email = ?";
         try (Connection con = getConnection(); PreparedStatement stmt = con.prepareStatement(QUERY)) {
-            stmt.setString(1, email);
+            stmt.setString(1, user.getEmail());
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
                 String iban = rs.getString("iban");
                 float saldo = rs.getFloat("saldo");
                 String typ = rs.getString("typ");
-                accounts.add(new Account(iban, saldo, typ, email, getAllCards(iban)));
+                accounts.add(new Account(iban, saldo, typ, user, getAllCards(iban)));
             }
         }
         return accounts;
@@ -106,14 +108,15 @@ public class DatabaseConnector {
         return cards;
     }
 
-    public void createSpace(float saldo, String typ, String email) throws SQLException {
+    public void createSpace(float saldo, String typ, User user) throws SQLException {
         final String INSERT_QUERY = "INSERT INTO accounts (saldo, typ, user_email) VALUES (?, ?, ?)";
         try (Connection con = getConnection(); PreparedStatement stmt = con.prepareStatement(INSERT_QUERY)) {
             stmt.setFloat(1, saldo);
             stmt.setString(2, typ);
-            stmt.setString(3, email);
+            stmt.setString(3, user.getEmail());
             stmt.executeUpdate();
         }
+        user.setAccounts(getAllAccounts(user));
     }
 
     public void karteBestellen(String iban, int kartenLimit, String typ) throws SQLException {

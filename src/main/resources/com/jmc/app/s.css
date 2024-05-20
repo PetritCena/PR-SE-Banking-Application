@@ -1,3 +1,12 @@
+.scroll-pane > .viewport {
+    -fx-background-color: transparent;
+}
+.scroll-pane > .scroll-bar{
+    -fx-font-size: 10;
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
 .scroll-pane {
     -fx-background-insets: 0;
     -fx-padding: 0;
@@ -5,4 +14,5 @@
     -fx-border-color: transparent; /* Stellt sicher, dass keine Grenze gezeichnet wird */
     -fx-effect: null; /* Entfernt jegliche Effekte wie Schatten */
 }
+
 

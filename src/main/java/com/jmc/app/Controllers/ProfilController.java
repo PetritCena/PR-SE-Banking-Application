@@ -4,13 +4,11 @@ package com.jmc.app.Controllers;
 import com.jmc.app.Models.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
@@ -35,17 +33,21 @@ public class ProfilController implements Controller{
     @FXML
     private Circle photoCircle;
     @FXML
-    private Button startSeiteButton;
+    private Button signoutButton;
+    @FXML
+    private BorderPane borderPane;
+
 
     private final FileChooser fileChooser = new FileChooser();
     private User user;
 
     @FXML
-    public void initialize(User user) {
-        this.user = user;
+    public void initialize(Object user) {
+        this.user = (User) user;
+        SceneChanger.loadLeftFrame(borderPane, this.user);
         fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
-        if (user.getPic() != null && user.getPic().length > 0) {
-            Image image = new Image(new ByteArrayInputStream(user.getPic()));
+        if (this.user.getPic() != null && this.user.getPic().length > 0) {
+            Image image = new Image(new ByteArrayInputStream(this.user.getPic()));
             photoCircle.setFill(new ImagePattern(image));
         }
         else{
@@ -67,7 +69,7 @@ public class ProfilController implements Controller{
         }
     }
 
-    public void choosePhoto(MouseEvent event) throws SQLException {
+    public void choosePhoto(MouseEvent event) throws SQLException, IOException {
         fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg"));
         File imageFile = fileChooser.showOpenDialog(new Stage());
         if (imageFile != null) {
@@ -142,14 +144,7 @@ public class ProfilController implements Controller{
     }
 
     public void signoutButtonOnAction(ActionEvent event) throws IOException {
-        SceneChanger.changeScene("/com/jmc/app/login.fxml", 520, 400, startSeiteButton);
-    }
-
-    public void startSeiteButtonOnAction(ActionEvent event) throws IOException {
-        SceneChanger.changeScene("/com/jmc/app/Dashboard.fxml", 850, 750, startSeiteButton, user);
-    }
-
-    public void produktSeiteButtonOnAction(MouseEvent event) throws IOException {
-        SceneChanger.changeScene("/com/jmc/app/Produktseite.fxml", 850, 750, startSeiteButton, user);
+        Stage stage = (Stage) signoutButton.getScene().getWindow();
+        SceneChanger.changeScene("/com/jmc/app/login.fxml", stage, null);
     }
 }
