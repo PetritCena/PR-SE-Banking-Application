@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane fx:id="borderpane" maxHeight="750.0" maxWidth="850.0" minHeight="750.0" minWidth="850.0" prefHeight="750.0" prefWidth="850.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jmc.app.Controllers.KartenController">
+   <center>
+      <VBox prefHeight="200.0" prefWidth="100.0" spacing="10.0" BorderPane.alignment="CENTER">
+         <Label text="Meine Karte">
+            <VBox.margin>
+               <Insets left="70.0" top="40.0" />
+            </VBox.margin>
+            <font>
+               <Font name="System Bold" size="50.0" />
+            </font>
+            <padding>
+               <Insets bottom="30.0" />
+            </padding>
+         </Label>
+         <HBox fx:id="kartennummerHbox" prefHeight="20.0" prefWidth="850.0" spacing="10.0">
+            <Label prefHeight="18.0" prefWidth="94.0" text="Kartennummer:">
+               <HBox.margin>
+                  <Insets left="70.0" />
+               </HBox.margin>
+            </Label>
+         </HBox>
+         <HBox fx:id="ibanHbox" prefHeight="15.0" prefWidth="850.0" spacing="10.0">
+            <Label prefHeight="18.0" prefWidth="94.0" text="Iban:">
+               <HBox.margin>
+                  <Insets left="70.0" />
+               </HBox.margin>
+            </Label>
+         </HBox>
+         <HBox fx:id="inhaberHbox" prefHeight="18.0" prefWidth="850.0" spacing="10.0">
+            <Label prefHeight="18.0" prefWidth="94.0" text="Inhaber:">
+               <HBox.margin>
+                  <Insets left="70.0" />
+               </HBox.margin>
+            </Label>
+         </HBox>
+         <HBox fx:id="kartenlimitHbox" prefHeight="40.0" prefWidth="850.0" spacing="10.0">
+            <Label prefHeight="18.0" prefWidth="94.0" text="Kartenlimit:">
+               <HBox.margin>
+                  <Insets left="70.0" />
+               </HBox.margin>
+            </Label>
+            <TextField fx:id="kartenlimitFeld" />
+            <Button fx:id="kartenlimitButton" mnemonicParsing="false" onMouseClicked="#cardLimitButtonOnAction" prefHeight="30.0" prefWidth="74.0" style="-fx-background-radius: 10; -fx-background-color: DAECFB;" text="Speichern" textFill="#35495a">
+               <cursor>
+                  <Cursor fx:constant="OPEN_HAND" />
+               </cursor>
+            </Button>
+         </HBox>
+      </VBox>
+   </center>
+</BorderPane>
