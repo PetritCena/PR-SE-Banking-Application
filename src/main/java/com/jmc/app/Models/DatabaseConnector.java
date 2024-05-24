@@ -1,14 +1,23 @@
 package com.jmc.app.Models;
 
+import javafx.scene.control.TextField;
+
 import java.io.*;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Random;
 
 public class DatabaseConnector {
 
-    private final String CONNECTION_STRING = "jdbc:oracle:thin:@e4xxmj5ey9kfqzz5_high?TNS_ADMIN=/Users/petritcena/Desktop/Wallet_E4XXMJ5EY9KFQZZ5";
+    private final String CONNECTION_STRING = "jdbc:oracle:thin:@e4xxmj5ey9kfqzz5_high?TNS_ADMIN=/Users/oemer.t/Downloads/Wallet_E4XXMJ5EY9KFQZZ5";
     private final String USER = "admin";
     private final String PWD = "BigBankSoSe2024";
+
+    Random random = new Random();
+
+    private ArrayList<int[]> farben = new ArrayList<>(Arrays.asList(new int[]{0,51,102}, new int[]{192,192,192}, new int[]{211,211,211}, new int[]{176,224,230}, new int[]{163,100,100}));
+
 
     public Connection getConnection() throws SQLException {
         return DriverManager.getConnection(CONNECTION_STRING, USER, PWD);
@@ -90,7 +99,7 @@ public class DatabaseConnector {
         return accounts;
     }
 
-    public ArrayList<Card> getAllCards(String iban) throws SQLException {
+    public ArrayList<Card> getAllCards(String iban) throws SQLException { // lieber karte einfach in die liste hinzufügen
         ArrayList<Card> cards = new ArrayList<>();
         final String QUERY = "SELECT * FROM cards WHERE iban = ?";
         try (Connection con = getConnection(); PreparedStatement stmt = con.prepareStatement(QUERY)) {
@@ -98,11 +107,12 @@ public class DatabaseConnector {
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
                 float kartenlimit = rs.getFloat("kartenlimit");
-                float kartennummer = rs.getFloat("kartennummer");
+                long kartennummer = rs.getLong("kartennummer");
                 int folgenummer = rs.getInt("folgenummer");
                 String typ = rs.getString("typ");
                 int geheimzahl = rs.getInt("geheimzahl");
-                cards.add(new Card(iban, kartenlimit, kartennummer, folgenummer, typ, geheimzahl));
+                int[] farbe = farben.get(random.nextInt(5));
+                cards.add(new Card(iban, kartenlimit, kartennummer, folgenummer, typ, geheimzahl, farbe));
             }
         }
         return cards;
@@ -137,6 +147,17 @@ public class DatabaseConnector {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public void changeCardLimit(Card card, String kartenlimit) throws SQLException {
+        final String UPDATE = "UPDATE CARDS SET kartenlimit = ? WHERE kartennummer = ?";
+        float kartenlimitFloat = Float.parseFloat(kartenlimit);
+        try(Connection con = getConnection(); PreparedStatement stmt = con.prepareStatement(UPDATE)){
+            stmt.setFloat(1, kartenlimitFloat);
+            stmt.setLong(2, card.getKartenNummer());
+            stmt.executeUpdate();
+        }
+        card.setKartenLimit(kartenlimitFloat);
     }
 }
 

@@ -45,12 +45,12 @@ public class LoginController{
     // Helper method to load the Dashboard view
     private void loadDashboardView() throws IOException {
         Stage stage = (Stage) loginButton.getScene().getWindow();
-        SceneChanger.changeScene("/com/jmc/app/Dashboard.fxml", stage, user);
+        SceneChanger.changeScene("/com/jmc/app/Dashboard.fxml", stage, user, null);
     }
 
     // Redirect to the SignUp page
     public void noAccountButtonAction(ActionEvent event) throws IOException {
         Stage stage = (Stage) noAccountButton.getScene().getWindow();
-        SceneChanger.changeScene("/com/jmc/app/signup.fxml", stage, null);
+        SceneChanger.changeScene("/com/jmc/app/signup.fxml", stage, null, null);
     }
 }

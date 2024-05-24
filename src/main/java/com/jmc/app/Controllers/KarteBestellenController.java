@@ -24,8 +24,9 @@ public class KarteBestellenController implements Controller{
     private User user;
     private boolean b = true;
 
+
     @FXML
-    public void initialize(Object user) {
+    public void initialize(Object user, Object nulll) {
         this.user = (User) user;
         SceneChanger.loadLeftFrame(borderPane, this.user);
     }
@@ -41,13 +42,13 @@ public class KarteBestellenController implements Controller{
 
     public void neinButtonOnAction(MouseEvent event) throws IOException {
         Stage stage = (Stage) neinButton.getScene().getWindow();
-        SceneChanger.changeScene("/com/jmc/app/Produktseite.fxml", stage, this.user);
+        SceneChanger.changeScene("/com/jmc/app/Produktseite.fxml", stage, this.user, null);
     }
 
     public void jaButtonOnAction(MouseEvent event) throws IOException, SQLException {
         karteKaufen();
         Stage stage = (Stage) jaButton.getScene().getWindow();
-        SceneChanger.changeScene("/com/jmc/app/Dashboard.fxml", stage, this.user);
+        SceneChanger.changeScene("/com/jmc/app/Dashboard.fxml", stage, this.user, null);
     }
 
     private void karteKaufen() throws SQLException{

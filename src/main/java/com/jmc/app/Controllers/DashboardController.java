@@ -45,7 +45,7 @@ public class DashboardController implements Controller{
     Account hauptkonto = null;
 
     @FXML
-    public void initialize(Object user) {
+    public void initialize(Object user, Object nulll) {
         this.user = (User) user;
         SceneChanger.loadLeftFrame(borderPane, this.user);
         accounts = this.user.getAccounts();
@@ -131,7 +131,7 @@ public class DashboardController implements Controller{
 
                 spaceBox.setOnMouseClicked(mouseEvent -> {
                     try {
-                        accountsButtonOnAction(spaceBox, account);
+                        accountsButtonOnAction(spaceBox, account, user);
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
@@ -188,11 +188,11 @@ public class DashboardController implements Controller{
     }
 
     public void hauptKontoBoxOnAction(MouseEvent mouseEvent) throws IOException {
-        accountsButtonOnAction(hauptKontoBox, hauptkonto);
+        accountsButtonOnAction(hauptKontoBox, hauptkonto, user);
     }
 
-    public void accountsButtonOnAction(VBox box, Account account) throws IOException {
+    public void accountsButtonOnAction(VBox box, Account account, User user) throws IOException {
         Stage stage = (Stage) box.getScene().getWindow();
-        SceneChanger.changeScene("/com/jmc/app/spaceAccount.fxml", stage, account);
+        SceneChanger.changeScene("/com/jmc/app/spaceAccount.fxml", stage, account, user);
     }
 }

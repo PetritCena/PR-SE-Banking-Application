@@ -20,18 +20,18 @@ public class ProduktseiteController implements Controller{
     private User user;
     
     @FXML
-    public void initialize(Object user) {
+    public void initialize(Object user, Object nulll) {
         this.user = (User) user;
         SceneChanger.loadLeftFrame(borderPane, this.user);
     }
 
     public void spaceOnAction(MouseEvent event) throws IOException{
         Stage stage = (Stage) spaceButton.getScene().getWindow();
-        SceneChanger.changeScene("/com/jmc/app/spaceAnlegen.fxml", stage, user);
+        SceneChanger.changeScene("/com/jmc/app/spaceAnlegen.fxml", stage, user, null);
     }
 
     public void karteOnAction(MouseEvent event) throws IOException{
         Stage stage = (Stage) karteButton.getScene().getWindow();
-        SceneChanger.changeScene("/com/jmc/app/karteBestellen.fxml", stage, user);
+        SceneChanger.changeScene("/com/jmc/app/karteBestellen.fxml", stage, user, null);
     }
 }

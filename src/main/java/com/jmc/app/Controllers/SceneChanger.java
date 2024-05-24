@@ -15,17 +15,30 @@ import java.io.IOException;
 //das ist eine klasse damit wir nicht in jeder Klasse erneut die changeScene Methode hinzufügen müssen
 
 public class SceneChanger {
-    public static void changeScene(String fxmlPath, Stage stage, Object o) throws IOException{
+    /*public static void changeScene(String fxmlPath, Stage stage, Object o) throws IOException{
         FXMLLoader loader = new FXMLLoader(SceneChanger.class.getResource(fxmlPath));
         Parent root = loader.load();
         if(o != null) {
             Controller controller = loader.getController();
-            controller.initialize(o);
+            controller.initialize(o, null);
+        }
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+    }*/
+    public static void changeScene(String fxmlPath, Stage stage, Object o, Object o2) throws IOException{
+        FXMLLoader loader = new FXMLLoader(SceneChanger.class.getResource(fxmlPath));
+        Parent root = loader.load();
+        if (o!=null) {
+            Controller controller = loader.getController();
+            controller.initialize(o, o2);
         }
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
     }
+
+
 
     public static void loadLeftFrame(BorderPane borderPane, Object o){
         AnchorPane pane = new AnchorPane();
@@ -49,7 +62,7 @@ public class SceneChanger {
         profilIcon.setCursor(Cursor.OPEN_HAND);
         profilIcon.setOnMouseClicked(mouseEvent -> {
             try {
-                changeScene("/com/jmc/app/profil.fxml", (Stage) profilIcon.getScene().getWindow(), o);
+                changeScene("/com/jmc/app/profil.fxml", (Stage) profilIcon.getScene().getWindow(), o, null);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -66,7 +79,7 @@ public class SceneChanger {
         startSeite.setCursor(Cursor.OPEN_HAND);
         startSeite.setOnMouseClicked(mouseEvent -> {
             try {
-                changeScene("/com/jmc/app/Dashboard.fxml", (Stage) startSeite.getScene().getWindow(), o);
+                changeScene("/com/jmc/app/Dashboard.fxml", (Stage) startSeite.getScene().getWindow(), o, null);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -83,7 +96,7 @@ public class SceneChanger {
         produkte.setCursor(Cursor.OPEN_HAND);
         produkte.setOnMouseClicked(mouseEvent -> {
             try {
-                changeScene("/com/jmc/app/Produktseite.fxml", (Stage) produkte.getScene().getWindow(), o);
+                changeScene("/com/jmc/app/Produktseite.fxml", (Stage) produkte.getScene().getWindow(), o, null);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

@@ -45,7 +45,7 @@ public class SignUpController {
     }
 
     private void loadLoginView(Stage stage) throws IOException {
-        SceneChanger.changeScene("/com/jmc/app/login.fxml", stage, null);
+        SceneChanger.changeScene("/com/jmc/app/login.fxml", stage, null, null);
     }
 
     public void haveAcccountButtonAction(ActionEvent actionEvent) throws IOException {

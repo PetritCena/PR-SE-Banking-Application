@@ -42,7 +42,7 @@ public class ProfilController implements Controller{
     private User user;
 
     @FXML
-    public void initialize(Object user) {
+    public void initialize(Object user, Object nulll) {
         this.user = (User) user;
         SceneChanger.loadLeftFrame(borderPane, this.user);
         fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
@@ -145,6 +145,6 @@ public class ProfilController implements Controller{
 
     public void signoutButtonOnAction(ActionEvent event) throws IOException {
         Stage stage = (Stage) signoutButton.getScene().getWindow();
-        SceneChanger.changeScene("/com/jmc/app/login.fxml", stage, null);
+        SceneChanger.changeScene("/com/jmc/app/login.fxml", stage, null, null);
     }
 }

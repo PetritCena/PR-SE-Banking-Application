@@ -1,5 +1,10 @@
 package com.jmc.app.Controllers;
 
 public interface Controller {
-     void initialize(Object o);
+     //default void initialize(Object o){
+
+     void initialize(Object o, Object o2);
+
+     //void initialize(Object o);
+
 }
