@@ -5,6 +5,8 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
@@ -24,12 +26,58 @@
                <Insets bottom="30.0" />
             </padding>
          </Label>
+         <VBox maxHeight="154.0" maxWidth="222.0" prefHeight="141.0" prefWidth="222.0" style="-fx-background-color: #3F3F3F; -fx-background-radius: 8;">
+            <VBox.margin>
+               <Insets left="70.0" />
+            </VBox.margin>
+            <Label text="VISA" textFill="WHITE">
+               <font>
+                  <Font name="System Bold Italic" size="21.0" />
+               </font>
+               <VBox.margin>
+                  <Insets left="10.0" top="10.0" />
+               </VBox.margin>
+            </Label>
+            <HBox prefHeight="48.0" prefWidth="222.0">
+               <ImageView fitHeight="42.0" fitWidth="41.0" pickOnBounds="true" preserveRatio="true">
+                  <image>
+                     <Image url="@iconsChipcard.png" />
+                  </image>
+                  <HBox.margin>
+                     <Insets left="10.0" />
+                  </HBox.margin>
+               </ImageView>
+               <ImageView fitHeight="30.0" fitWidth="28.0" layoutX="10.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
+                  <image>
+                     <Image url="@iconsNfc.png" />
+                  </image>
+                  <HBox.margin>
+                     <Insets top="7.0" />
+                  </HBox.margin>
+               </ImageView>
+            </HBox>
+            <Label fx:id="ibanLabel" prefHeight="18.0" prefWidth="155.0" textFill="WHITE">
+               <VBox.margin>
+                  <Insets left="35.0" />
+               </VBox.margin>
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <Label fx:id="nameLabel" layoutX="39.0" layoutY="96.0" prefHeight="18.0" prefWidth="114.0" textFill="WHITE">
+               <VBox.margin>
+                  <Insets left="35.0" />
+               </VBox.margin></Label>
+         </VBox>
          <HBox fx:id="kartennummerHbox" prefHeight="15.0" prefWidth="850.0" spacing="10.0">
             <Label prefHeight="18.0" prefWidth="94.0" text="Kartennummer:">
                <HBox.margin>
                   <Insets left="70.0" />
                </HBox.margin>
             </Label>
+            <VBox.margin>
+               <Insets top="30.0" />
+            </VBox.margin>
          </HBox>
          <HBox fx:id="ibanHbox" prefHeight="15.0" prefWidth="850.0" spacing="10.0">
             <Label prefHeight="18.0" prefWidth="94.0" text="Iban:">
@@ -74,6 +122,9 @@
                </cursor>
             </Button>
          </HBox>
+         <BorderPane.margin>
+            <Insets />
+         </BorderPane.margin>
       </VBox>
    </center>
 </BorderPane>

@@ -70,11 +70,11 @@ public class SpaceAccountController implements Controller {
             VBox.setMargin(visa, new Insets(10,0,0,10));
 
             //imageview vom Chip
-            Image chip = new Image("file:/Users/oemer.t/Downloads/icons8-chip-card-100.png");
+            Image chip = new Image(getClass().getResource("/com/jmc/app/iconsChipcard.png").toExternalForm());
             ImageView imageView = new ImageView(chip);
             imageView.setFitHeight(33);
             imageView.setFitWidth(38);
-            Image nfc = new Image("file:/Users/oemer.t/Downloads/icons8-nfc-96.png");
+            Image nfc = new Image(getClass().getResource("/com/jmc/app/iconsNfc.png").toExternalForm());
             ImageView imageView2 = new ImageView(nfc);
             imageView2.setFitHeight(21);
             imageView2.setFitWidth(22);

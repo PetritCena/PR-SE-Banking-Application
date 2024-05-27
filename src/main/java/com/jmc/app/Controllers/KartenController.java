@@ -24,6 +24,8 @@ public class KartenController implements Controller{
     public Button kartenlimitButton;
     public HBox folgenummerHbox;
     public HBox geheimzahlHbox;
+    public Label ibanLabel;
+    public Label nameLabel;
     Account account;
     Card card;
     DatabaseConnector db = new DatabaseConnector();
@@ -35,6 +37,8 @@ public class KartenController implements Controller{
         SceneChanger.loadLeftFrame(borderpane, account.getUser());
         addCardData();
         kartenlimitFeld.setText(card.getKartenLimit()+"");
+        ibanLabel.setText(card.getKartenNummer() + "");
+        nameLabel.setText(account.getUser().getFirstName() + " " + account.getUser().getLastName());
     }
 
     public void addCardData(){
