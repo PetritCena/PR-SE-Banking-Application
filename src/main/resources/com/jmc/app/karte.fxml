@@ -24,7 +24,7 @@
                <Insets bottom="30.0" />
             </padding>
          </Label>
-         <HBox fx:id="kartennummerHbox" prefHeight="20.0" prefWidth="850.0" spacing="10.0">
+         <HBox fx:id="kartennummerHbox" prefHeight="15.0" prefWidth="850.0" spacing="10.0">
             <Label prefHeight="18.0" prefWidth="94.0" text="Kartennummer:">
                <HBox.margin>
                   <Insets left="70.0" />
@@ -38,8 +38,24 @@
                </HBox.margin>
             </Label>
          </HBox>
-         <HBox fx:id="inhaberHbox" prefHeight="18.0" prefWidth="850.0" spacing="10.0">
+         <HBox fx:id="inhaberHbox" prefHeight="15.0" prefWidth="850.0" spacing="10.0">
             <Label prefHeight="18.0" prefWidth="94.0" text="Inhaber:">
+               <HBox.margin>
+                  <Insets left="70.0" />
+               </HBox.margin>
+            </Label>
+         </HBox>
+         <HBox fx:id="folgenummerHbox" prefHeight="15.0" prefWidth="850.0" spacing="10.0">
+            <children>
+               <Label prefWidth="94.0" text="Folgenummer:">
+                  <HBox.margin>
+                     <Insets left="70.0" />
+                  </HBox.margin>
+               </Label>
+            </children>
+         </HBox>
+         <HBox fx:id="geheimzahlHbox" prefHeight="15.0" prefWidth="850.0" spacing="10.0">
+            <Label prefWidth="94.0" text="Geheimzahl:">
                <HBox.margin>
                   <Insets left="70.0" />
                </HBox.margin>

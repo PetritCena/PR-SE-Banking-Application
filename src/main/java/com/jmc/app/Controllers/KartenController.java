@@ -3,6 +3,7 @@ package com.jmc.app.Controllers;
 import com.jmc.app.Models.Account;
 import com.jmc.app.Models.Card;
 import com.jmc.app.Models.DatabaseConnector;
+import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -21,9 +22,12 @@ public class KartenController implements Controller{
     public HBox kartenlimitHbox;
     public TextField kartenlimitFeld;
     public Button kartenlimitButton;
+    public HBox folgenummerHbox;
+    public HBox geheimzahlHbox;
     Account account;
     Card card;
     DatabaseConnector db = new DatabaseConnector();
+    boolean verschleiert = true;
     @Override
     public void initialize(Object o, Object o2) {
         this.card = (Card) o;
@@ -40,8 +44,26 @@ public class KartenController implements Controller{
         ibanHbox.getChildren().add(iban);
         Label inhaber = new Label(account.getUser().getFirstName() + " " + account.getUser().getFirstName());
         inhaberHbox.getChildren().add(inhaber);
+        Label folgenummer = new Label(card.getFolgeNummer() + "");
+        folgenummerHbox.getChildren().add(folgenummer);
+        Label geheimzahl = new Label("****");
+        geheimzahlHbox.getChildren().add(geheimzahl);
+        geheimzahl.setCursor(Cursor.OPEN_HAND);
+        geheimzahl.setOnMouseClicked(mouseEvent -> {
+            showGeheimzahl(geheimzahl);
+        });
     }
 
+    public void showGeheimzahl(Label geheimzahl){
+        if (verschleiert){
+            geheimzahl.setText(card.getGeheimZahl() + "");
+            verschleiert = false;
+        }
+        else {
+            geheimzahl.setText("****");
+            verschleiert = true;
+        }
+    }
     public void cardLimitButtonOnAction() throws SQLException {
         db.changeCardLimit(card, kartenlimitFeld.getText());
         kartenlimitFeld.setText(card.getKartenLimit()+"");
