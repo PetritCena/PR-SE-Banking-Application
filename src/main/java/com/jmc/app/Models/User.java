@@ -16,6 +16,7 @@ public class User {
     private byte[] pic;
     private ArrayList<Account> accounts;
 
+
     public User(String firstName, String lastName, String email, String password, byte[] pic, ArrayList<Account> accounts) {
         this.dbConnector = new DatabaseConnector();
         this.email = email;
@@ -54,5 +55,12 @@ public class User {
     public ArrayList<Account> getAccounts() { return accounts; }
     public void setAccounts(ArrayList<Account> accounts) {
         this.accounts = accounts;
+    }
+
+    public Account getHauptkonto(){
+        for (Account account : accounts) {
+            if(account.getTyp().equals("Hauptkonto")) return account;
+        }
+        return null;
     }
 }
