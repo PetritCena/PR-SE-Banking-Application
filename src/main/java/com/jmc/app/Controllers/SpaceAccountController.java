@@ -107,10 +107,5 @@ public class SpaceAccountController implements Controller {
                 }
             });
         }
-
     }
-
-    /*public void onCardClick(){
-
-    }*/
 }
