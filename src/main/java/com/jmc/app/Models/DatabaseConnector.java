@@ -16,7 +16,7 @@ public class DatabaseConnector {
 
     Random random = new Random();
 
-    private ArrayList<int[]> farben = new ArrayList<>(Arrays.asList(new int[]{0,51,102}, new int[]{192,192,192}, new int[]{211,211,211}, new int[]{176,224,230}, new int[]{163,100,100}));
+    private ArrayList<int[]> farben = new ArrayList<>(Arrays.asList(new int[]{0, 51, 102}, new int[]{192, 192, 192}, new int[]{211, 211, 211}, new int[]{176, 224, 230}, new int[]{163, 100, 100}));
 
 
     public Connection getConnection() throws SQLException {
@@ -139,7 +139,7 @@ public class DatabaseConnector {
         }
     }
 
-    public void geldAbziehen(String email){
+    public void geldAbziehen(String email) {
         final String UPDATE = "UPDATE ACCOUNTS SET saldo = saldo -10 WHERE typ = 'Hauptkonto' AND user_email = ?";
         try (Connection con = getConnection(); PreparedStatement stmt = con.prepareStatement(UPDATE)) {
             stmt.setString(1, email);
@@ -152,12 +152,80 @@ public class DatabaseConnector {
     public void changeCardLimit(Card card, String kartenlimit) throws SQLException {
         final String UPDATE = "UPDATE CARDS SET kartenlimit = ? WHERE kartennummer = ?";
         float kartenlimitFloat = Float.parseFloat(kartenlimit);
-        try(Connection con = getConnection(); PreparedStatement stmt = con.prepareStatement(UPDATE)){
+        try (Connection con = getConnection(); PreparedStatement stmt = con.prepareStatement(UPDATE)) {
             stmt.setFloat(1, kartenlimitFloat);
             stmt.setLong(2, card.getKartenNummer());
             stmt.executeUpdate();
         }
         card.setKartenLimit(kartenlimitFloat);
     }
+
+    public boolean enoughBalance(String fromAccountId, String toAccountId, double amount, String transactionType,
+                                 String receiverIban, String senderIban, String purpose, int transactionNumber, long cardNumber) throws SQLException {
+        try (Connection con = getConnection()) {
+
+            con.setAutoCommit(false);
+
+            String checkBalanceQuery = "SELECT saldo FROM accounts WHERE iban = ?";
+            PreparedStatement checkBalanceStmt = con.prepareStatement(checkBalanceQuery);
+            checkBalanceStmt.setString(1, fromAccountId);
+            ResultSet rs = checkBalanceStmt.executeQuery();
+
+            if (rs.next()) {
+                double balance = rs.getDouble("balance");
+                if (balance < amount) {
+                    return false;
+                }
+            }
+            return true;
+        }
+    }
+
+    public void withdrawal(String fromAccountId, String toAccountId, double amount, String transactionType,
+                           String receiverIban, String senderIban, String purpose, int transactionNumber, long cardNumber) throws SQLException {
+        if (enoughBalance(fromAccountId, toAccountId, amount, transactionType, receiverIban, senderIban, purpose, transactionNumber, cardNumber)) {
+            final String withdrawQuery = "UPDATE accounts SET saldo = saldo - ? WHERE iban = ?";
+            try (Connection con = getConnection(); PreparedStatement stmt = con.prepareStatement(withdrawQuery)) {
+                stmt.setDouble(1, amount);
+                stmt.setString(2, fromAccountId);
+                stmt.executeUpdate();
+            }
+            insertIntoTransaction(fromAccountId, toAccountId, amount, transactionType, receiverIban, senderIban, purpose, transactionNumber, cardNumber);
+
+        }
+    }
+
+    public void insertIntoTransaction(String fromAccountId, String toAccountId, double amount, String transactionType,
+                                      String receiverIban, String senderIban, String purpose, int transactionNumber, long cardNumber) throws SQLException {
+
+        final String insertTransactionQuery = "INSERT INTO transactions " +
+                "(betrag, ausgangeingang, ibansender, ibanempfeanger, verwendungszweck, kartennummer, transaktionnummer,) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?)";
+        try (Connection con = getConnection(); PreparedStatement stmt = con.prepareStatement(insertTransactionQuery)) {
+            stmt.setDouble(1, amount);
+            stmt.setString(2, transactionType);
+            stmt.setString(3, fromAccountId);
+            stmt.setString(4, toAccountId);
+            stmt.setString(5, purpose);
+            stmt.setLong(6, cardNumber);
+            stmt.setInt(7, transactionNumber);
+            stmt.executeUpdate();
+        }
+
+    }
+
+    public void deposit(String fromAccountId, String toAccountId, double amount, String transactionType,
+                        String receiverIban, String senderIban, String purpose, int transactionNumber, long cardNumber) throws SQLException {
+        final String depositQuery = "UPDATE accounts SET saldo = saldo + ? WHERE iban = ?";
+        try (Connection con = getConnection(); PreparedStatement stmt = con.prepareStatement(depositQuery)) {
+            stmt.setDouble(1, amount);
+            stmt.setString(2, toAccountId);
+            stmt.executeUpdate();
+        }
+        insertIntoTransaction(fromAccountId, toAccountId, amount, transactionType, receiverIban, senderIban, purpose, transactionNumber, cardNumber);
+    }
 }
+
+
+
 
