@@ -13,6 +13,7 @@ public class TransactionOKcontroller implements Controller {
 
     @FXML
     public Button BackToProduct;
+    public Button Back;
     @FXML
     private BorderPane borderPane;
     private  User user;

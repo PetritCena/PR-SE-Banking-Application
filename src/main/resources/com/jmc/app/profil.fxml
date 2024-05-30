@@ -47,12 +47,33 @@
                <Font size="21.0" />
             </font>
          </Text>
-         <PasswordField fx:id="altesPasswortFeld" layoutX="88.0" layoutY="338.0" promptText="    Passwort eingeben" />
-         <PasswordField fx:id="neuesPasswortFeld" layoutX="88.0" layoutY="417.0" promptText="    Passwort eingeben" />
-         <PasswordField fx:id="neuesPasswortBestätigungFeld" layoutX="88.0" layoutY="496.0" promptText="    Passwort eingeben" />
-         <FontAwesomeIconView fill="#d0c5c5" glyphName="LOCK" layoutX="92.0" layoutY="356.0" />
-         <FontAwesomeIconView fill="#d0c5c5" glyphName="LOCK" layoutX="92.0" layoutY="435.0" />
-         <FontAwesomeIconView fill="#d0c5c5" glyphName="LOCK" layoutX="92.0" layoutY="514.0" />
+         <PasswordField fx:id="altesPasswortFeld" layoutX="88.0" layoutY="338.0" prefWidth="150.0" promptText="Passwort eingeben" />
+         <Button fx:id="toggleOldPasswordVisibilityButton" layoutX="243.0" layoutY="339.0" prefHeight="24.0" prefWidth="24.0" onAction="#togglePasswordVisibility" style="-fx-background-radius: 5;">
+            <graphic>
+               <FontAwesomeIconView fx:id="VisabiltiyButtonOld" glyphName="EYE" size="15" styleClass="password-toggle-icon" />
+            </graphic>
+         </Button>
+         <TextField fx:id="visibleOldPasswordTextField" layoutX="88.0" layoutY="338.0" prefWidth="150.0" prefHeight="24.0" promptText="Passwort eingeben" visible="false" />
+
+         <PasswordField fx:id="neuesPasswortFeld" layoutX="88.0" layoutY="417.0" prefWidth="150.0" promptText="Passwort eingeben" />
+         <Button fx:id="toggleNewPasswordVisibilityButton" layoutX="243.0" layoutY="418.0" prefHeight="24.0" prefWidth="24.0" onAction="#togglePasswordVisibility" style="-fx-background-radius: 5;">
+            <graphic>
+               <FontAwesomeIconView fx:id="VisabiltiyButtonNew" glyphName="EYE" size="15" styleClass="password-toggle-icon" />
+            </graphic>
+         </Button>
+         <TextField fx:id="visibleNewPasswordTextField" layoutX="88.0" layoutY="417.0" prefWidth="150.0" prefHeight="24.0" promptText="Passwort eingeben" visible="false" />
+
+         <PasswordField fx:id="neuesPasswortBestätigungFeld" layoutX="88.0" layoutY="496.0" prefWidth="150.0" promptText="Passwort eingeben" />
+         <Button fx:id="toggleConfirmNewPasswordVisibilityButton" layoutX="243.0" layoutY="497.0" prefHeight="24.0" prefWidth="24.0" onAction="#togglePasswordVisibility" style="-fx-background-radius: 5;">
+            <graphic>
+               <FontAwesomeIconView fx:id="VisabiltiyButtonConfirmNew" glyphName="EYE" size="15" styleClass="password-toggle-icon" />
+            </graphic>
+         </Button>
+         <TextField fx:id="visibleConfirmNewPasswordTextField" layoutX="88.0" layoutY="496.0" prefWidth="150.0" prefHeight="24.0" promptText="Passwort eingeben" visible="false" />
+
+         <FontAwesomeIconView fill="#d0c5c5" glyphName="LOCK" layoutX="222.0" layoutY="357.0" />
+         <FontAwesomeIconView fill="#d0c5c5" glyphName="LOCK" layoutX="222.0" layoutY="434.0" />
+         <FontAwesomeIconView fill="#d0c5c5" glyphName="LOCK" layoutX="222.0" layoutY="513.0" />
          <Label fx:id="statusLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="153.0" layoutY="568.0" prefHeight="23.0" prefWidth="365.0" textAlignment="CENTER" textFill="RED" AnchorPane.leftAnchor="153.0" AnchorPane.rightAnchor="152.0">
             <font>
                <Font size="18.0" />

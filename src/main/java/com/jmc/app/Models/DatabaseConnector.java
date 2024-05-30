@@ -223,7 +223,47 @@ public class DatabaseConnector {
         }
         insertIntoTransaction(fromAccountId, toAccountId, amount, transactionType, receiverIban, senderIban, purpose, transactionNumber, cardNumber);
     }
+
+    public boolean isCardDataValid(long kartennummer, int folgenummer, int geheimzahl) {
+        final String QUERY = "SELECT COUNT(*) FROM cards WHERE kartennummer = ? AND folgenummer = ? AND geheimzahl = ?";
+        try (Connection con = getConnection(); PreparedStatement stmt = con.prepareStatement(QUERY)) {
+            stmt.setLong(1, kartennummer);
+            stmt.setInt(2, folgenummer);
+            stmt.setInt(3, geheimzahl);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+        } catch (SQLException e) {
+            System.err.println("Datenbankfehler: " + e.getMessage());
+            e.printStackTrace(System.err);
+        }
+        return false;
+    }
+
+    public void updateAccountBalance(long kartennummer, int folgenummer, int geheimzahl, float amount) throws SQLException {
+        if (!isCardDataValid(kartennummer, folgenummer, geheimzahl)) {
+            throw new SQLException("Invalid card data");
+        }
+
+        final String QUERY = "UPDATE accounts a " +
+                "SET a.saldo = a.saldo - ? " +
+                "WHERE a.iban = (SELECT c.iban FROM cards c " +
+                "WHERE c.kartennummer = ? AND c.folgenummer = ? AND c.geheimzahl = ?)";
+        try (Connection con = getConnection(); PreparedStatement stmt = con.prepareStatement(QUERY)) {
+            stmt.setFloat(1, amount);
+            stmt.setLong(2, kartennummer);
+            stmt.setInt(3, folgenummer);
+            stmt.setInt(4, geheimzahl);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println("Datenbankfehler: " + e.getMessage());
+            e.printStackTrace(System.err);
+        }
+    }
 }
+
+
 
 
 

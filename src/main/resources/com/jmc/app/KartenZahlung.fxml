@@ -8,7 +8,7 @@
 <BorderPane fx:id="borderPane" prefHeight="750.0" prefWidth="850.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jmc.app.Controllers.KartenBezahlungController">
     <center>
         <AnchorPane prefHeight="764.0" prefWidth="883.0" BorderPane.alignment="CENTER">
-            <Label layoutX="100.0" layoutY="61.0" text="Kartenzahlung" textFill="#35495a">
+            <Label layoutX="100.0" layoutY="61.0" text="Kartenbezahlung" textFill="#35495a">
                 <font>
                     <Font name="Arial Bold" size="42.0" />
                 </font>
@@ -40,7 +40,7 @@
                     <RowConstraints />
                 </rowConstraints>
             </GridPane>
-            <Button fx:id="Abhebung" defaultButton="true" layoutX="109.0" layoutY="375.0" onMouseClicked="#Transaction" prefHeight="40.0" prefWidth="134.0" style="-fx-background-color: #35495a; -fx-text-fill: white; -fx-font-size: 14px; -fx-padding: 10 20 10 20; -fx-background-radius: 8; -fx-border-radius: 8;" text="Zahlen">
+            <Button fx:id="Abhebung" defaultButton="true" layoutX="109.0" layoutY="375.0" onMouseClicked="#Transaction" prefHeight="40.0" prefWidth="134.0" style="-fx-background-color: #35495a; -fx-text-fill: white; -fx-font-size: 14px; -fx-padding: 10 20 10 20; -fx-background-radius: 8; -fx-border-radius: 8;" text="Bezahlung">
                 <font>
                     <Font size="14" />
                 </font>
@@ -48,7 +48,7 @@
                     <Cursor fx:constant="CLOSED_HAND" />
                 </cursor>
             </Button>
-            <Button fx:id="Back" layoutX="406.0" layoutY="375.0" onMouseClicked="#Back" prefHeight="40.0" prefWidth="124.0" style="-fx-background-color: #7b91c5; -fx-text-fill: white; -fx-font-size: 14px; -fx-padding: 10 20 10 20; -fx-border-radius: 8; -fx-background-radius: 8;" text="Zurück">
+            <Button fx:id="Back" layoutX="344.0" layoutY="375.0" onMouseClicked="#Back" prefHeight="40.0" prefWidth="124.0" style="-fx-background-color: #7b91c5; -fx-text-fill: white; -fx-font-size: 14px; -fx-padding: 10 20 10 20; -fx-border-radius: 8; -fx-background-radius: 8;" text="Zurück">
                 <font>
                     <Font size="14" />
                 </font>
@@ -58,23 +58,22 @@
             </Button>
             <!-- Kartennummer -->
             <Label layoutX="96.0" layoutY="143.0" style="-fx-font-size: 16px; -fx-text-fill: #333333;" text="Kartennummer:" />
-            <TextField layoutX="96.0" layoutY="168.0" promptText="12345678901234567" style="-fx-background-color: #FFFFFF; -fx-border-color: #D0D0D0; -fx-border-radius: 8; -fx-background-radius: 5;" />
-            <TextField layoutX="96.0" layoutY="227.0" promptText="123" style="-fx-background-color: #FFFFFF; -fx-border-color: #D0D0D0; -fx-border-radius: 8; -fx-background-radius: 5;" />
-            <PasswordField layoutX="374.0" layoutY="165.0" promptText="0123" style="-fx-background-color: #FFFFFF; -fx-border-color: #D0D0D0; -fx-border-radius: 8; -fx-background-radius: 5;" />
-            <TextField layoutX="374.0" layoutY="227.0" promptText="KartenZahlung" style="-fx-background-color: #FFFFFF; -fx-border-color: #D0D0D0; -fx-border-radius: 8; -fx-background-radius: 5;" />
-            <TextField layoutX="374.0" layoutY="288.0" promptText="2050 €" style="-fx-background-color: #FFFFFF; -fx-border-color: #D0D0D0; -fx-border-radius: 8; -fx-background-radius: 5;" />
+            <TextField fx:id="kartennummerField" layoutX="96.0" layoutY="168.0" promptText="12345678901234567" style="-fx-background-color: #FFFFFF; -fx-border-color: #D0D0D0; -fx-border-radius: 8; -fx-background-radius: 5;" />
+            <TextField fx:id="folgenummerField" layoutX="96.0" layoutY="227.0" promptText="123" style="-fx-background-color: #FFFFFF; -fx-border-color: #D0D0D0; -fx-border-radius: 8; -fx-background-radius: 5;" />
+            <PasswordField fx:id="geheimzahlField" layoutX="330.0" layoutY="168.0" promptText="0123" style="-fx-background-color: #FFFFFF; -fx-border-color: #D0D0D0; -fx-border-radius: 8; -fx-background-radius: 5;" />
+            <TextField fx:id="BetragFeld" layoutX="330.0" layoutY="229.0" promptText="2050 €" style="-fx-background-color: #FFFFFF; -fx-border-color: #D0D0D0; -fx-border-radius: 8; -fx-background-radius: 5;" />
 
             <!-- Betrag € -->
-            <Label layoutX="375.0" layoutY="263.0" style="-fx-font-size: 16px; -fx-text-fill: #333333;" text="Betrag €:" />
-
-            <!-- Verwendungszweck -->
-            <Label layoutX="378.0" layoutY="203.0" style="-fx-font-size: 16px; -fx-text-fill: #333333;" text="Verwendungszweck:" />
+            <Label layoutX="331.0" layoutY="204.0" style="-fx-font-size: 16px; -fx-text-fill: #333333;" text="Betrag €:" />
 
             <!-- Geheimzahl -->
-            <Label layoutX="374.0" layoutY="140.0" style="-fx-font-size: 16px; -fx-text-fill: #333333;" text="Geheimzahl:" />
+            <Label layoutX="330.0" layoutY="143.0" style="-fx-font-size: 16px; -fx-text-fill: #333333;" text="Geheimzahl:" />
 
             <!-- Folgenummer -->
             <Label layoutX="94.0" layoutY="203.0" style="-fx-font-size: 16px; -fx-text-fill: #333333;" text="Folgenummer:" />
+            <Label fx:id="validationMessage" layoutX="96.0" layoutY="260.0" style="-fx-font-size: 14px; -fx-text-fill: red;" text="" />
+         <TextField fx:id="BetragFeld1" layoutX="330.0" layoutY="280.0" promptText="Bezahlzweck" style="-fx-background-color: #FFFFFF; -fx-border-color: #D0D0D0; -fx-border-radius: 8; -fx-background-radius: 5;" />
+         <Label layoutX="331.0" layoutY="258.0" style="-fx-font-size: 16px; -fx-text-fill: #333333;" text="Bezahlzweck" />
             <cursor>
                 <Cursor fx:constant="DEFAULT" />
             </cursor>
