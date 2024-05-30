@@ -12,6 +12,9 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
+
+        // Set system properties for Oracle JDBC connection
+        System.setProperty("oracle.net.tns_admin", "C:\\Workspace\\Wallet_E4XXMJ5EY9KFQZZ5");
         Parent fxmlLoader = FXMLLoader.load(getClass().getResource("login.fxml"));
         Scene scene = new Scene(fxmlLoader, 520, 400);
         stage.setTitle("Login");

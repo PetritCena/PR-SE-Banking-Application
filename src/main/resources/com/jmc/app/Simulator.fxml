@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import de.jensd.fx.glyphs.fontawesome.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<BorderPane fx:id="borderPane" prefHeight="750.0" prefWidth="850.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jmc.app.Controllers.SimulatorController">
+    <center>
+        <AnchorPane prefHeight="200.0" prefWidth="479.0" BorderPane.alignment="CENTER">
+            <!-- Einzahlung Button -->
+            <VBox fx:id="EinzahlungButton" accessibleRole="BUTTON" layoutX="58.0" layoutY="161.0" onMouseClicked="#handleEinzahlung" prefHeight="90.0" prefWidth="412.0" styleClass="button-box">
+                <HBox alignment="CENTER" prefHeight="37.0" prefWidth="438.0" spacing="20">
+                    <Label prefHeight="37.0" prefWidth="233.0" styleClass="label-text" text="Einzahlung">
+                  <cursor>
+                     <Cursor fx:constant="CLOSED_HAND" />
+                  </cursor></Label>
+                    <FontAwesomeIconView glyphName="ARROW_RIGHT" size="32" styleClass="icon-arrow" />
+                </HBox>
+            <cursor>
+               <Cursor fx:constant="CLOSED_HAND" />
+            </cursor>
+            </VBox>
+
+            <!-- Kartenzahlung Button -->
+            <VBox fx:id="KartenZahlungButton" accessibleRole="BUTTON" layoutX="58.0" layoutY="261.0" onMouseClicked="#HandleKartenZahlung" prefHeight="90.0" prefWidth="416.0" styleClass="button-box">
+                <HBox alignment="CENTER" spacing="20">
+                    <Label prefHeight="37.0" prefWidth="239.0" styleClass="label-text" text="Kartenzahlung">
+                  <cursor>
+                     <Cursor fx:constant="CLOSED_HAND" />
+                  </cursor></Label>
+                    <FontAwesomeIconView glyphName="ARROW_RIGHT" size="32" styleClass="icon-arrow" />
+               <cursor>
+                  <Cursor fx:constant="CLOSED_HAND" />
+               </cursor>
+                </HBox>
+            <cursor>
+               <Cursor fx:constant="CLOSED_HAND" />
+            </cursor>
+            </VBox>
+
+            <!-- Abhebung Button -->
+            <VBox fx:id="AbhebungButton" accessibleRole="BUTTON" layoutX="58.0" layoutY="361.0" onMouseClicked="#HandleAbhebung" prefHeight="90.0" prefWidth="418.0" styleClass="button-box">
+                <HBox alignment="CENTER" spacing="20">
+                    <Label prefHeight="37.0" prefWidth="230.0" styleClass="label-text" text="Abhebung">
+                  <cursor>
+                     <Cursor fx:constant="CLOSED_HAND" />
+                  </cursor></Label>
+                    <FontAwesomeIconView glyphName="ARROW_RIGHT" size="32" styleClass="icon-arrow" wrappingWidth="31.0" />
+               <cursor>
+                  <Cursor fx:constant="CLOSED_HAND" />
+               </cursor>
+                </HBox>
+            <cursor>
+               <Cursor fx:constant="CLOSED_HAND" />
+            </cursor>
+            </VBox>
+
+            <Label layoutX="148.0" layoutY="83.0" text="Simulator" textFill="#416179">
+                <font>
+                    <Font name="Arial Bold" size="42.0" />
+                </font>
+            <cursor>
+               <Cursor fx:constant="DEFAULT" />
+            </cursor>
+            </Label>
+            <Text fx:id="saldoHauptkonto" fill="#35495a" layoutX="107.0" layoutY="328.0" onMouseClicked="#hauptKontoBoxOnAction" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="137.5186767578125">
+                <cursor>
+                    <Cursor fx:constant="OPEN_HAND" />
+                </cursor>
+            </Text>
+            <Label layoutX="45.0" layoutY="188.0">
+                <font>
+                    <Font name="System Bold" size="32.0" />
+                </font>
+            </Label>
+            <AnchorPane layoutX="314.0" layoutY="202.0" />
+
+            <BorderPane.margin>
+                <Insets bottom="20.0" />
+            </BorderPane.margin>
+         <cursor>
+            <Cursor fx:constant="DEFAULT" />
+         </cursor>
+        </AnchorPane>
+    </center>
+</BorderPane>

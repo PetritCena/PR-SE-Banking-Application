@@ -10,8 +10,7 @@ import java.util.Random;
 
 public class DatabaseConnector {
 
-    private final String CONNECTION_STRING = "jdbc:oracle:thin:@e4xxmj5ey9kfqzz5_high?TNS_ADMIN=/Users/oemer.t/Downloads/Wallet_E4XXMJ5EY9KFQZZ5";
-    private final String USER = "admin";
+    private static final String CONNECTION_STRING = "jdbc:oracle:thin:@e4xxmj5ey9kfqzz5_high";    private final String USER = "admin";
     private final String PWD = "BigBankSoSe2024";
 
     Random random = new Random();

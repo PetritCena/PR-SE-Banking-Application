@@ -40,7 +40,7 @@ public class SceneChanger {
 
 
 
-    public static void loadLeftFrame(BorderPane borderPane, Object o){
+    public static void loadLeftFrame(BorderPane borderPane, Object o) {
         AnchorPane pane = new AnchorPane();
         pane.setPrefHeight(750);
         pane.setPrefWidth(182);
@@ -102,10 +102,28 @@ public class SceneChanger {
             }
         });
 
+        Button simulatorButton = new Button();
+        simulatorButton.setPrefHeight(40);
+        simulatorButton.setPrefWidth(90);
+        simulatorButton.setStyle("-fx-background-color: #35495a; -fx-background-radius: 4");
+        simulatorButton.setLayoutX(46);
+        simulatorButton.setLayoutY(511);
+        simulatorButton.setText("Simulator");
+        simulatorButton.setTextFill(Paint.valueOf("#daecfb"));
+        simulatorButton.setCursor(Cursor.OPEN_HAND);
+        simulatorButton.setOnMouseClicked(mouseEvent -> {
+            try {
+                changeScene("/com/jmc/app/Simulator.fxml", (Stage) simulatorButton.getScene().getWindow(), o, null);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
+
         pane.getChildren().add(bank);
         pane.getChildren().add(profilIcon);
         pane.getChildren().add(startSeite);
         pane.getChildren().add(produkte);
+        pane.getChildren().add(simulatorButton);
 
         borderPane.setLeft(pane);
     }

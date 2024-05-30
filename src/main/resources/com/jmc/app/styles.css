@@ -1,0 +1,19 @@
+.button-box {
+    -fx-background-radius: 20;
+    -fx-background-color: #D9D9D9;
+    -fx-padding: 20;
+}
+
+.button-box:hover {
+    -fx-cursor: open-hand;
+}
+
+.label-text {
+    -fx-font-size: 32px;
+    -fx-font-family: 'Arial Bold';
+    -fx-text-fill: #416179;
+}
+
+.icon-arrow {
+    -fx-fill: #416179;
+}
