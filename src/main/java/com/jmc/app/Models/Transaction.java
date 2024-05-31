@@ -1,19 +1,15 @@
 package com.jmc.app.Models;
 
-import java.util.ArrayList;
+public class Transaction {
+    private final float betrag;
+    private final String eingangAusgang;
+    private final String empfaengerIban;
+    private final String senderIban;
+    private final String verwendungszweck;
+    private final int transaktionsnummer;
+    private final long kartennummer;
 
-public class Transactions {
-    private float betrag;
-    private String eingangAusgang;
-    private String empfaengerIban;
-    private String senderIban;
-    private String verwendungszweck;
-    private int transaktionsnummer;
-    private long kartennummer;
-    private ArrayList<Transactions> transactions;
-
-
-    public Transactions(float betrag, String eingangAusgang, String empfaengerIban, String senderIban, String verwendungszweck, int transaktionsnummer, long kartennummer, ArrayList<Transactions> transactions) {
+    public Transaction(float betrag, String eingangAusgang, String empfaengerIban, String senderIban, String verwendungszweck, int transaktionsnummer, long kartennummer) {
         this.betrag = betrag;
         this.eingangAusgang = eingangAusgang;
         this.empfaengerIban = empfaengerIban;
@@ -21,7 +17,6 @@ public class Transactions {
         this.verwendungszweck = verwendungszweck;
         this.transaktionsnummer = transaktionsnummer;
         this.kartennummer = kartennummer;
-        this.transactions = transactions;
     }
 
     public float getBetrag() {
@@ -44,8 +39,5 @@ public class Transactions {
     }
     public long getKartennummer() {
         return kartennummer;
-    }
-    public ArrayList<Transactions> getTransactions() {
-        return transactions;
     }
 }

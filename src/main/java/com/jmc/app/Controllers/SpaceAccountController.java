@@ -21,7 +21,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class SpaceAccountController implements Controller {
-
     @FXML
     private Label ibanLabel, saldoLabel, typLabel;
     @FXML
@@ -33,7 +32,6 @@ public class SpaceAccountController implements Controller {
     private ArrayList<Card> cards = null;
 
     private User user;
-
 
     @Override
     public void initialize(Object o, Object o2) {

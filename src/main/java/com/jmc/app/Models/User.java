@@ -17,7 +17,7 @@ public class User {
     private ArrayList<Account> accounts;
 
 
-    public User(String firstName, String lastName, String email, String password, byte[] pic, ArrayList<Account> accounts) {
+    public User(String firstName, String lastName, String email, String password, byte[] pic, ArrayList<Account> accounts) throws SQLException {
         this.dbConnector = new DatabaseConnector();
         this.email = email;
         this.password = password;

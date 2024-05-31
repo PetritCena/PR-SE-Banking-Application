@@ -11,12 +11,8 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class SimulatorController implements Controller {
-
-    public Text saldoHauptkonto;
-    public VBox BezahlungButton;
-    public VBox EinzahlungButton;
-    public VBox KartenZahlungButton;
-    public VBox AbhebungButton;
+    @FXML
+    private VBox EinzahlungButton, KartenZahlungButton, AbhebungButton;
     @FXML
     private BorderPane borderPane;
 
@@ -27,25 +23,19 @@ public class SimulatorController implements Controller {
         SceneChanger.loadLeftFrame(borderPane, this.user);
     }
 
-
-
-    public void hauptKontoBoxOnAction(MouseEvent mouseEvent) {
-    }
-
-
     public void handleEinzahlung(MouseEvent event) throws IOException {
         Stage stage = (Stage) EinzahlungButton.getScene().getWindow();
-        SceneChanger.changeScene("/com/jmc/app/Einzahlung.fxml", stage, user, user);
+        SceneChanger.changeScene("/com/jmc/app/Einzahlung.fxml", stage, user, null);
     }
 
     public void HandleAbhebung(MouseEvent mouseEvent) throws IOException {
         Stage stage = (Stage) AbhebungButton.getScene().getWindow();
-        SceneChanger.changeScene("/com/jmc/app/Abhebung.fxml", stage, user, user);
+        SceneChanger.changeScene("/com/jmc/app/Abhebung.fxml", stage, user, null);
     }
 
     public void HandleKartenZahlung(MouseEvent mouseEvent) throws IOException {
         Stage stage = (Stage) KartenZahlungButton.getScene().getWindow();
-        SceneChanger.changeScene("/com/jmc/app/KartenZahlung.fxml", stage, user, user);
+        SceneChanger.changeScene("/com/jmc/app/KartenZahlung.fxml", stage, user, null);
     }
 
 

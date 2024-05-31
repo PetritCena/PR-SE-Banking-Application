@@ -1,26 +1,21 @@
 package com.jmc.app.Controllers;
 
 import com.jmc.app.Models.Account;
-import com.jmc.app.Models.Card;
 import com.jmc.app.Models.DatabaseConnector;
 import com.jmc.app.Models.User;
+import com.jmc.app.Models.Card;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-
-public class EinzahlungsController implements Controller {
+public class AbhebungContoller implements Controller {
     @FXML
-    private Button Einzahlung, Back;
+    private Button Abhebung, Back;
     @FXML
     private BorderPane borderPane;
     @FXML
@@ -36,6 +31,7 @@ public class EinzahlungsController implements Controller {
     private ArrayList<Account> accounts = new ArrayList<>();
     private ArrayList<Card> cards = new ArrayList<>();
 
+
     @Override
     public void initialize(Object user, Object nulll) {
         this.user = (User) user;
@@ -49,16 +45,16 @@ public class EinzahlungsController implements Controller {
         SceneChanger.loadLeftFrame(borderPane, this.user);
     }
 
-    public void Back(MouseEvent mouseEvent) throws IOException {
-        Stage stage = (Stage) Back.getScene().getWindow();
-        SceneChanger.changeScene("/com/jmc/app/Simulator.fxml", stage, user, user);
-    }
-
     public void Transaction(MouseEvent mouseEvent) throws IOException, SQLException {
         if(validateCard()) {
-            Stage stage = (Stage) Einzahlung.getScene().getWindow();
-            SceneChanger.changeScene("/com/jmc/app/TransactionErfolgreich.fxml", stage, user, user);
+            Stage stage = (Stage) Abhebung.getScene().getWindow();
+            SceneChanger.changeScene("/com/jmc/app/TransactionErfolgreich.fxml", stage, user, null);
         }
+    }
+
+    public void Back(MouseEvent mouseEvent) throws IOException {
+        Stage stage = (Stage) Back.getScene().getWindow();
+        SceneChanger.changeScene("/com/jmc/app/Simulator.fxml", stage, user, null);
     }
 
     private boolean validateCard() throws SQLException {
@@ -116,10 +112,10 @@ public class EinzahlungsController implements Controller {
         boolean isValid = db.isCardDataValid(kartennummer, folgenummer, geheimzahl);
 
         if (isValid) {
-            db.deposit(iban, betrag, kartennummer);
+            db.withdrawal(iban, betrag, kartennummer);
             for(Account account : accounts) {
                 if(iban.equals(account.getIban())) {
-                    account.setSaldo(account.getSaldo() + betrag);
+                    account.setSaldo(account.getSaldo() - betrag);
                 }
             }
         } else {

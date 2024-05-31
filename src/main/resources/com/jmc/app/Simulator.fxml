@@ -53,27 +53,14 @@
                   <Cursor fx:constant="CLOSED_HAND" />
                </cursor>
                 </HBox>
-            <cursor>
-               <Cursor fx:constant="CLOSED_HAND" />
-            </cursor>
+                <cursor>
+                   <Cursor fx:constant="CLOSED_HAND" />
+                </cursor>
             </VBox>
 
             <Label layoutX="148.0" layoutY="83.0" text="Simulator" textFill="#416179">
                 <font>
                     <Font name="Arial Bold" size="42.0" />
-                </font>
-            <cursor>
-               <Cursor fx:constant="DEFAULT" />
-            </cursor>
-            </Label>
-            <Text fx:id="saldoHauptkonto" fill="#35495a" layoutX="107.0" layoutY="328.0" onMouseClicked="#hauptKontoBoxOnAction" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="137.5186767578125">
-                <cursor>
-                    <Cursor fx:constant="OPEN_HAND" />
-                </cursor>
-            </Text>
-            <Label layoutX="45.0" layoutY="188.0">
-                <font>
-                    <Font name="System Bold" size="32.0" />
                 </font>
             </Label>
             <AnchorPane layoutX="314.0" layoutY="202.0" />
@@ -81,9 +68,6 @@
             <BorderPane.margin>
                 <Insets bottom="20.0" />
             </BorderPane.margin>
-         <cursor>
-            <Cursor fx:constant="DEFAULT" />
-         </cursor>
         </AnchorPane>
     </center>
 </BorderPane>

@@ -3,33 +3,33 @@ package com.jmc.app.Controllers;
 import com.jmc.app.Models.Account;
 import com.jmc.app.Models.Card;
 import com.jmc.app.Models.DatabaseConnector;
+import javafx.fxml.FXML;
 import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.text.Text;
 
 import java.sql.SQLException;
 
 public class KartenController implements Controller{
+    @FXML
+    private BorderPane borderpane;
+    @FXML
+    private HBox kartennummerHbox, ibanHbox, inhaberHbox, kartenlimitHbox, folgenummerHbox, geheimzahlHbox;
+    @FXML
+    private TextField kartenlimitFeld;
+    @FXML
+    private Button kartenlimitButton;
+    @FXML
+    private Label ibanLabel, nameLabel;
 
-    public BorderPane borderpane;
-    public HBox kartennummerHbox;
-    public HBox ibanHbox;
-    public HBox inhaberHbox;
-    public HBox kartenlimitHbox;
-    public TextField kartenlimitFeld;
-    public Button kartenlimitButton;
-    public HBox folgenummerHbox;
-    public HBox geheimzahlHbox;
-    public Label ibanLabel;
-    public Label nameLabel;
-    Account account;
-    Card card;
-    DatabaseConnector db = new DatabaseConnector();
-    boolean verschleiert = true;
+    private Account account;
+    private Card card;
+    private boolean verschleiert = true;
+
+
     @Override
     public void initialize(Object o, Object o2) {
         this.card = (Card) o;
@@ -69,6 +69,7 @@ public class KartenController implements Controller{
         }
     }
     public void cardLimitButtonOnAction() throws SQLException {
+        DatabaseConnector db = new DatabaseConnector();
         db.changeCardLimit(card, kartenlimitFeld.getText());
         kartenlimitFeld.setText(card.getKartenLimit()+"");
     }

@@ -25,7 +25,7 @@ public class LoginController{
     private User user;
 
     // Handles the login process
-    public void handleLoginButtonAction(ActionEvent event) throws IOException {
+    public void handleLoginButtonAction(ActionEvent event) throws SQLException, IOException {
         if (emailField.getText().isEmpty() || passwordField.getText().isEmpty()){
             statusLabel.setText("Bitte E-Mail und Passwort eingeben!");
         } else {

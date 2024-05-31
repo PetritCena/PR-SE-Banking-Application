@@ -15,21 +15,11 @@ import java.io.IOException;
 //das ist eine klasse damit wir nicht in jeder Klasse erneut die changeScene Methode hinzufügen müssen
 
 public class SceneChanger {
-    /*public static void changeScene(String fxmlPath, Stage stage, Object o) throws IOException{
-        FXMLLoader loader = new FXMLLoader(SceneChanger.class.getResource(fxmlPath));
-        Parent root = loader.load();
-        if(o != null) {
-            Controller controller = loader.getController();
-            controller.initialize(o, null);
-        }
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
-    }*/
+
     public static void changeScene(String fxmlPath, Stage stage, Object o, Object o2) throws IOException{
         FXMLLoader loader = new FXMLLoader(SceneChanger.class.getResource(fxmlPath));
         Parent root = loader.load();
-        if (o!=null) {
+        if (o != null) {
             Controller controller = loader.getController();
             controller.initialize(o, o2);
         }
@@ -38,9 +28,7 @@ public class SceneChanger {
         stage.show();
     }
 
-
-
-    public static void loadLeftFrame(BorderPane borderPane, Object o) {
+    public static void loadLeftFrame(BorderPane borderPane, Object o){
         AnchorPane pane = new AnchorPane();
         pane.setPrefHeight(750);
         pane.setPrefWidth(182);

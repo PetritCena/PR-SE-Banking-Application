@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="borderPane" prefHeight="750.0" prefWidth="850.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jmc.app.Controllers.AbhebungConroller">
+<BorderPane fx:id="borderPane" prefHeight="750.0" prefWidth="850.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jmc.app.Controllers.AbhebungContoller">
     <center>
         <AnchorPane prefHeight="764.0" prefWidth="883.0" BorderPane.alignment="CENTER">
             <Label layoutX="100.0" layoutY="61.0" text="Abhebung" textFill="#35495a">
@@ -13,33 +18,6 @@
                     <Font name="Arial Bold" size="42.0" />
                 </font>
             </Label>
-            <Text fx:id="saldoHauptkonto" fill="#35495a" layoutX="107.0" layoutY="328.0" onMouseClicked="#Transaction" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="137.5186767578125">
-                <cursor>
-                    <Cursor fx:constant="OPEN_HAND" />
-                </cursor>
-            </Text>
-            <Label layoutX="45.0" layoutY="188.0" prefHeight="47.0" prefWidth="49.0">
-                <font>
-                    <Font name="System Bold" size="32.0" />
-                </font>
-            </Label>
-            <AnchorPane layoutX="314.0" layoutY="202.0" />
-            <VBox alignment="CENTER" layoutX="100" layoutY="620" spacing="20">
-                <HBox alignment="CENTER" spacing="15" />
-            </VBox>
-            <GridPane hgap="10" layoutX="159.0" layoutY="187.0" vgap="10">
-                <columnConstraints>
-                    <ColumnConstraints />
-                    <ColumnConstraints />
-                </columnConstraints>
-                <rowConstraints>
-                    <RowConstraints />
-                    <RowConstraints />
-                    <RowConstraints />
-                    <RowConstraints />
-                    <RowConstraints />
-                </rowConstraints>
-            </GridPane>
             <Button fx:id="Abhebung" defaultButton="true" layoutX="109.0" layoutY="375.0" onMouseClicked="#Transaction" prefHeight="40.0" prefWidth="134.0" style="-fx-background-color: #35495a; -fx-text-fill: white; -fx-font-size: 14px; -fx-padding: 10 20 10 20; -fx-background-radius: 8; -fx-border-radius: 8;" text="Abehbung">
                 <font>
                     <Font size="14" />
@@ -58,11 +36,10 @@
             </Button>
             <!-- Kartennummer -->
             <Label layoutX="96.0" layoutY="143.0" style="-fx-font-size: 16px; -fx-text-fill: #333333;" text="Kartennummer:" />
-            <TextField layoutX="96.0" layoutY="168.0" promptText="12345678901234567" style="-fx-background-color: #FFFFFF; -fx-border-color: #D0D0D0; -fx-border-radius: 8; -fx-background-radius: 5;" />
-            <TextField layoutX="96.0" layoutY="227.0" promptText="123" style="-fx-background-color: #FFFFFF; -fx-border-color: #D0D0D0; -fx-border-radius: 8; -fx-background-radius: 5;" />
-            <PasswordField layoutX="374.0" layoutY="165.0" promptText="0123" style="-fx-background-color: #FFFFFF; -fx-border-color: #D0D0D0; -fx-border-radius: 8; -fx-background-radius: 5;" />
-            <TextField layoutX="374.0" layoutY="227.0" promptText="Abhebung" style="-fx-background-color: #FFFFFF; -fx-border-color: #D0D0D0; -fx-border-radius: 8; -fx-background-radius: 5;" />
-            <TextField layoutX="374.0" layoutY="288.0" promptText="2050 €" style="-fx-background-color: #FFFFFF; -fx-border-color: #D0D0D0; -fx-border-radius: 8; -fx-background-radius: 5;" />
+            <TextField fx:id="folgenummerField" layoutX="96.0" layoutY="227.0" promptText="123" style="-fx-background-color: #FFFFFF; -fx-border-color: #D0D0D0; -fx-border-radius: 8; -fx-background-radius: 8;" />
+            <PasswordField fx:id="geheimzahlField" layoutX="374.0" layoutY="165.0" promptText="0123" style="-fx-background-color: #FFFFFF; -fx-border-color: #D0D0D0; -fx-border-radius: 8; -fx-background-radius: 8;" />
+            <TextField layoutX="374.0" layoutY="227.0" promptText="Abhebung" style="-fx-background-color: #FFFFFF; -fx-border-color: #D0D0D0; -fx-border-radius: 8; -fx-background-radius: 8;" />
+            <TextField fx:id="BetragFeld" layoutX="374.0" layoutY="288.0" promptText="2050 €" style="-fx-background-color: #FFFFFF; -fx-border-color: #D0D0D0; -fx-border-radius: 8; -fx-background-radius: 8;" />
 
             <!-- Betrag € -->
             <Label layoutX="375.0" layoutY="263.0" style="-fx-font-size: 16px; -fx-text-fill: #333333;" text="Betrag €:" />
@@ -75,9 +52,12 @@
 
             <!-- Folgenummer -->
             <Label layoutX="94.0" layoutY="203.0" style="-fx-font-size: 16px; -fx-text-fill: #333333;" text="Folgenummer:" />
+         <ComboBox fx:id="kartenNummerAuswahl" layoutX="96.0" layoutY="168.0" prefHeight="28.0" prefWidth="161.5" style="-fx-background-color: #FFFFFF; -fx-border-color: #D0D0D0; -fx-border-radius: 8; -fx-background-radius: 8;">
             <cursor>
-                <Cursor fx:constant="DEFAULT" />
+                <Cursor fx:constant="OPEN_HAND" />
             </cursor>
+         </ComboBox>
+         <Label fx:id="validationMessage" layoutX="101.0" layoutY="308.0" prefHeight="17.0" prefWidth="155.0" />
         </AnchorPane>
     </center>
 </BorderPane>

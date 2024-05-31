@@ -1,11 +1,8 @@
 package com.jmc.app.Models;
 
-import java.awt.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Random;
 
-import static javafx.scene.paint.Color.rgb;
 
 public class Card {
     private final String iban;
@@ -14,15 +11,9 @@ public class Card {
     private final int folgeNummer;
     private final String typ;
     private final int geheimZahl;
-
-    //private ArrayList<int[]> farben = new ArrayList<>(Arrays.asList(new int[]{0,51,102}, new int[]{192,192,192}, new int[]{211,211,211}, new int[]{176,224,230}, new int[]{163,100,100}));
-
-    public int[] getFarbe() {
-        return farbe;
-    }
-
     private final int[] farbe;
-    Random random = new Random();
+    private ArrayList<Transaction> transactions;
+
     public Card(String iban, float kartenLimit, long kartenNummer, int folgeNummer, String typ, int geheimZahl, int[] farbe) {
         this.iban = iban;
         this.kartenLimit = kartenLimit;
@@ -30,7 +21,6 @@ public class Card {
         this.folgeNummer = folgeNummer;
         this.typ = typ;
         this.geheimZahl = geheimZahl;
-        //this.farbe = farben.get(random.nextInt(5));
         this.farbe = farbe;
     }
 
@@ -55,4 +45,10 @@ public class Card {
     public void setKartenLimit(float zahl){
         kartenLimit = zahl;
     }
+    public int[] getFarbe() {
+        return farbe;
+    }
+    public ArrayList<Transaction> getTransactions() { return transactions; }
+    public void setTransactions(ArrayList<Transaction> transactions) { this.transactions = transactions; }
+    public String toString(){ return kartenNummer + ""; }
 }
