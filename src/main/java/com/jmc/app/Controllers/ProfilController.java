@@ -25,14 +25,8 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 public class ProfilController implements Controller{
-    public FontAwesomeIconView VisabiltiyButtonOld;
-    public Button toggleOldPasswordVisibilityButton;
-    public Button toggleNewPasswordVisibilityButton;
-    public FontAwesomeIconView VisabiltiyButtonNew;
-    public Button toggleConfirmNewPasswordVisibilityButton;
-    public FontAwesomeIconView VisabiltiyButtonConfirmNew;
     @FXML
-    private TextField vornameFeld, nachnameFeld;
+    private TextField vornameFeld, nachnameFeld, visibleOldPasswordTextField, visibleNewPasswordTextField, visibleConfirmNewPasswordTextField;
     @FXML
     private PasswordField altesPasswortFeld, neuesPasswortFeld, neuesPasswortBestätigungFeld;
     @FXML
@@ -43,17 +37,6 @@ public class ProfilController implements Controller{
     private Button signoutButton;
     @FXML
     private BorderPane borderPane;
-  
-    @FXML
-    private TextField visibleOldPasswordTextField;
-
-    @FXML
-    private TextField visibleNewPasswordTextField;
-
-    @FXML
-    private TextField visibleConfirmNewPasswordTextField;
-
-
 
     private final FileChooser fileChooser = new FileChooser();
     private User user;
@@ -215,7 +198,6 @@ public class ProfilController implements Controller{
                 iconView.setGlyphName("EYE");
             }
         }
-        System.out.println("Toggled visibility");
     }
 
 }

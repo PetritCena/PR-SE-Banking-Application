@@ -10,28 +10,18 @@ import javafx.scene.control.TextField;
 import javafx.event.ActionEvent;
 import javafx.stage.Stage;
 import java.util.regex.Pattern;
-
 import java.io.IOException;
 import java.sql.*;
+
 public class SignUpController {
-
-
-    public FontAwesomeIconView VisabiltiyButton1;
-    public FontAwesomeIconView VisabiltiyButton2;
-
     @FXML
-    private TextField firstNameTextField, lastNameTextField, emailTextField;
+    private TextField firstNameTextField, lastNameTextField, emailTextField, visiblePasswordTextField, visiblePasswordAgainTextField;
     @FXML
     private PasswordField passwordTextField, passwordAgainTextField;
     @FXML
     private Button registerButton, haveAcccountButton;
     @FXML
     private Label messageLabel;
-    @FXML
-    private TextField visiblePasswordTextField;
-    @FXML
-    private TextField visiblePasswordAgainTextField;
-
 
     public void registerButtonAction(ActionEvent actionEvent) throws IOException, SQLException {
         String firstName = firstNameTextField.getText();

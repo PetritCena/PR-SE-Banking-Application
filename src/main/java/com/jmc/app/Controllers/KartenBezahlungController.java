@@ -29,7 +29,6 @@ public class KartenBezahlungController implements Controller {
     public Button Back;
     @FXML
     private BorderPane borderPane;
-    DatabaseConnector db = new DatabaseConnector();
 
     @FXML
     private TextField kartennummerField;
@@ -113,7 +112,8 @@ public class KartenBezahlungController implements Controller {
         boolean isValid = dbConnector.isCardDataValid(kartennummer, folgenummer, geheimzahl);
 
         if (isValid) {
-            dbConnector.updateAccountBalance(kartennummer, folgenummer, geheimzahl, betrag*-1);
+            //hier musst du weiter machen, Ömer!
+            //dbConnector.updateAccountBalance(kartennummer, folgenummer, geheimzahl, betrag*-1);
             validationMessage.setText("Transaction successful.");
             validationMessage.setStyle("-fx-text-fill: green;");
         } else {

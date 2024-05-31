@@ -41,7 +41,6 @@ public class DashboardController implements Controller{
     @FXML
     public void initialize(Object user, Object nulll) {
         this.user = (User) user;
-        refreshUserData();
         SceneChanger.loadLeftFrame(borderPane, this.user);
         accounts = this.user.getAccounts();
         for (Account account : accounts) {
@@ -63,16 +62,6 @@ public class DashboardController implements Controller{
 
         addBoxFromDatabase();
     }
-
-    private void refreshUserData() {
-        DatabaseConnector dbConnector = new DatabaseConnector();
-        // Re-authenticate user to get the latest account data
-        User refreshedUser = dbConnector.authenticateUser(this.user.getEmail(), this.user.getPassword());
-        if (refreshedUser != null) {
-            this.user = refreshedUser;
-        }
-    }
-
 
     private String getInitials(String firstName, String lastName) {
         String initials = "";
