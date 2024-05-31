@@ -2,6 +2,7 @@ package com.jmc.app.Controllers;
 
 
 import com.jmc.app.Models.User;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.SnapshotParameters;
@@ -24,6 +25,12 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 public class ProfilController implements Controller{
+    public FontAwesomeIconView VisabiltiyButtonOld;
+    public Button toggleOldPasswordVisibilityButton;
+    public Button toggleNewPasswordVisibilityButton;
+    public FontAwesomeIconView VisabiltiyButtonNew;
+    public Button toggleConfirmNewPasswordVisibilityButton;
+    public FontAwesomeIconView VisabiltiyButtonConfirmNew;
     @FXML
     private TextField vornameFeld, nachnameFeld;
     @FXML
@@ -36,6 +43,16 @@ public class ProfilController implements Controller{
     private Button signoutButton;
     @FXML
     private BorderPane borderPane;
+  
+    @FXML
+    private TextField visibleOldPasswordTextField;
+
+    @FXML
+    private TextField visibleNewPasswordTextField;
+
+    @FXML
+    private TextField visibleConfirmNewPasswordTextField;
+
 
 
     private final FileChooser fileChooser = new FileChooser();
@@ -147,4 +164,58 @@ public class ProfilController implements Controller{
         Stage stage = (Stage) signoutButton.getScene().getWindow();
         SceneChanger.changeScene("/com/jmc/app/login.fxml", stage, null, null);
     }
+
+    @FXML
+    public void togglePasswordVisibility(ActionEvent event) {
+        Object source = event.getSource();
+        Button btn = null;
+        FontAwesomeIconView iconView = null;
+
+        if (source instanceof Button) {
+            btn = (Button) source;
+        } else if (source instanceof FontAwesomeIconView) {
+            iconView = (FontAwesomeIconView) source;
+            btn = (Button) iconView.getParent();
+        }
+
+        if (btn == null) {
+            System.out.println("Button is null");
+            return;
+        }
+
+        PasswordField pwdField;
+        TextField txtField;
+
+        if ("toggleOldPasswordVisibilityButton".equals(btn.getId())) {
+            pwdField = altesPasswortFeld;
+            txtField = visibleOldPasswordTextField;
+        } else if ("toggleNewPasswordVisibilityButton".equals(btn.getId())) {
+            pwdField = neuesPasswortFeld;
+            txtField = visibleNewPasswordTextField;
+        } else if ("toggleConfirmNewPasswordVisibilityButton".equals(btn.getId())) {
+            pwdField = neuesPasswortBestätigungFeld;
+            txtField = visibleConfirmNewPasswordTextField;
+        } else {
+            System.out.println("Unknown button ID");
+            return;
+        }
+
+        if (pwdField.isVisible()) {
+            txtField.setText(pwdField.getText());
+            txtField.setVisible(true);
+            pwdField.setVisible(false);
+            if (iconView != null) {
+                iconView.setGlyphName("EYE_SLASH");
+            }
+        } else {
+            pwdField.setText(txtField.getText());
+            pwdField.setVisible(true);
+            txtField.setVisible(false);
+            if (iconView != null) {
+                iconView.setGlyphName("EYE");
+            }
+        }
+        System.out.println("Toggled visibility");
+    }
+
 }

@@ -11,7 +11,7 @@
     <center>
         <AnchorPane prefHeight="200.0" prefWidth="479.0" BorderPane.alignment="CENTER">
             <!-- Einzahlung Button -->
-            <VBox fx:id="EinzahlungButton" accessibleRole="BUTTON" layoutX="58.0" layoutY="161.0" onMouseClicked="#handleEinzahlung" prefHeight="90.0" prefWidth="412.0" styleClass="button-box">
+            <VBox fx:id="EinzahlungButton" accessibleRole="BUTTON" layoutX="58.0" layoutY="161.0" onMouseClicked="#handleEinzahlung" prefHeight="90.0" prefWidth="412.0" style="-fx-background-color: DAECFB;" styleClass="button-box">
                 <HBox alignment="CENTER" prefHeight="37.0" prefWidth="438.0" spacing="20">
                     <Label prefHeight="37.0" prefWidth="233.0" styleClass="label-text" text="Einzahlung">
                   <cursor>
@@ -25,7 +25,7 @@
             </VBox>
 
             <!-- Kartenzahlung Button -->
-            <VBox fx:id="KartenZahlungButton" accessibleRole="BUTTON" layoutX="58.0" layoutY="261.0" onMouseClicked="#HandleKartenZahlung" prefHeight="90.0" prefWidth="416.0" styleClass="button-box">
+            <VBox fx:id="KartenZahlungButton" accessibleRole="BUTTON" layoutX="58.0" layoutY="261.0" onMouseClicked="#HandleKartenZahlung" prefHeight="90.0" prefWidth="416.0" style="-fx-background-color: DAECFB;" styleClass="button-box">
                 <HBox alignment="CENTER" spacing="20">
                     <Label prefHeight="37.0" prefWidth="239.0" styleClass="label-text" text="Kartenzahlung">
                   <cursor>
@@ -42,9 +42,9 @@
             </VBox>
 
             <!-- Abhebung Button -->
-            <VBox fx:id="AbhebungButton" accessibleRole="BUTTON" layoutX="58.0" layoutY="361.0" onMouseClicked="#HandleAbhebung" prefHeight="90.0" prefWidth="418.0" styleClass="button-box">
+            <VBox fx:id="AbhebungButton" accessibleRole="BUTTON" layoutX="58.0" layoutY="361.0" onMouseClicked="#HandleAbhebung" prefHeight="90.0" prefWidth="418.0" style="-fx-background-color: DAECFB;" styleClass="button-box">
                 <HBox alignment="CENTER" spacing="20">
-                    <Label prefHeight="37.0" prefWidth="230.0" styleClass="label-text" text="Abhebung">
+                    <Label prefHeight="37.0" prefWidth="242.0" styleClass="label-text" text="Abhebung">
                   <cursor>
                      <Cursor fx:constant="CLOSED_HAND" />
                   </cursor></Label>

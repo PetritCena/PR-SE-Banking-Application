@@ -41,10 +41,11 @@ public class DashboardController implements Controller{
     @FXML
     public void initialize(Object user, Object nulll) {
         this.user = (User) user;
+        refreshUserData();
         SceneChanger.loadLeftFrame(borderPane, this.user);
         accounts = this.user.getAccounts();
-        for(Account account : accounts) {
-            if(Objects.equals(account.getTyp(), "Hauptkonto")){
+        for (Account account : accounts) {
+            if (Objects.equals(account.getTyp(), "Hauptkonto")) {
                 hauptkonto = account;
             }
             cards.addAll(account.getCards());
@@ -52,8 +53,7 @@ public class DashboardController implements Controller{
         if (this.user.getPic() != null && this.user.getPic().length > 0) {
             Image image = new Image(new ByteArrayInputStream(this.user.getPic()));
             photoCircle.setFill(new ImagePattern(image));
-        }
-        else {
+        } else {
             displayInitialsInCircle();
         }
         typ.setText(hauptkonto.getTyp());
@@ -63,6 +63,16 @@ public class DashboardController implements Controller{
 
         addBoxFromDatabase();
     }
+
+    private void refreshUserData() {
+        DatabaseConnector dbConnector = new DatabaseConnector();
+        // Re-authenticate user to get the latest account data
+        User refreshedUser = dbConnector.authenticateUser(this.user.getEmail(), this.user.getPassword());
+        if (refreshedUser != null) {
+            this.user = refreshedUser;
+        }
+    }
+
 
     private String getInitials(String firstName, String lastName) {
         String initials = "";
