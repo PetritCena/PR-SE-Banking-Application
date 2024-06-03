@@ -116,7 +116,7 @@ public class EinzahlungsController implements Controller {
         boolean isValid = db.isCardDataValid(kartennummer, folgenummer, geheimzahl);
 
         if (isValid) {
-            db.deposit(iban, betrag, kartennummer);
+            db.updateBalance(iban, betrag, kartennummer, "Einzahlung");
             for(Account account : accounts) {
                 if(iban.equals(account.getIban())) {
                     account.setSaldo(account.getSaldo() + betrag);

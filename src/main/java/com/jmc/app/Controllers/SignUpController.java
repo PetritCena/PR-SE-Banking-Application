@@ -47,7 +47,7 @@ public class SignUpController {
         }
 
         DatabaseConnector db = new DatabaseConnector();
-        db.registerUser(firstName, lastName, email, password);
+        db.registerUser(firstName, lastName, email, password); ///////////////////////////////
 
         // If registration is successful, redirect to login view
         Stage stage = (Stage) registerButton.getScene().getWindow();

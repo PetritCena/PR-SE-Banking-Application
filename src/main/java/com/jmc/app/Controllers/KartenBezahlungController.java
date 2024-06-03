@@ -1,18 +1,17 @@
 package com.jmc.app.Controllers;
 
 import com.jmc.app.Models.Account;
+import com.jmc.app.Models.Card;
 import com.jmc.app.Models.DatabaseConnector;
 import com.jmc.app.Models.User;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
-import javafx.scene.control.PasswordField;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import javafx.scene.control.Label;
 
+import java.awt.image.AreaAveragingScaleFilter;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -20,6 +19,7 @@ import java.util.ArrayList;
 public class KartenBezahlungController implements Controller {
     @FXML
     public TextField BetragFeld1;
+    public ComboBox<String> kartenNummerAuswahl;
     private User user;
 
     public Text saldoHauptkonto;
@@ -41,15 +41,21 @@ public class KartenBezahlungController implements Controller {
 
     @FXML
     private TextField BetragFeld;
-
-
     @FXML
     private Label validationMessage;
+    private ArrayList<Card> cards = new ArrayList<>();
+    private ArrayList<Account> accounts = new ArrayList<>();
 
-    @FXML
     public void initialize(Object user, Object nulll) {
         this.user = (User) user;
         SceneChanger.loadLeftFrame(borderPane, this.user);
+        accounts = this.user.getAccounts();
+        for (Account account: accounts){
+            cards.addAll(account.getCards());
+        }
+        for (Card card : cards) {
+            kartenNummerAuswahl.getItems().add(card.toString());
+        }
     }
 
     public void Transaction(MouseEvent mouseEvent) throws IOException, SQLException {
@@ -65,10 +71,10 @@ public class KartenBezahlungController implements Controller {
     }
 
     private boolean validateCard() throws SQLException {
-        DatabaseConnector dbConnector = new DatabaseConnector();
+        DatabaseConnector db = new DatabaseConnector();
 
         // Retrieve the values from the input fields
-        String kartennummerText = kartennummerField.getText();
+        String kartennummerText = kartenNummerAuswahl.getValue();
         String folgenummerText = folgenummerField.getText();
         String geheimzahlText = geheimzahlField.getText();
         String betragText = BetragFeld.getText();
@@ -107,13 +113,20 @@ public class KartenBezahlungController implements Controller {
         int folgenummer = Integer.parseInt(folgenummerText);
         int geheimzahl = Integer.parseInt(geheimzahlText);
         float betrag = Float.parseFloat(betragText);
+        String iban = "";
+        for (Card card: cards){
+            if (card.getKartenNummer()==kartennummer) iban = card.getIban();
+        }
 
         // Validate the card data
-        boolean isValid = dbConnector.isCardDataValid(kartennummer, folgenummer, geheimzahl);
+        boolean isValid = db.isCardDataValid(kartennummer, folgenummer, geheimzahl);
 
         if (isValid) {
             //hier musst du weiter machen, Ömer!
-            //dbConnector.updateAccountBalance(kartennummer, folgenummer, geheimzahl, betrag*-1);
+            db.updateBalance(iban, betrag, kartennummer, "Kartenzahlung");
+            for (Account account: accounts){
+                if (account.getIban().equals(iban)) account.setSaldo(account.getSaldo()-betrag);
+            }
             validationMessage.setText("Transaction successful.");
             validationMessage.setStyle("-fx-text-fill: green;");
         } else {

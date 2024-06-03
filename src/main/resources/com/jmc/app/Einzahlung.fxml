@@ -39,14 +39,10 @@
             <Label layoutX="96.0" layoutY="143.0" style="-fx-font-size: 16px; -fx-text-fill: #333333;" text="Kartennummer:" />
             <TextField fx:id="folgenummerField" layoutX="96.0" layoutY="227.0" promptText="123" style="-fx-background-color: #FFFFFF; -fx-border-color: #D0D0D0; -fx-border-radius: 8; -fx-background-radius: 5;" />
             <PasswordField fx:id="geheimzahlField" layoutX="374.0" layoutY="165.0" promptText="0123" style="-fx-background-color: #FFFFFF; -fx-border-color: #D0D0D0; -fx-border-radius: 8; -fx-background-radius: 5;" />
-            <TextField layoutX="374.0" layoutY="227.0" promptText="Einzahlung" style="-fx-background-color: #FFFFFF; -fx-border-color: #D0D0D0; -fx-border-radius: 8; -fx-background-radius: 5;" />
-            <TextField fx:id="BetragFeld" layoutX="374.0" layoutY="288.0" promptText="2050 €" style="-fx-background-color: #FFFFFF; -fx-border-color: #D0D0D0; -fx-border-radius: 8; -fx-background-radius: 5;" />
+            <TextField fx:id="BetragFeld" layoutX="374.0" layoutY="231.0" promptText="2050 €" style="-fx-background-color: #FFFFFF; -fx-border-color: #D0D0D0; -fx-border-radius: 8; -fx-background-radius: 5;" />
 
             <!-- Betrag € -->
-            <Label layoutX="375.0" layoutY="263.0" style="-fx-font-size: 16px; -fx-text-fill: #333333;" text="Betrag €:" />
-
-            <!-- Verwendungszweck -->
-            <Label layoutX="378.0" layoutY="203.0" style="-fx-font-size: 16px; -fx-text-fill: #333333;" text="Verwendungszweck:" />
+            <Label layoutX="375.0" layoutY="206.0" style="-fx-font-size: 16px; -fx-text-fill: #333333;" text="Betrag €:" />
 
             <!-- Geheimzahl -->
             <Label layoutX="374.0" layoutY="140.0" style="-fx-font-size: 16px; -fx-text-fill: #333333;" text="Geheimzahl:" />

@@ -112,7 +112,7 @@ public class AbhebungContoller implements Controller {
         boolean isValid = db.isCardDataValid(kartennummer, folgenummer, geheimzahl);
 
         if (isValid) {
-            db.withdrawal(iban, betrag, kartennummer);
+            db.updateBalance(iban, betrag, kartennummer, "Abhebung");
             for(Account account : accounts) {
                 if(iban.equals(account.getIban())) {
                     account.setSaldo(account.getSaldo() - betrag);

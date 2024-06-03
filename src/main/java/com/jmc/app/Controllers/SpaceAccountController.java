@@ -4,11 +4,17 @@ import com.jmc.app.Models.Account;
 import com.jmc.app.Models.Card;
 import com.jmc.app.Models.User;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Cursor;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Accordion;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -17,10 +23,13 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.util.ArrayList;
 
 public class SpaceAccountController implements Controller {
+    @FXML
+    public Button transferÜberweisungButton;
     @FXML
     private Label ibanLabel, saldoLabel, typLabel;
     @FXML
@@ -43,6 +52,11 @@ public class SpaceAccountController implements Controller {
         saldoLabel.setText(account.getSaldo() + "€");
         typLabel.setText(account.getTyp());
         loadCard();
+        if (account.getTyp().equals("Hauptkonto")) transferÜberweisungButton.setText("Überweisung");
+        else{
+            transferÜberweisungButton.setText("Transfer");
+        }
+
     }
 
 
@@ -107,4 +121,41 @@ public class SpaceAccountController implements Controller {
             });
         }
     }
+
+    public void handleTransferÜberweisungButton(MouseEvent event) throws IOException {
+        /*Stage stage = (Stage) hbox.getScene().getWindow();
+        SceneChanger.changeScene("/com/jmc/app/Dashboard.fxml", stage, user, null);*/
+            try {
+                String resource;
+                if (account.getTyp().equals("Hauptkonto")){
+                    resource = "/com/jmc/app/popupÜberweisung.fxml";
+                }
+                else {
+                    resource = "/com/jmc/app/popupTransfer.fxml";
+                }
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(resource));
+                Parent root = (Parent) fxmlLoader.load();
+                Controller controller = fxmlLoader.getController();
+                controller.initialize(user, account);
+                Stage stage = new Stage();
+                stage.setScene(new Scene(root));
+                stage.show();
+            }catch (Exception e) {
+                System.out.println("Cant load window");
+            }
+    }
+
+        /*if (account.getTyp().equals("Hauptkonto")){
+
+        }
+        else {*/
+
+
+
+    /*public void handleTransferÜberweisungButton(javafx.event.ActionEvent actionEvent) throws IOException {
+
+        Stage stage = (Stage) transferÜberweisungButton.getScene().getWindow();
+        SceneChanger.changeScene("popupTransfer.fxml", stage, user, account);
+    }*/
+
 }

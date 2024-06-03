@@ -2,6 +2,7 @@
 
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Accordion?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TableColumn?>
@@ -62,18 +63,17 @@
            <panes>
              <TitledPane animated="false" text="Transaktionen" textFill="#35495a">
                <content>
-                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                        <children>
-                           <TableView layoutX="-2.0" prefHeight="154.0" prefWidth="624.0">
-                             <columns>
-                               <TableColumn prefWidth="75.0" text="C1" />
-                               <TableColumn prefWidth="75.0" text="C2" />
-                                 <TableColumn prefWidth="75.0" text="Column X" />
-                                 <TableColumn prefWidth="75.0" text="Column X" />
-                                 <TableColumn prefWidth="75.0" text="Column X" />
-                             </columns>
-                           </TableView>
-                        </children></AnchorPane>
+                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                       <TableView layoutX="-2.0" prefHeight="154.0" prefWidth="624.0">
+                           <columns>
+                           <TableColumn prefWidth="75.0" text="C1" />
+                           <TableColumn prefWidth="75.0" text="C2" />
+                               <TableColumn prefWidth="75.0" text="Column X" />
+                               <TableColumn prefWidth="75.0" text="Column X" />
+                               <TableColumn prefWidth="75.0" text="Column X" />
+                           </columns>
+                       </TableView>
+                   </AnchorPane>
                </content>
                   <font>
                      <Font name="System Bold" size="20.0" />
@@ -85,13 +85,11 @@
              <TitledPane animated="false" prefHeight="234.0" prefWidth="624.0" text="Karten" textFill="#35495a">
                <content>
                    <HBox layoutX="54.0" layoutY="458.0" prefHeight="174.0" prefWidth="622.0">
-                       <children>
-                           <ScrollPane fx:id="scrollpane" fitToHeight="true" prefHeight="282.0" prefWidth="596.0" stylesheets="@s.css" vbarPolicy="NEVER">
-                               <content>
-                                   <HBox fx:id="hbox" prefHeight="132.0" prefWidth="589.0" spacing="20.0" />
-                               </content>
-                           </ScrollPane>
-                       </children>
+                       <ScrollPane fx:id="scrollpane" fitToHeight="true" prefHeight="282.0" prefWidth="596.0" stylesheets="@s.css" vbarPolicy="NEVER">
+                           <content>
+                               <HBox fx:id="hbox" prefHeight="132.0" prefWidth="589.0" spacing="20.0" />
+                           </content>
+                       </ScrollPane>
                    </HBox>
                </content>
                   <font>
@@ -103,6 +101,7 @@
                <Cursor fx:constant="OPEN_HAND" />
             </cursor>
          </Accordion>
+         <Button fx:id="transferÜberweisungButton" layoutX="58.0" layoutY="629.0" mnemonicParsing="false" onMouseClicked="#handleTransferÜberweisungButton" prefHeight="48.0" prefWidth="106.0" style="-fx-background-color: DAECFB; -fx-border-radius: 10;" />
         </AnchorPane>
     </center>
 </BorderPane>
