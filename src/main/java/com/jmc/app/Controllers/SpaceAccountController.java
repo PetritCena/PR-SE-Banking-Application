@@ -2,40 +2,55 @@ package com.jmc.app.Controllers;
 
 import com.jmc.app.Models.Account;
 import com.jmc.app.Models.Card;
+import com.jmc.app.Models.Transaction;
 import com.jmc.app.Models.User;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Cursor;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Accordion;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontPosture;
-import javafx.scene.text.FontWeight;
-import javafx.scene.text.Text;
+import javafx.scene.paint.Paint;
+import javafx.scene.text.*;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 
-import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class SpaceAccountController implements Controller {
     @FXML
-    public Button transferÜberweisungButton;
+    private Text accountName;
+    @FXML
+    private Accordion accordion;
+    @FXML
+    private TitledPane listViewTitledPane;
+    @FXML
+    private Button transferÜberweisungButton, searchButton;
+    @FXML
+    private TextField searchbar;
+    @FXML
+    private ComboBox<String> filterComboBox;
     @FXML
     private Label ibanLabel, saldoLabel, typLabel;
     @FXML
     private BorderPane borderPane;
     @FXML
     private HBox hbox;
+    @FXML
+    private ListView<Transaction> transactionsListView;
 
     private Account account;
     private ArrayList<Card> cards = null;
@@ -52,11 +67,22 @@ public class SpaceAccountController implements Controller {
         saldoLabel.setText(account.getSaldo() + "€");
         typLabel.setText(account.getTyp());
         loadCard();
-        if (account.getTyp().equals("Hauptkonto")) transferÜberweisungButton.setText("Überweisung");
+        if (account.getTyp().equals("Hauptkonto")){
+            transferÜberweisungButton.setText("Überweisung");
+            accountName.setText("Hauptkonto");
+        }
         else{
             transferÜberweisungButton.setText("Transfer");
+            accountName.setText("Spacekonto");
         }
 
+        accordion.setExpandedPane(listViewTitledPane);
+
+        searchButton.setStyle("-fx-background-color: grey; -fx-background-radius: 4");
+        searchButton.setTextFill(Paint.valueOf("white"));
+        filterComboBox.setStyle("-fx-background-color: grey; -fx-background-radius: 4; -fx-text-fill: white;");
+        filterComboBox.setItems(FXCollections.observableArrayList(null, "Eingang", "Ausgang"));
+        fillListView(this.account.getTransactions());
     }
 
 
@@ -123,39 +149,106 @@ public class SpaceAccountController implements Controller {
     }
 
     public void handleTransferÜberweisungButton(MouseEvent event) throws IOException {
-        /*Stage stage = (Stage) hbox.getScene().getWindow();
-        SceneChanger.changeScene("/com/jmc/app/Dashboard.fxml", stage, user, null);*/
-            try {
-                String resource;
-                if (account.getTyp().equals("Hauptkonto")){
-                    resource = "/com/jmc/app/popupÜberweisung.fxml";
-                }
-                else {
-                    resource = "/com/jmc/app/popupTransfer.fxml";
-                }
-                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(resource));
-                Parent root = (Parent) fxmlLoader.load();
-                Controller controller = fxmlLoader.getController();
-                controller.initialize(user, account);
-                Stage stage = new Stage();
-                stage.setScene(new Scene(root));
-                stage.show();
-            }catch (Exception e) {
-                System.out.println("Cant load window");
-            }
+        String resource;
+        if (account.getTyp().equals("Hauptkonto")){
+            resource = "/com/jmc/app/popupÜberweisung.fxml";
+        }
+        else {
+            resource = "/com/jmc/app/popupTransfer.fxml";
+        }
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(resource));
+        Parent root = (Parent) fxmlLoader.load();
+        Controller controller = fxmlLoader.getController();
+        controller.initialize(user, account);
+        Stage stage = new Stage();
+        stage.setScene(new Scene(root));
+        stage.show();
     }
 
-        /*if (account.getTyp().equals("Hauptkonto")){
-
+    private List<Transaction> filterTransactionsByType(String type) {
+        Stream<Transaction> filteredTransactions = account.getTransactions().stream();
+        if (type.equals("Eingang")) {
+            filteredTransactions = filteredTransactions.filter(t -> t.getEingangAusgang().equals("Eingang"));
+        } else if (type.equals("Ausgang")) {
+            filteredTransactions = filteredTransactions.filter(t -> t.getEingangAusgang().equals("Ausgang"));
         }
-        else {*/
+        return filteredTransactions.collect(Collectors.toList());
+    }
 
+    private List<Transaction> searchTransactions(String searchTerm) {
+        return account.getTransactions().stream()
+                .filter(t -> t.getVerwendungszweck().contains(searchTerm))
+                .collect(Collectors.toList());
+    }
 
+    public void searchButtonOnAction(ActionEvent event) {
+        String filterType = filterComboBox.getValue();
+        String searchTerm = searchbar.getText();
 
-    /*public void handleTransferÜberweisungButton(javafx.event.ActionEvent actionEvent) throws IOException {
+        List<Transaction> filteredTransactions = new ArrayList<>();
 
-        Stage stage = (Stage) transferÜberweisungButton.getScene().getWindow();
-        SceneChanger.changeScene("popupTransfer.fxml", stage, user, account);
-    }*/
+        if(filterComboBox.getValue() != null) {
+            filteredTransactions = filterTransactionsByType(filterType);
+        }
+        else filteredTransactions = searchTransactions(searchTerm);
 
+        fillListView(filteredTransactions);
+    }
+
+    private void fillListView(List<Transaction> transactions){
+        ObservableList<Transaction> transactionsData = FXCollections.observableArrayList();
+        transactionsData.addAll(transactions);
+        transactionsListView.setItems(transactionsData);
+
+        transactionsListView.setCellFactory(new Callback<ListView<Transaction>, ListCell<Transaction>>() {
+            @Override
+            public ListCell<Transaction> call(ListView<Transaction> listView) {
+                return new ListCell<Transaction>() {
+                    private final HBox content;
+                    private final Text description;
+                    private final Text amount;
+
+                    {
+                        description = new Text();
+                        amount = new Text();
+                        content = new HBox(description, amount);
+                    }
+
+                    @Override
+                    protected void updateItem(Transaction item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (item != null && !empty) {
+                            switch (item.getVerwendungszweck()) {
+                                case "Transfer" -> content.setSpacing(470);
+                                case "Abhebung" -> content.setSpacing(459);
+                                case "Einzahlung" -> content.setSpacing(458);
+                                case "Kartenzahlung" -> content.setSpacing(438);
+                                default -> content.setSpacing(441);
+                            }
+                            description.setText(item.getVerwendungszweck());
+                            amount.setText(item.getBetrag() + " €");
+                            if(item.getEingangAusgang().equals("Eingang")) amount.setFill(Color.GREEN);
+                            else amount.setFill(Color.RED);
+                            setGraphic(content);
+                            if (getIndex() % 2 == 0){
+                                setStyle("-fx-background-color: #DAECFB");
+                            }
+                            else {
+                                setStyle("-fx-background-color: white");
+                            }
+                        }
+                        else {
+                            setGraphic(null);
+                            if (getIndex() % 2 == 0){
+                                setStyle("-fx-background-color: #DAECFB");
+                            }
+                            else {
+                                setStyle("-fx-background-color: white");
+                            }
+                        }
+                    }
+                };
+            }
+        });
+    }
 }

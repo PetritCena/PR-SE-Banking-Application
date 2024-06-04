@@ -2,7 +2,7 @@
     -fx-background-color: transparent;
 }
 .scroll-pane > .scroll-bar{
-    -fx-font-size: 10;
+    -fx-font-size: 1;
     -fx-background-color: transparent;
     -fx-border-color: transparent;
 }

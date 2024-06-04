@@ -2,19 +2,24 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Accordion?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="borderpane" maxHeight="750.0" maxWidth="850.0" minHeight="750.0" minWidth="850.0" prefHeight="750.0" prefWidth="850.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jmc.app.Controllers.KartenController">
+<BorderPane fx:id="borderpane" maxHeight="750.0" maxWidth="850.0" minHeight="750.0" minWidth="850.0" prefHeight="750.0" prefWidth="850.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jmc.app.Controllers.KartenController">
    <center>
-      <VBox prefHeight="200.0" prefWidth="100.0" spacing="10.0" BorderPane.alignment="CENTER">
+      <VBox prefHeight="200.0" prefWidth="100.0" spacing="10.0" style="-fx-background-color: white;" BorderPane.alignment="CENTER">
          <Label text="Meine Karte">
             <VBox.margin>
                <Insets left="70.0" top="40.0" />
@@ -122,6 +127,32 @@
                </cursor>
             </Button>
          </HBox>
+         <Accordion prefHeight="268.0" prefWidth="754.0" stylesheets="@accordion.css">
+            <panes>
+               <TitledPane animated="true" prefHeight="257.0" prefWidth="624.0" text="Transaktionen" textFill="#35495a">
+                  <content>
+                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                        <ListView fx:id="transactionsListView" layoutY="31.0" prefHeight="241.0" prefWidth="623.0" style="-fx-border-color: white; -fx-effect: null;" />
+                        <TextField fx:id="searchbar" layoutX="1.0" prefHeight="30.0" prefWidth="416.0" promptText="Suche nach Verwendungszweck" />
+                        <ComboBox fx:id="filterComboBox" layoutX="427.0" onAction="#searchButtonOnAction" prefHeight="30.0" prefWidth="120.0" promptText="Typ" />
+                        <Button fx:id="searchButton" layoutX="557.0" onAction="#searchButtonOnAction" text="Suche" />
+                     </AnchorPane>
+                  </content>
+                  <font>
+                     <Font name="System Bold" size="20.0" />
+                  </font>
+                  <cursor>
+                     <Cursor fx:constant="OPEN_HAND" />
+                  </cursor>
+                  <padding>
+                     <Insets left="41.0" top="10.0" />
+                  </padding>
+               </TitledPane>
+            </panes>
+            <cursor>
+               <Cursor fx:constant="OPEN_HAND" />
+            </cursor>
+         </Accordion>
          <BorderPane.margin>
             <Insets />
          </BorderPane.margin>

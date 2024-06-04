@@ -1,9 +1,6 @@
 package com.jmc.app.Controllers;
 
-import com.jmc.app.Models.Account;
-import com.jmc.app.Models.DatabaseConnector;
-import com.jmc.app.Models.User;
-import com.jmc.app.Models.Card;
+import com.jmc.app.Models.*;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
@@ -116,8 +113,14 @@ public class AbhebungContoller implements Controller {
             for(Account account : accounts) {
                 if(iban.equals(account.getIban())) {
                     account.setSaldo(account.getSaldo() - betrag);
+                    /*int transaktionsNummer = 1;
+                    if(account.getTransactions() != null){
+                        transaktionsNummer = account.getTransactions().getLast().getTransaktionsnummer() + 1;
+                    }*/
+                    account.addTransaction(new Transaction(betrag, "Ausgang", null, account.getIban(), "Abhebung", 0, kartennummer));
                 }
             }
+
         } else {
             validationMessage.setText("Card data is invalid.");
             validationMessage.setStyle("-fx-text-fill: red;");

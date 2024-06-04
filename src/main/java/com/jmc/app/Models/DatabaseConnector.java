@@ -8,12 +8,12 @@ import java.util.Random;
 
 public class DatabaseConnector {
 
-    private final String CONNECTION_STRING = "jdbc:oracle:thin:@e4xxmj5ey9kfqzz5_high?TNS_ADMIN=/Users/oemer.t/Downloads/Wallet_E4XXMJ5EY9KFQZZ5";
+    private final String CONNECTION_STRING = "jdbc:oracle:thin:@e4xxmj5ey9kfqzz5_high?TNS_ADMIN=/Users/petritcena/Desktop/Wallet_E4XXMJ5EY9KFQZZ5";
     private final String USER = "admin";
     private final String PWD = "BigBankSoSe2024";
 
     Random random = new Random();
-    private ArrayList<Transaction> transactions = new ArrayList<>();
+    private final ArrayList<Transaction> transactions = new ArrayList<>();
     private ArrayList<int[]> farben = new ArrayList<>(Arrays.asList(new int[]{0, 51, 102}, new int[]{192, 192, 192}, new int[]{211, 211, 211}, new int[]{176, 224, 230}, new int[]{163, 100, 100}));
 
     private final Connection con;
@@ -92,9 +92,7 @@ public class DatabaseConnector {
                 float saldo = rs.getFloat("saldo");
                 String typ = rs.getString("typ");
 
-                getAllWithdrawals(iban);
-                getAllDeposits(iban);
-                accounts.add(new Account(iban, saldo, typ, user, getAllCards(iban), transactions));
+                accounts.add(new Account(iban, saldo, typ, user, getAllCards(iban), getAllTransactions(iban)));
             }
         }
         return accounts;
@@ -176,20 +174,19 @@ public class DatabaseConnector {
         }
     }
 //deposit withdrawal und kartenzahlung in einer methode
-    public void updateBalance(String iban, float betrag, long kartennummer, String transaktionsTyp) throws SQLException {
+    public void updateBalance(String iban, float betrag, Long kartennummer, String transaktionsTyp) throws SQLException {
         String query = "";
-
-            if (transaktionsTyp.equals("Abhebung")){
-                if (enoughBalance(iban,betrag)) {
-                    query = "UPDATE accounts SET saldo = saldo - ? WHERE iban = ?";
-                    insertIntoTransaction(betrag, "Ausgang", null, iban, "Abhebung", kartennummer);
-                }
-            } else if (transaktionsTyp.equals("Kartenzahlung")) {
-                if (enoughBalance(iban,betrag)) {
-                    query = "UPDATE accounts SET saldo = saldo - ? WHERE iban = ?";
-                    insertIntoTransaction(betrag, "Ausgang", null, iban, "Kartenzahlung", kartennummer);
-                }
-            } else if (transaktionsTyp.equals("Einzahlung")) {
+        if (transaktionsTyp.equals("Abhebung")){
+            if (enoughBalance(iban,betrag)) {
+                query = "UPDATE accounts SET saldo = saldo - ? WHERE iban = ?";
+                insertIntoTransaction(betrag, "Ausgang", null, iban, "Abhebung", kartennummer);
+            }
+        } else if (transaktionsTyp.equals("Kartenzahlung")) {
+            if (enoughBalance(iban,betrag)) {
+                query = "UPDATE accounts SET saldo = saldo - ? WHERE iban = ?";
+                insertIntoTransaction(betrag, "Ausgang", null, iban, "Kartenzahlung", kartennummer);
+            }
+        } else if (transaktionsTyp.equals("Einzahlung")) {
             query = "UPDATE accounts SET saldo = saldo + ? WHERE iban = ?";
             insertIntoTransaction(betrag, "Eingang",iban, null,  "Einzahlung", kartennummer);
         }
@@ -199,27 +196,7 @@ public class DatabaseConnector {
             stmt.executeUpdate();
         }
     }
-    /*public void withdrawal(String senderIban, float betrag, long kartennummer) throws SQLException {
-        if (enoughBalance(senderIban, betrag)) {
-            final String withdrawQuery = "UPDATE accounts SET saldo = saldo - ? WHERE iban = ?";
-            try (PreparedStatement stmt = con.prepareStatement(withdrawQuery)) {
-                stmt.setFloat(1, betrag);
-                stmt.setString(2, senderIban);
-                stmt.executeUpdate();
-            }
-            insertIntoTransaction(betrag, "Ausgang", null, senderIban, "Abhebung", kartennummer);
-        }
-    }
 
-    public void deposit(String empfaengerIban, float betrag, long kartennummer) throws SQLException {
-        final String depositQuery = "UPDATE accounts SET saldo = saldo + ? WHERE iban = ?";
-        try (PreparedStatement stmt = con.prepareStatement(depositQuery)) {
-            stmt.setFloat(1, betrag);
-            stmt.setString(2, empfaengerIban);
-            stmt.executeUpdate();
-        }
-        insertIntoTransaction(betrag, "Eingang", empfaengerIban, null,  "Einzahlung", kartennummer);
-    }*/
     public void transferHauptkonnto(String hauptkontoIban, String spaceIban, float betrag, String transferTyp) throws SQLException {
         final String query = "UPDATE accounts SET saldo = saldo + ? WHERE iban = ?";
         try (PreparedStatement stmt = con.prepareStatement(query)) {
@@ -243,21 +220,18 @@ public class DatabaseConnector {
             else if (transferTyp.equals("zum Hauptkonto")) {
                 stmt.setString(2, spaceIban);
             }
-
             stmt.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
         if (transferTyp.equals("vom Hauptkonto")){
-            insertIntoTransaction(betrag, "Eingang", spaceIban, hauptkontoIban,  "Transfer", 0);
+            insertIntoTransactionTransfer(betrag, "Eingang", spaceIban, hauptkontoIban,  "Transfer");
         }
         else if (transferTyp.equals("zum Hauptkonto")) {
-            insertIntoTransaction(betrag, "Ausgang", hauptkontoIban, spaceIban,  "Transfer", 0);
+            insertIntoTransactionTransfer(betrag, "Ausgang", hauptkontoIban, spaceIban, "Transfer");
         }
-
-
-
     }
+
     public void überweisen(String senderIban, String empfängerIban, float betrag) throws SQLException {
         final String query = "UPDATE accounts SET saldo = saldo + ? WHERE iban = ?";
         try (PreparedStatement stmt = con.prepareStatement(query)) {
@@ -275,7 +249,7 @@ public class DatabaseConnector {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        insertIntoTransaction(betrag, "Ausgang", empfängerIban, senderIban,  "Überweisung", 0);
+        insertIntoTransactionTransfer(betrag, "Ausgang", empfängerIban, senderIban,  "Überweisung");
     }
     private void insertIntoTransaction(float betrag, String eingangAusgang, String empfaengerIban, String senderIban,
                                        String verwendungszweck, long kartennummer) throws SQLException {
@@ -293,8 +267,7 @@ public class DatabaseConnector {
             stmt.executeUpdate();
         }
     }
-
-    /*private void insertIntoTransaction2(float betrag, String eingangAusgang, String empfaengerIban, String senderIban,
+    private void insertIntoTransactionTransfer(float betrag, String eingangAusgang, String empfaengerIban, String senderIban,
                                        String verwendungszweck) throws SQLException {
 
         final String insertTransactionQuery = "INSERT INTO transactions " +
@@ -308,9 +281,11 @@ public class DatabaseConnector {
             stmt.setString(5, verwendungszweck);
             stmt.executeUpdate();
         }
-    }*/
+    }
 
-    private void getAllWithdrawals(String iban) throws SQLException {
+
+    private ArrayList<Transaction> getAllWithdrawals(String iban) throws SQLException {
+        ArrayList<Transaction> withdrawals = new ArrayList<>();
         final String query = "SELECT * FROM transactions WHERE senderIban = ? ";
         try (PreparedStatement stmt = con.prepareStatement(query)) {
             stmt.setString(1, iban);
@@ -324,12 +299,14 @@ public class DatabaseConnector {
                 int transaktionsnummer = rs.getInt("transaktionsNummer");
                 long kartennummer = rs.getLong("kartennummer");
 
-                transactions.add(new Transaction(betrag, eingangAusgang, empfaengerIban, senderIban, verwendungszweck, transaktionsnummer, kartennummer));
+                withdrawals.add(new Transaction(betrag, eingangAusgang, empfaengerIban, senderIban, verwendungszweck, transaktionsnummer, kartennummer));
             }
         }
+        return withdrawals;
     }
 
-    private void getAllDeposits(String iban) throws SQLException {
+    private ArrayList<Transaction> getAllDeposits(String iban) throws SQLException {
+        ArrayList<Transaction> deposits = new ArrayList<>();
         final String query = "SELECT * FROM transactions WHERE empfaengerIban = ? ";
         try (PreparedStatement stmt = con.prepareStatement(query)) {
             stmt.setString(1, iban);
@@ -343,9 +320,17 @@ public class DatabaseConnector {
                 int transaktionsnummer = rs.getInt("transaktionsNummer");
                 long kartennummer = rs.getLong("kartennummer");
 
-                transactions.add(new Transaction(betrag, eingangAusgang, empfaengerIban, senderIban, verwendungszweck, transaktionsnummer, kartennummer));
+                deposits.add(new Transaction(betrag, eingangAusgang, empfaengerIban, senderIban, verwendungszweck, transaktionsnummer, kartennummer));
             }
         }
+        return deposits;
+    }
+
+    private ArrayList<Transaction> getAllTransactions(String iban) throws SQLException {
+        ArrayList<Transaction> allTransactions = new ArrayList<>();
+        allTransactions.addAll(getAllWithdrawals(iban));
+        allTransactions.addAll(getAllDeposits(iban));
+        return allTransactions;
     }
 
     public boolean isCardDataValid(long kartennummer, int folgenummer, int geheimzahl) {
@@ -364,6 +349,4 @@ public class DatabaseConnector {
         }
         return false;
     }
-
-
 }

@@ -1,9 +1,6 @@
 package com.jmc.app.Controllers;
 
-import com.jmc.app.Models.Account;
-import com.jmc.app.Models.Card;
-import com.jmc.app.Models.DatabaseConnector;
-import com.jmc.app.Models.User;
+import com.jmc.app.Models.*;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
@@ -122,10 +119,16 @@ public class KartenBezahlungController implements Controller {
         boolean isValid = db.isCardDataValid(kartennummer, folgenummer, geheimzahl);
 
         if (isValid) {
-            //hier musst du weiter machen, Ömer!
             db.updateBalance(iban, betrag, kartennummer, "Kartenzahlung");
             for (Account account: accounts){
-                if (account.getIban().equals(iban)) account.setSaldo(account.getSaldo()-betrag);
+                if (account.getIban().equals(iban)){
+                    account.setSaldo(account.getSaldo()-betrag);
+                    /*int transaktionsNummer = 1;
+                    if(account.getTransactions() != null){
+                        transaktionsNummer = account.getTransactions().getLast().getTransaktionsnummer() + 1;
+                    }*/
+                    account.addTransaction(new Transaction(betrag, "Ausgang", null, account.getIban(), "Kartenzahlung", 0, kartennummer));
+                }
             }
             validationMessage.setText("Transaction successful.");
             validationMessage.setStyle("-fx-text-fill: green;");

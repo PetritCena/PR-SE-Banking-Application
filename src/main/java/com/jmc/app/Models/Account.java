@@ -34,6 +34,9 @@ public class Account {
         return cards;
     }
     public ArrayList<Transaction> getTransactions() { return transactions; }
+    public void addTransaction(Transaction transaction) {
+        transactions.add(transaction);
+    }
     public String toString() {
         return iban;
     }

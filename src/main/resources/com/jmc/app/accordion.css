@@ -5,6 +5,7 @@
 .accordion .titled-pane>*.content{
     -fx-background-color: transparent;
     -fx-border-color: transparent;
+    -fx-effect: null;
 }
 
 .accordion .titled-pane>.title>.arrow-button>.arrow {

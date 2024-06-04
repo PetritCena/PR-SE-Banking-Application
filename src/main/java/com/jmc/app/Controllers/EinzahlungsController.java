@@ -1,9 +1,6 @@
 package com.jmc.app.Controllers;
 
-import com.jmc.app.Models.Account;
-import com.jmc.app.Models.Card;
-import com.jmc.app.Models.DatabaseConnector;
-import com.jmc.app.Models.User;
+import com.jmc.app.Models.*;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -120,6 +117,11 @@ public class EinzahlungsController implements Controller {
             for(Account account : accounts) {
                 if(iban.equals(account.getIban())) {
                     account.setSaldo(account.getSaldo() + betrag);
+                    /*int transaktionsNummer = 1;
+                    if(account.getTransactions() != null){
+                        transaktionsNummer = account.getTransactions().getLast().getTransaktionsnummer() + 1;
+                    }*/
+                    account.addTransaction(new Transaction(betrag, "Eingang", account.getIban(), null, "Einzahlung", 0, kartennummer));
                 }
             }
         } else {
