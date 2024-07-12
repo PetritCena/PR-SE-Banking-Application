@@ -2,19 +2,17 @@ package com.jmc.app.Controllers;
 
 import com.jmc.app.Models.*;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-
+/**
+ * Diese Klasse entspricht dem Controller für die Einzahlungsseite.
+ */
 public class EinzahlungsController implements Controller {
     @FXML
     private Button Einzahlung, Back;
@@ -33,6 +31,11 @@ public class EinzahlungsController implements Controller {
     private ArrayList<Account> accounts = new ArrayList<>();
     private ArrayList<Card> cards = new ArrayList<>();
 
+    /**
+     * Diese Methode initialisiert die Einzahlungsseite.
+     * @param user ist eine User-Instanz.
+     * @param nulll wird hier nicht, benutzt, da keine Account-Instanz notwendig ist.
+     */
     @Override
     public void initialize(Object user, Object nulll) {
         this.user = (User) user;
@@ -46,15 +49,24 @@ public class EinzahlungsController implements Controller {
         SceneChanger.loadLeftFrame(borderPane, this.user);
     }
 
-    public void Back(MouseEvent mouseEvent) throws IOException {
+    /**
+     * Diese Methode führt den User zurück zur Simulator-Seite.
+     * @throws IOException wird geworfen, wenn SceneChanger.changeScene("/com/jmc/app/Simulator.fxml", stage, user, user) einen Fehler zurückgibt.
+     */
+    public void Back() throws IOException {
         Stage stage = (Stage) Back.getScene().getWindow();
-        SceneChanger.changeScene("/com/jmc/app/Simulator.fxml", stage, user, user);
+        SceneChanger.changeScene("/com/jmc/app/Simulator.fxml", stage, user, null);
     }
 
-    public void Transaction(MouseEvent mouseEvent) throws IOException, SQLException {
+    /**
+     * Diese Methode führt die Transaktion durch und bringt den User zur TransaktionErfolgreich-Seite.
+     * @throws IOException wird geworfen, wenn SceneChanger.changeScene("/com/jmc/app/TransactionErfolgreich.fxml", stage, user, null) einen Fehler zurückgibt.
+     * @throws SQLException wird geworfen, wenn validateCard() einen Fehler zurückgibt.
+     */
+    public void Transaction() throws IOException, SQLException {
         if(validateCard()) {
             Stage stage = (Stage) Einzahlung.getScene().getWindow();
-            SceneChanger.changeScene("/com/jmc/app/TransactionErfolgreich.fxml", stage, user, user);
+            SceneChanger.changeScene("/com/jmc/app/TransactionErfolgreich.fxml", stage, user, null);
         }
     }
 
@@ -113,14 +125,10 @@ public class EinzahlungsController implements Controller {
         boolean isValid = db.isCardDataValid(kartennummer, folgenummer, geheimzahl);
 
         if (isValid) {
-            db.updateBalance(iban, betrag, kartennummer, "Einzahlung");
+            db.updateBalance(iban, betrag, kartennummer, "Eingang", "Einzahlung");
             for(Account account : accounts) {
                 if(iban.equals(account.getIban())) {
                     account.setSaldo(account.getSaldo() + betrag);
-                    /*int transaktionsNummer = 1;
-                    if(account.getTransactions() != null){
-                        transaktionsNummer = account.getTransactions().getLast().getTransaktionsnummer() + 1;
-                    }*/
                     account.addTransaction(new Transaction(betrag, "Eingang", account.getIban(), null, "Einzahlung", 0, kartennummer));
                 }
             }

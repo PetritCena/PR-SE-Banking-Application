@@ -13,19 +13,27 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.sql.*;
 
+/**
+ * Diese Klasse ist der Controller für das Login.
+ */
 public class LoginController{
     @FXML
-    public Button loginButton, noAccountButton;
+    private Button loginButton, noAccountButton, forgotPasswordButton;
     @FXML
     private TextField emailField;
     @FXML
     private PasswordField passwordField;
     @FXML
     private Label statusLabel;
+
     private User user;
 
-    // Handles the login process
-    public void handleLoginButtonAction(ActionEvent event) throws SQLException, IOException {
+    /**
+     * Diese Methode übernimmt den Login-Vorgang.
+     * @throws SQLException wird geworfen, wenn dbConnector.authenticateUser(email, password) einen Fehler zurückgibt.
+     * @throws IOException wird geworfen, wenn loadDashboardView() einen Fehler zurückgibt.
+     */
+    public void handleLoginButtonAction() throws SQLException, IOException {
         if (emailField.getText().isEmpty() || passwordField.getText().isEmpty()){
             statusLabel.setText("Bitte E-Mail und Passwort eingeben!");
         } else {
@@ -42,15 +50,26 @@ public class LoginController{
         }
     }
 
-    // Helper method to load the Dashboard view
     private void loadDashboardView() throws IOException {
         Stage stage = (Stage) loginButton.getScene().getWindow();
         SceneChanger.changeScene("/com/jmc/app/Dashboard.fxml", stage, user, null);
     }
 
-    // Redirect to the SignUp page
-    public void noAccountButtonAction(ActionEvent event) throws IOException {
+    /**
+     * Diese Methode führt den User zur Signup-Seite.
+     * @throws IOException wird geworfen, wenn SceneChanger.changeScene("/com/jmc/app/signup.fxml", stage, null, null) einen Fehler zurückgibt.
+     */
+    public void noAccountButtonAction() throws IOException {
         Stage stage = (Stage) noAccountButton.getScene().getWindow();
         SceneChanger.changeScene("/com/jmc/app/signup.fxml", stage, null, null);
+    }
+
+    /**
+     * Diese Methode führt den User zur Signup-Seite.
+     * @throws IOException wird geworfen, SceneChanger.changeScene("/com/jmc/app/forgotPassword.fxml", stage, null, null);
+     */
+    public void handleForgotPasswordAction() throws IOException {
+        Stage stage = (Stage) forgotPasswordButton.getScene().getWindow();
+        SceneChanger.changeScene("/com/jmc/app/forgotPassword.fxml", stage, null, null);
     }
 }

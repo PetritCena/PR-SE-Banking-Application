@@ -3,46 +3,40 @@ package com.jmc.app.Controllers;
 import com.jmc.app.Models.*;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-import java.awt.image.AreaAveragingScaleFilter;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+/**
+ * Diese Klasse entspricht dem Controller für die Kartenzahlungsseite.
+ */
 public class KartenBezahlungController implements Controller {
     @FXML
-    public TextField BetragFeld1;
-    public ComboBox<String> kartenNummerAuswahl;
-    private User user;
-
-    public Text saldoHauptkonto;
+    private TextField folgenummerField, BetragFeld;
     @FXML
-    public Button Abhebung;
+    private ComboBox<String> kartenNummerAuswahl;
     @FXML
-    public Button Back;
+    private Button Abhebung, Back;
     @FXML
     private BorderPane borderPane;
-
-    @FXML
-    private TextField kartennummerField;
-
-    @FXML
-    private TextField folgenummerField;
-
     @FXML
     private PasswordField geheimzahlField;
-
-    @FXML
-    private TextField BetragFeld;
     @FXML
     private Label validationMessage;
+
+    private User user;
     private ArrayList<Card> cards = new ArrayList<>();
     private ArrayList<Account> accounts = new ArrayList<>();
 
+    /**
+     * Diese Methode initialisiert die Kartenzahlungsseite.
+     * @param user ist eine User-Instanz.
+     * @param nulll wird hier nicht, benutzt, da keine Account-Instanz notwendig ist.
+     */
+    @Override
     public void initialize(Object user, Object nulll) {
         this.user = (User) user;
         SceneChanger.loadLeftFrame(borderPane, this.user);
@@ -55,16 +49,25 @@ public class KartenBezahlungController implements Controller {
         }
     }
 
-    public void Transaction(MouseEvent mouseEvent) throws IOException, SQLException {
+    /**
+     * Diese Methode führt die Transaktion durch und bringt den User zur TransaktionErfolgreich-Seite.
+     * @throws IOException wird geworfen, wenn SceneChanger.changeScene("/com/jmc/app/TransactionErfolgreich.fxml", stage, user, null) einen Fehler zurückgibt.
+     * @throws SQLException wird geworfen, wenn validateCard() einen Fehler zurückgibt.
+     */
+    public void Transaction() throws IOException, SQLException {
         if (validateCard()) {
             Stage stage = (Stage) Abhebung.getScene().getWindow();
-            SceneChanger.changeScene("/com/jmc/app/TransactionErfolgreich.fxml", stage, user, user);
+            SceneChanger.changeScene("/com/jmc/app/TransactionErfolgreich.fxml", stage, user, null);
         }
     }
 
-    public void Back(MouseEvent mouseEvent) throws IOException, SQLException {
+    /**
+     * Diese Methode führt den User zurück zur Simulator-Seite.
+     * @throws IOException wird geworfen, wenn SceneChanger.changeScene("/com/jmc/app/Simulator.fxml", stage, user, user) einen Fehler zurückgibt.
+     */
+    public void Back() throws IOException, SQLException {
         Stage stage = (Stage) Back.getScene().getWindow();
-        SceneChanger.changeScene("/com/jmc/app/Simulator.fxml", stage, user, user);
+        SceneChanger.changeScene("/com/jmc/app/Simulator.fxml", stage, user, null);
     }
 
     private boolean validateCard() throws SQLException {
@@ -119,14 +122,10 @@ public class KartenBezahlungController implements Controller {
         boolean isValid = db.isCardDataValid(kartennummer, folgenummer, geheimzahl);
 
         if (isValid) {
-            db.updateBalance(iban, betrag, kartennummer, "Kartenzahlung");
+            db.updateBalance(iban, betrag, kartennummer, "Ausgang", "Kartenzahlung");
             for (Account account: accounts){
                 if (account.getIban().equals(iban)){
                     account.setSaldo(account.getSaldo()-betrag);
-                    /*int transaktionsNummer = 1;
-                    if(account.getTransactions() != null){
-                        transaktionsNummer = account.getTransactions().getLast().getTransaktionsnummer() + 1;
-                    }*/
                     account.addTransaction(new Transaction(betrag, "Ausgang", null, account.getIban(), "Kartenzahlung", 0, kartennummer));
                 }
             }

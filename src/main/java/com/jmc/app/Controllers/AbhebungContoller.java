@@ -10,6 +10,9 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+/**
+ * Diese Klasse entspricht dem Controller für die Abhebungsseite.
+ */
 public class AbhebungContoller implements Controller {
     @FXML
     private Button Abhebung, Back;
@@ -28,7 +31,11 @@ public class AbhebungContoller implements Controller {
     private ArrayList<Account> accounts = new ArrayList<>();
     private ArrayList<Card> cards = new ArrayList<>();
 
-
+    /**
+     * Diese Methode initialisiert die Abhebungsseite.
+     * @param user ist eine User-Instanz.
+     * @param nulll wird hier nicht, benutzt, da keine Account-Instanz notwendig ist.
+     */
     @Override
     public void initialize(Object user, Object nulll) {
         this.user = (User) user;
@@ -42,14 +49,23 @@ public class AbhebungContoller implements Controller {
         SceneChanger.loadLeftFrame(borderPane, this.user);
     }
 
-    public void Transaction(MouseEvent mouseEvent) throws IOException, SQLException {
+    /**
+     * Diese Methode führt die Transaktion durch und bringt den User zur TransaktionErfolgreich-Seite.
+     * @throws IOException wird geworfen, wenn SceneChanger.changeScene("/com/jmc/app/TransactionErfolgreich.fxml", stage, user, null) einen Fehler zurückgibt.
+     * @throws SQLException wird geworfen, wenn validateCard() einen Fehler zurückgibt.
+     */
+    public void Transaction() throws IOException, SQLException {
         if(validateCard()) {
             Stage stage = (Stage) Abhebung.getScene().getWindow();
             SceneChanger.changeScene("/com/jmc/app/TransactionErfolgreich.fxml", stage, user, null);
         }
     }
 
-    public void Back(MouseEvent mouseEvent) throws IOException {
+    /**
+     * Diese Methode führt den User zurück zur Simulator-Seite.
+     * @throws IOException wird geworfen, wenn SceneChanger.changeScene("/com/jmc/app/Simulator.fxml", stage, user, user) einen Fehler zurückgibt.
+     */
+    public void Back() throws IOException {
         Stage stage = (Stage) Back.getScene().getWindow();
         SceneChanger.changeScene("/com/jmc/app/Simulator.fxml", stage, user, null);
     }
@@ -109,14 +125,10 @@ public class AbhebungContoller implements Controller {
         boolean isValid = db.isCardDataValid(kartennummer, folgenummer, geheimzahl);
 
         if (isValid) {
-            db.updateBalance(iban, betrag, kartennummer, "Abhebung");
+            db.updateBalance(iban, betrag, kartennummer, "Ausgang", "Abhebung");
             for(Account account : accounts) {
                 if(iban.equals(account.getIban())) {
                     account.setSaldo(account.getSaldo() - betrag);
-                    /*int transaktionsNummer = 1;
-                    if(account.getTransactions() != null){
-                        transaktionsNummer = account.getTransactions().getLast().getTransaktionsnummer() + 1;
-                    }*/
                     account.addTransaction(new Transaction(betrag, "Ausgang", null, account.getIban(), "Abhebung", 0, kartennummer));
                 }
             }

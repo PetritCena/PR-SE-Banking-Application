@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+
+<BorderPane fx:id="borderPane" prefHeight="750.0" prefWidth="850.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jmc.app.Controllers.KryptoController">
+   <center>
+      <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+                <Label layoutX="162.0" layoutY="21.0" style="-fx-font-weight: bold; -fx-font-size: 16px;" text="Trends" />
+                <Label alignment="CENTER" contentDisplay="CENTER" layoutX="446.0" layoutY="21.0" style="-fx-font-weight: bold; -fx-font-size: 16px;" text="Top 5 Kryptoaktien" />
+                <TableView fx:id="topKryptoTable" layoutX="362.0" layoutY="43.0" prefHeight="195">
+                    <columns>
+                        <TableColumn fx:id="topKryptoNameColumn" prefWidth="140.0" text="Name" />
+                        <TableColumn fx:id="topKryptoPriceColumn" prefWidth="140.0" text="Price" />
+                    </columns>
+                </TableView>
+                 <TableView fx:id="trendsTable" layoutX="45.0" layoutY="43.0" prefHeight="195">
+                     <columns>
+                         <TableColumn fx:id="trendsNameColumn" prefWidth="140.0" text="Name" />
+                         <TableColumn fx:id="trendsPriceColumn" prefWidth="140.0" text="Price" />
+                     </columns>
+                 </TableView>
+               <LineChart fx:id="bitcoinChart" layoutX="25.0" layoutY="268.0" prefHeight="474.0" prefWidth="613.0">
+                   <xAxis>
+                       <CategoryAxis label="Date" />
+                   </xAxis>
+                   <yAxis>
+                       <NumberAxis label="Price (USD)" />
+                   </yAxis>
+               </LineChart>
+         </children>
+      </AnchorPane>
+   </center>
+</BorderPane>

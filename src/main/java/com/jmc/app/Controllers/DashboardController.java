@@ -21,6 +21,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Objects;
 
+/**
+ * Diese Klasse entspricht dem Controller für die Dashboard-Seite.
+ */
 public class DashboardController implements Controller{
     @FXML
     private HBox hbox;
@@ -36,9 +39,14 @@ public class DashboardController implements Controller{
     private User user;
     private ArrayList<Account> accounts;
     private ArrayList<Card> cards = new ArrayList<>();
-    Account hauptkonto = null;
+    private Account hauptkonto = null;
 
-    @FXML
+    /**
+     * Diese Methode initialisiert die Dashboard-Seite.
+     * @param user ist eine User-Instanz.
+     * @param nulll wird hier nicht benutzt, da eine Account-Instanz hier nicht notwendig ist.
+     */
+    @Override
     public void initialize(Object user, Object nulll) {
         this.user = (User) user;
         SceneChanger.loadLeftFrame(borderPane, this.user);
@@ -97,7 +105,7 @@ public class DashboardController implements Controller{
             if (Objects.equals(account.getTyp(), "Spacekonto")) {
                 VBox spaceBox = new VBox();
                 hbox.getChildren().add(spaceBox);
-                Label spacekonto = new Label("Spacekonto");
+                Label spacekonto = new Label(account.getName());
                 spacekonto.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
 
                 String iban = account.getIban();
@@ -131,10 +139,21 @@ public class DashboardController implements Controller{
         }
     }
 
-    public void hauptKontoBoxOnAction(MouseEvent mouseEvent) throws IOException {
+    /**
+     * Diese Methode führt den User zum Hauptkonto.
+     * @throws IOException wird geworfen, wenn accountsButtonOnAction(hauptKontoBox, hauptkonto, user) einen Fehler zurückgibt.
+     */
+    public void hauptKontoBoxOnAction() throws IOException {
         accountsButtonOnAction(hauptKontoBox, hauptkonto, user);
     }
 
+    /**
+     * Diese Methode führt den User zum ausgewählten Konto.
+     * @param box ist VBox, die das Konto repräsentiert.
+     * @param account ist der ausgewählte Account mit seinen ganzen Informationen.
+     * @param user ist der aktuelle User.
+     * @throws IOException wird geworfen, wenn SceneChanger.changeScene("/com/jmc/app/spaceAccount.fxml", stage, account, user) einen Fehler zurückgibt.
+     */
     public void accountsButtonOnAction(VBox box, Account account, User user) throws IOException {
         Stage stage = (Stage) box.getScene().getWindow();
         SceneChanger.changeScene("/com/jmc/app/spaceAccount.fxml", stage, account, user);

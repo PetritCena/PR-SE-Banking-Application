@@ -31,49 +31,68 @@
                <Insets bottom="30.0" />
             </padding>
          </Label>
-         <VBox maxHeight="154.0" maxWidth="222.0" prefHeight="141.0" prefWidth="222.0" style="-fx-background-color: #3F3F3F; -fx-background-radius: 8;">
-            <VBox.margin>
-               <Insets left="70.0" />
-            </VBox.margin>
-            <Label text="VISA" textFill="WHITE">
-               <font>
-                  <Font name="System Bold Italic" size="21.0" />
-               </font>
-               <VBox.margin>
-                  <Insets left="10.0" top="10.0" />
-               </VBox.margin>
-            </Label>
-            <HBox prefHeight="48.0" prefWidth="222.0">
-               <ImageView fitHeight="42.0" fitWidth="41.0" pickOnBounds="true" preserveRatio="true">
-                  <image>
-                     <Image url="@iconsChipcard.png" />
-                  </image>
-                  <HBox.margin>
-                     <Insets left="10.0" />
-                  </HBox.margin>
-               </ImageView>
-               <ImageView fitHeight="30.0" fitWidth="28.0" layoutX="10.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
-                  <image>
-                     <Image url="@iconsNfc.png" />
-                  </image>
-                  <HBox.margin>
-                     <Insets top="7.0" />
-                  </HBox.margin>
-               </ImageView>
-            </HBox>
-            <Label fx:id="ibanLabel" prefHeight="18.0" prefWidth="155.0" textFill="WHITE">
-               <VBox.margin>
-                  <Insets left="35.0" />
-               </VBox.margin>
-               <font>
-                  <Font size="16.0" />
-               </font>
-            </Label>
-            <Label fx:id="nameLabel" layoutX="39.0" layoutY="96.0" prefHeight="18.0" prefWidth="114.0" textFill="WHITE">
-               <VBox.margin>
-                  <Insets left="35.0" />
-               </VBox.margin></Label>
-         </VBox>
+         <!-- QR Code section -->
+         <HBox prefHeight="250.0" prefWidth="754">
+            <AnchorPane prefHeight="214.0" prefWidth="851.0">
+               <VBox layoutX="66.0" layoutY="23.0" maxHeight="154.0" maxWidth="222.0" prefHeight="141.0" prefWidth="222.0" style="-fx-background-color: #3F3F3F; -fx-background-radius: 8;">
+                  <VBox.margin>
+                     <Insets left="70.0" />
+                  </VBox.margin>
+                  <Label text="VISA" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold Italic" size="21.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets left="10.0" top="10.0" />
+                     </VBox.margin>
+                  </Label>
+                  <HBox prefHeight="48.0" prefWidth="222.0">
+                     <ImageView fitHeight="42.0" fitWidth="41.0" pickOnBounds="true" preserveRatio="true">
+                        <image>
+                           <Image url="@iconsChipcard.png" />
+                        </image>
+                        <HBox.margin>
+                           <Insets left="10.0" />
+                        </HBox.margin>
+                     </ImageView>
+                     <ImageView fitHeight="30.0" fitWidth="28.0" layoutX="10.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
+                        <image>
+                           <Image url="@iconsNfc.png" />
+                        </image>
+                        <HBox.margin>
+                           <Insets top="7.0" />
+                        </HBox.margin>
+                     </ImageView>
+                  </HBox>
+                  <Label fx:id="ibanLabel" prefHeight="18.0" prefWidth="155.0" textFill="WHITE">
+                     <VBox.margin>
+                        <Insets left="35.0" />
+                     </VBox.margin>
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="nameLabel" layoutX="39.0" layoutY="96.0" prefHeight="18.0" prefWidth="114.0" textFill="WHITE">
+                     <VBox.margin>
+                        <Insets left="35.0" />
+                     </VBox.margin>
+                  </Label>
+               </VBox>
+               <VBox alignment="CENTER" layoutX="351.0" layoutY="-10.0" prefHeight="181.0" prefWidth="174.0" spacing="10.0" style="-fx-background-color: #F0F0F0; -fx-background-radius: 8; -fx-padding: 10;">
+                  <Button fx:id="generateQRCodeButton" onAction="#generateQRCode" style="-fx-background-radius: 20; -fx-background-color: #DAECFB; -fx-padding: 10 20;" text="QR-Code generieren" textFill="#35495a">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Button>
+                  <ImageView fx:id="qrCodeImageView" fitHeight="120.0" fitWidth="120.0" preserveRatio="true" visible="false" />
+                  <Label text="Scan für Kartendetails" textFill="#35495a">
+                     <font>
+                        <Font size="12.0" />
+                     </font>
+                  </Label>
+               </VBox>
+            </AnchorPane>
+         </HBox>
          <HBox fx:id="kartennummerHbox" prefHeight="15.0" prefWidth="850.0" spacing="10.0">
             <Label prefHeight="18.0" prefWidth="94.0" text="Kartennummer:">
                <HBox.margin>
@@ -127,7 +146,7 @@
                </cursor>
             </Button>
          </HBox>
-         <Accordion prefHeight="268.0" prefWidth="754.0" stylesheets="@accordion.css">
+         <Accordion prefHeight="268.0" prefWidth="624.0" stylesheets="@accordion.css">
             <panes>
                <TitledPane animated="true" prefHeight="257.0" prefWidth="624.0" text="Transaktionen" textFill="#35495a">
                   <content>

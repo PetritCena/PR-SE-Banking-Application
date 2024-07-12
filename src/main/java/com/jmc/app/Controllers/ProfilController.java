@@ -1,6 +1,5 @@
 package com.jmc.app.Controllers;
 
-
 import com.jmc.app.Models.User;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.event.ActionEvent;
@@ -8,7 +7,6 @@ import javafx.fxml.FXML;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
@@ -24,6 +22,9 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 
+/**
+ * Diese Klasse entspricht dem Controller für die Profilseite.
+ */
 public class ProfilController implements Controller{
     @FXML
     private TextField vornameFeld, nachnameFeld, visibleOldPasswordTextField, visibleNewPasswordTextField, visibleConfirmNewPasswordTextField;
@@ -41,6 +42,11 @@ public class ProfilController implements Controller{
     private final FileChooser fileChooser = new FileChooser();
     private User user;
 
+    /**
+     *
+     * @param user ist eine User-Instanz.
+     * @param nulll wird hier nicht benutzt, da eine Account-Instanz hier nicht notwendig ist.
+     */
     @FXML
     public void initialize(Object user, Object nulll) {
         this.user = (User) user;
@@ -60,7 +66,11 @@ public class ProfilController implements Controller{
         vornameFeld.setText(user.getFirstName());
         nachnameFeld.setText(user.getLastName());
     }
-    public void datenÄndern(ActionEvent actionEvent) {
+
+    /**
+     * Diese Methode ändert die User-Daten.
+     */
+    public void datenÄndern() {
         if(!vornameFeld.getText().equals(user.getFirstName()) || !nachnameFeld.getText().equals(user.getLastName())) updateUserData();
         else if(!neuesPasswortFeld.getText().isEmpty()) updatePassword();
         else {
@@ -69,7 +79,12 @@ public class ProfilController implements Controller{
         }
     }
 
-    public void choosePhoto(MouseEvent event) throws SQLException, IOException {
+    /**
+     * Diese Methode übernimmt das Auswählen eines Fotos für das Profil.
+     * @throws SQLException wird geworfen, wenn user.setPic(imageFile) eine Fehler zurückgibt.
+     * @throws IOException wird geworfen, wenn user.setPic(imageFile) eine Fehler zurückgibt.
+     */
+    public void choosePhoto() throws SQLException, IOException {
         fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg"));
         File imageFile = fileChooser.showOpenDialog(new Stage());
         if (imageFile != null) {
@@ -90,6 +105,9 @@ public class ProfilController implements Controller{
         return initials;
     }
 
+    /**
+     * Diese Methode zeigt die Initialen des Users an, falls kein Profilbild vorhanden ist.
+     */
     public void displayInitialsInCircle() {
         Text text = new Text(getInitials(user.getFirstName(), user.getLastName()));
         text.setFont(Font.font("Arial", FontWeight.BOLD, 20));
@@ -143,12 +161,19 @@ public class ProfilController implements Controller{
         }
     }
 
-    public void signoutButtonOnAction(ActionEvent event) throws IOException {
+    /**
+     * Diese Methode bringt den User wieder zur Login-Seite zurück.
+     * @throws IOException wird geworfen, wenn SceneChanger.changeScene("/com/jmc/app/login.fxml", stage, null, null) einen Fehelr zurückgibt.
+     */
+    public void signoutButtonOnAction() throws IOException {
         Stage stage = (Stage) signoutButton.getScene().getWindow();
         SceneChanger.changeScene("/com/jmc/app/login.fxml", stage, null, null);
     }
 
-    @FXML
+    /**
+     * Diese Methode ist dazu da, dass der Inhalt der Passwordfelder angezeigt oder versteckt wird.
+     * @param event ist das Event (Mausdruck auf Button), das diese Methode auslöst.
+     */
     public void togglePasswordVisibility(ActionEvent event) {
         Object source = event.getSource();
         Button btn = null;

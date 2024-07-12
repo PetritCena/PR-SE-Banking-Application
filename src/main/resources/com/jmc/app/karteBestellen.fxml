@@ -53,7 +53,7 @@
          <Text layoutX="257.0" layoutY="341.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Debitkarte" />
          <Text layoutX="377.0" layoutY="341.0" strokeType="OUTSIDE" strokeWidth="0.0" text="10€" />
          <VBox alignment="CENTER" layoutX="254.0" layoutY="379.0" spacing="10.0" />
-         <ComboBox fx:id="accountComboBox" layoutX="223.0" layoutY="384.0" prefHeight="26.0" prefWidth="229.0" onMouseClicked="#accountList" promptText="Wählen Sie ein Konto" />
+         <ComboBox fx:id="accountComboBox" layoutX="223.0" layoutY="384.0" prefHeight="26.0" prefWidth="229.0" promptText="Wählen Sie ein Konto" />
       </AnchorPane>
    </center>
 </BorderPane>

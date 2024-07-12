@@ -1,12 +1,9 @@
 package com.jmc.app.Controllers;
 
-import com.jmc.app.Models.Account;
-import com.jmc.app.Models.Card;
-import com.jmc.app.Models.Transaction;
-import com.jmc.app.Models.User;
+import com.jmc.app.Models.*;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -16,21 +13,33 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.paint.Paint;
+import javafx.scene.shape.Circle;
 import javafx.scene.text.*;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 
+import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+/**
+ * Diese Klasse entspricht dem Controller für die Konto-Seite.
+ */
 public class SpaceAccountController implements Controller {
+    @FXML
+    private Circle photoCircle;
+    @FXML
+    private FontAwesomeIconView stiftIcon;
     @FXML
     private Text accountName;
     @FXML
@@ -44,7 +53,9 @@ public class SpaceAccountController implements Controller {
     @FXML
     private ComboBox<String> filterComboBox;
     @FXML
-    private Label ibanLabel, saldoLabel, typLabel;
+    private Label ibanLabel, typLabel;
+    @FXML
+    public Label saldoLabel;
     @FXML
     private BorderPane borderPane;
     @FXML
@@ -54,9 +65,14 @@ public class SpaceAccountController implements Controller {
 
     private Account account;
     private ArrayList<Card> cards = null;
-
     private User user;
+    private final FileChooser fileChooser = new FileChooser();
 
+    /**
+     * Diese Methode initialisiert die Konto-Seite.
+     * @param o ist eine Account-Instanz.
+     * @param o2 ist eine User-Instanz.
+     */
     @Override
     public void initialize(Object o, Object o2) {
         this.account = (Account) o;
@@ -70,12 +86,19 @@ public class SpaceAccountController implements Controller {
         if (account.getTyp().equals("Hauptkonto")){
             transferÜberweisungButton.setText("Überweisung");
             accountName.setText("Hauptkonto");
+            photoCircle.setVisible(false);
+            stiftIcon.setVisible(false);
         }
         else{
             transferÜberweisungButton.setText("Transfer");
-            accountName.setText("Spacekonto");
+            accountName.setText(account.getName());
         }
 
+        if (this.account.getPic() != null && this.account.getPic().length > 0) {
+            Image image = new Image(new ByteArrayInputStream(this.account.getPic()));
+            photoCircle.setFill(new ImagePattern(image));
+        }
+        else photoCircle.setFill(Paint.valueOf("#DAECFB"));
         accordion.setExpandedPane(listViewTitledPane);
 
         searchButton.setStyle("-fx-background-color: grey; -fx-background-radius: 4");
@@ -85,12 +108,25 @@ public class SpaceAccountController implements Controller {
         fillListView(this.account.getTransactions());
     }
 
-
-//C2AA10FF  3F3F3F  404F1BFF    #003366  #C0C0C0  #D3D3D3  #B0E0E6
+    /**
+     * Diese Methode übernimmt das Auswählen eines Fotos für das Konto.
+     * @throws SQLException wird geworfen, wenn account.setPic(imageFile) eine Fehler zurückgibt.
+     * @throws IOException wird geworfen, wenn account.setPic(imageFile) eine Fehler zurückgibt.
+     */
+    public void choosePhoto() throws SQLException, IOException {
+        fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg"));
+        File imageFile = fileChooser.showOpenDialog(new Stage());
+        if (imageFile != null) {
+            account.setPic(imageFile);
+            Image image = new Image(imageFile.toURI().toString());
+            photoCircle.setFill(new ImagePattern(image));
+        }
+    }
 
     private void loadCard(){
         if(cards == null) return;
         for (Card card : cards){
+
             //Kreditkarte
             VBox vboxKarte = new VBox();
             hbox.getChildren().add(vboxKarte);
@@ -108,7 +144,7 @@ public class SpaceAccountController implements Controller {
             vboxKarte.getChildren().add(visa);
             VBox.setMargin(visa, new Insets(10,0,0,10));
 
-            //imageview vom Chip
+            //Imageview vom Chip
             Image chip = new Image(getClass().getResource("/com/jmc/app/iconsChipcard.png").toExternalForm());
             ImageView imageView = new ImageView(chip);
             imageView.setFitHeight(33);
@@ -123,15 +159,14 @@ public class SpaceAccountController implements Controller {
             HBox.setMargin(imageView2, new Insets(9,0,0,-4));
 
             //Kartennummer
-            //card.getKartenNummer() = card.getKartenNummer() * 10000000000000000;
-            Text kartennummerText = new Text(card.getKartenNummer()+""); //nicht IBAN sonder Kartennummer!!!
+            Text kartennummerText = new Text(card.getKartenNummer()+"");
             kartennummerText.setFill(Color.WHITE);
             kartennummerText.setFont(Font.font( 14));
             vboxKarte.getChildren().add(kartennummerText);
             VBox.setMargin(kartennummerText, new Insets(0,0,0,30));
 
             //Name
-            Text name = new Text(user.getFirstName().toUpperCase() + " " + user.getLastName().toUpperCase()); //user holen
+            Text name = new Text(user.getFirstName().toUpperCase() + " " + user.getLastName().toUpperCase());
             name.setFill(Color.WHITE);
             name.setFont(Font.font( 10));
             vboxKarte.getChildren().add(name);
@@ -148,7 +183,11 @@ public class SpaceAccountController implements Controller {
         }
     }
 
-    public void handleTransferÜberweisungButton(MouseEvent event) throws IOException {
+    /**
+     * Diese Methode bringt den User zum Überweisungs-Dialog.
+     * @throws IOException wird geworfen, wenn fxmlLoader.load() einen Fehler zurückgibt.
+     */
+    public void handleTransferÜberweisungButton() throws IOException {
         String resource;
         if (account.getTyp().equals("Hauptkonto")){
             resource = "/com/jmc/app/popupÜberweisung.fxml";
@@ -159,10 +198,18 @@ public class SpaceAccountController implements Controller {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(resource));
         Parent root = (Parent) fxmlLoader.load();
         Controller controller = fxmlLoader.getController();
+        if(account.getTyp().equals("Hauptkonto")){
+            popupUeberweisungController cntrl = (popupUeberweisungController) controller;
+            cntrl.setSpaceController(this);
+        }
+        else{
+            popupTransferController cntrl = (popupTransferController) controller;
+            cntrl.setSpaceController(this);
+        }
         controller.initialize(user, account);
         Stage stage = new Stage();
         stage.setScene(new Scene(root));
-        stage.show();
+        stage.showAndWait();
     }
 
     private List<Transaction> filterTransactionsByType(String type) {
@@ -181,7 +228,10 @@ public class SpaceAccountController implements Controller {
                 .collect(Collectors.toList());
     }
 
-    public void searchButtonOnAction(ActionEvent event) {
+    /**
+     * Diese Methode filtert die Transaktionsliste nach filterType oder searchTerm.
+     */
+    public void searchButtonOnAction() {
         String filterType = filterComboBox.getValue();
         String searchTerm = searchbar.getText();
 
@@ -195,7 +245,11 @@ public class SpaceAccountController implements Controller {
         fillListView(filteredTransactions);
     }
 
-    private void fillListView(List<Transaction> transactions){
+    /**
+     * Diese Methode füllt die ListView transactionsListView mit den mitgegebenen Transaktionen.
+     * @param transactions ist die Liste von Transaktionen, mit dem das ListView transactionsListView befüllt wird.
+     */
+    public void fillListView(List<Transaction> transactions){
         ObservableList<Transaction> transactionsData = FXCollections.observableArrayList();
         transactionsData.addAll(transactions);
         transactionsListView.setItems(transactionsData);
@@ -211,20 +265,15 @@ public class SpaceAccountController implements Controller {
                     {
                         description = new Text();
                         amount = new Text();
-                        content = new HBox(description, amount);
+                        Region spacer = new Region();
+                        HBox.setHgrow(spacer, Priority.ALWAYS);
+                        content = new HBox(description, spacer, amount);
                     }
 
                     @Override
                     protected void updateItem(Transaction item, boolean empty) {
                         super.updateItem(item, empty);
                         if (item != null && !empty) {
-                            switch (item.getVerwendungszweck()) {
-                                case "Transfer" -> content.setSpacing(470);
-                                case "Abhebung" -> content.setSpacing(459);
-                                case "Einzahlung" -> content.setSpacing(458);
-                                case "Kartenzahlung" -> content.setSpacing(438);
-                                default -> content.setSpacing(441);
-                            }
                             description.setText(item.getVerwendungszweck());
                             amount.setText(item.getBetrag() + " €");
                             if(item.getEingangAusgang().equals("Eingang")) amount.setFill(Color.GREEN);
