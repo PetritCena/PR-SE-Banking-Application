@@ -12,4 +12,4 @@ Bei Unklarheiten, Fragen oder Problemen bei petritcena@gmail.com melden.
 
 Viel Spaß mit der BigBank App!
 
-Gruppe 4 (Armin, Fabian, Petrit, Ömer).
+Gruppe 3 (Armin, Fabian, Petrit, Ömer).
